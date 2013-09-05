@@ -38,16 +38,18 @@
 
         <LinearLayout
             style="@style/LoginFormContainer"
-            android:orientation="vertical"
-            android:textAlignment="center"             
-            ><TextView
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
                 android:id="@+id/welcome_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/welcome"
+                android:layout_marginBottom="10sp"
+                android:text="@string/registration_message"
                 android:textColor="#33B5E5"
                 android:textSize="30sp" />
-            
+
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -73,17 +75,11 @@
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="46dp"
-                android:text="@string/sign_up" />
-
-            <Button
-                android:id="@+id/create_account_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="46dp"
-                android:onClick="createAccount"
-                android:text="@string/si_queres_crearte_una_cuenta" />
-
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="@string/action_sign_in_short" />
         </LinearLayout>
     </ScrollView>
 

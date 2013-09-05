@@ -4,5 +4,8 @@
     <string name="app_name">Phone-Ticket</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="registration_message">Registracion</string>
+
+    
 
 </resources>

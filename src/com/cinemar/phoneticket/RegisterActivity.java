@@ -1,48 +1,27 @@
 package com.cinemar.phoneticket;
 
-import com.cinemar.phoneticket.RegisterActivity.UserLoginTask;
-
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.view.MenuItem;
+import android.support.v4.app.NavUtils;
 
-
-
-public class LoginActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.cinemar.phoneticket.MESSAGE";
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
-    
-    public void createAccount(View view){
-    	Intent intent = new Intent(this, RegisterActivity.class);
-    	EditText editText = (EditText) findViewById(R.id.email);
-    	String message = editText.getText().toString();
-    	intent.putExtra(EXTRA_MESSAGE, message);
-    	startActivity(intent);
-
-    	
-    }
-    
-
+/**
+ * Activity which displays a login screen to the user, offering registration as
+ * well.
+ */
+public class RegisterActivity extends Activity {
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -75,7 +54,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_login);
+		setContentView(R.layout.activity_register);
 		setupActionBar();		
           
         // Set up the login form.
@@ -142,7 +121,12 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.register, menu);
+		return true;
+	}
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
@@ -290,5 +274,4 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
-    
 }
