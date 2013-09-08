@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket;
 
-import com.cinemar.phoneticket.RegisterActivity.UserLoginTask;
+
+import com.cinemar.phoneticket.authentication.AuthenticationClient;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
 
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,26 +25,14 @@ import android.widget.TextView;
 
 
 public class LoginActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.cinemar.phoneticket.MESSAGE";
-
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
     }
-    
-    public void createAccount(View view){
-    	Intent intent = new Intent(this, RegisterActivity.class);
-    	EditText editText = (EditText) findViewById(R.id.email);
-    	String message = editText.getText().toString();
-    	intent.putExtra(EXTRA_MESSAGE, message);
-    	startActivity(intent);
-
-    	
-    }
-    
-
+	
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -70,7 +60,19 @@ public class LoginActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-
+	
+	/**
+	 * Action on the Sign up button to redirect to Register Activity
+	 */
+    public void createAccountAction(View view){
+    	Intent intent = new Intent(this, RegisterActivity.class);
+    	EditText editText = (EditText) findViewById(R.id.email);
+    	String message = editText.getText().toString();
+    	intent.putExtra("mensaje para la register activity", message);
+    	startActivity(intent);
+   	
+    }
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -250,7 +252,10 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO: attempt authentication against a network service.
-
+					
+			AuthenticationService autentication = new AuthenticationClient();
+			//autentication.login(mEmail, mPassword);
+			
 			try {
 				// Simulate network access.
 				Thread.sleep(2000);

@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="46dp"
-                android:onClick="createAccount"
+                android:onClick="createAccountAction"
                 android:text="@string/si_queres_crearte_una_cuenta" />
 
         </LinearLayout>
