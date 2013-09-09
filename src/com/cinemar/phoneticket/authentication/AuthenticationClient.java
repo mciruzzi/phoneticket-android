@@ -4,6 +4,13 @@ import java.io.IOException;
 
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.*;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 
@@ -13,6 +20,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import com.cinemar.phoneticket.model.User;
 import com.google.gson.Gson;
+import com.loopj.android.http.*;
+
 
 public class AuthenticationClient implements AuthenticationService {
 
@@ -21,7 +30,7 @@ public class AuthenticationClient implements AuthenticationService {
 	private static String URL = "http://wsf.cdyne.com/WeatherWS/Weather.asmx";
 	private static final String METHOD_NAME = "GetWeatherInformation";
 	private static final String SOAP_ACTION = "http://ws.cdyne.com/WeatherWS/GetWeatherInformation";
-
+	
 	// Declaracion de variables para consumir el web service
 	private SoapObject request = null;
 	private SoapSerializationEnvelope envelope = null;
@@ -31,10 +40,8 @@ public class AuthenticationClient implements AuthenticationService {
 	// objetos y cadenas JSON
 	Gson gson;
 
-	// Variables para manipular los controles de la UI
-
 	@Override
-	public User login(String user, String Password) {
+	public User loginSOAP(String user, String Password) {
 
 		request = new SoapObject(NAMESPACE, METHOD_NAME);
 		
@@ -67,14 +74,93 @@ public class AuthenticationClient implements AuthenticationService {
 	}
 
 	@Override
+	public User loginAsync(String user, String password) {
+		
+		RequestParams params = new RequestParams();
+		params.put("email", user);
+		params.put("password", "password");
+		Log.i("AuthenticationClient","Request Por Iniciar");
+
+		
+		RestClient.post("/api/users/sessions", params, new JsonHttpResponseHandler() {
+			@Override public void onStart() {
+				Log.i("AuthenticationClient","Request Iniciado");				
+			}
+			@Override public void onFailure(Throwable arg0, JSONObject arg1) {
+				Log.i("AuthenticationClient","Failure papa");
+			}
+			@Override public void onFailure(Throwable arg0, JSONArray arg1) {
+				Log.i("AuthenticationClient","Failure List papa");
+			}		
+			@Override public void onSuccess(JSONArray arg0) {
+				Log.i("AuthenticationClient","Succes List papa");
+			};
+			
+            @Override            
+            public void onSuccess(JSONObject  response) {
+                String emailDelChavon = null;
+                Log.i("AuthenticationClient","EYYYYYY");
+				try {					
+					emailDelChavon = response.getString("email");
+					Log.i("AuthenticationClient","email del chavon " + emailDelChavon);
+					
+				} catch (JSONException e) {					
+					e.printStackTrace();
+				}                        
+            }
+            @Override 
+            public void onFinish(){
+            	Log.i("AuthenticationClient","Request Finalizado");
+            }
+        });
+
+		
+		
+		return new User("login","succesful");
+		
+	}
+	@Override
+	public User login (String user, String password){
+	
+		HttpClient httpclient = new DefaultHttpClient();
+		// specify the URL you want to post to
+		HttpPost httppost = new HttpPost("http://phoneticket-stg.herokuapp.com/api/users/sessions");
+		try {
+		    JSONObject data = new JSONObject();
+	        data.put("email", "snipperme@gmail.com");
+	        data.put("password", "123456");	        
+	        
+	        StringEntity se = new StringEntity(data.toString());
+
+		    httppost.setEntity(se);
+		    
+		    httppost.setHeader("Accept", "application/json");
+		    httppost.setHeader("Content-type", "application/json");			
+		       		    
+		    // send the variable and value, in other words post, to the URL
+		    HttpResponse response = httpclient.execute(httppost);
+		    Log.i("RESPONSE",response.toString());
+	    } catch (ClientProtocolException e) {
+	    	Log.i("PROTOCOL","A");
+	    } catch (IOException e) {
+		    Log.i("IO","S");
+	    } catch (JSONException e) {
+			Log.i("JSON","J");
+		}
+		
+		return new User("login","succesful");
+		
+	}
+	
+	
+	@Override
 	public User signup(String user, String Password) {
 		// TODO Auto-generated method stub
 		return new User("A","B");
 	}
 	
 	/**
-     * Metodo que recibe una cadena JSON y la convierte en una lista
-     * de objetos AndroidOS para despues cargarlos en la lista
+     * Metodo que recibe una cadena JSON y la convierte en un @User
      * @param strJson (String) Cadena JSON
      */
     private User parseUser(String strJson){

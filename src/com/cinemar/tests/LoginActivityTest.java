@@ -6,7 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.ActivityTestCase;
 import android.widget.TextView;
 
-/* ASI ES UN EJEMPLO DE COMO SE PUEDE TESTEAR UNA ACTIVIDAD ENTERA*/
+/* ASI ES UN EJEMPLO DE COMO SE PUEDE TESTEAR UNA ACTIVIDAD ENTERA INCLUSIVE ESTADO DE SU UI y etc*/
 
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	

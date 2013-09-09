@@ -254,7 +254,7 @@ public class LoginActivity extends Activity {
 			// TODO: attempt authentication against a network service.
 					
 			AuthenticationService autentication = new AuthenticationClient();
-			//autentication.login(mEmail, mPassword);
+			autentication.login(mEmail, mPassword);
 			
 			try {
 				// Simulate network access.

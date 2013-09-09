@@ -4,9 +4,13 @@ import com.cinemar.phoneticket.model.User;
 
 public interface AuthenticationService {
 	
-	User login (String user, String Password);
+	User loginSOAP (String user, String password);
+	User login (String user, String password);
+	User loginAsync(String user, String password);
 			
-	User signup (String user, String Password);
+	User signup (String user, String password);
+	
+	
 		
 	
 
