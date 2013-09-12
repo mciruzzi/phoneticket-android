@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.model.User;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -22,6 +24,8 @@ public class LoginWebServiceTest extends InstrumentationTestCase {
 	public void testLoginWebService() throws Throwable {
 		final AsyncHttpClient client = new AsyncHttpClient();
 		final CountDownLatch signal = new CountDownLatch(1);
+		final StringBuilder strBuilder = new StringBuilder();
+		
 		runTestOnUiThread(new Runnable() { // THIS IS THE KEY TO SUCCESS
 			@Override
 			public void run() {
@@ -38,6 +42,7 @@ public class LoginWebServiceTest extends InstrumentationTestCase {
 							public void onSuccess(String response) {
 								Log.i("OK", response);
 								Log.i("OK", response);
+								strBuilder.append(response);
 
 							}
 
@@ -62,5 +67,14 @@ public class LoginWebServiceTest extends InstrumentationTestCase {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		assertEquals(strBuilder.toString(),"{\"email\":\"snipperme@gmail.com\"}");
+		
+		//se crea el objeto que ayuda deserealizar la cadena JSON
+		Gson gson = new Gson();
+		
+ 		//Deserealizamos la cadena JSON para que se convertida
+		User user = gson.fromJson(strBuilder.toString(), User.class);
+		assertEquals(user.getEmail(),"snipperme@gmail.com");
 	}
 }
