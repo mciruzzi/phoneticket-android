@@ -6,7 +6,7 @@
     <string name="registration_message">Registracion</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in_short"><b>Sign in</b></string>
+    <string name="action_sign_up_short"><b>Registrar</b></string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="error_invalid_email">This email address is invalid</string>

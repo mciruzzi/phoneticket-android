@@ -2,8 +2,8 @@
 <resources>
 
     <string name="welcome">Bienvenido a la aplicacion de CineAR</string>
-    <string name="si_queres_crearte_una_cuenta">Si queres crearte una cuenta...</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sing_up">Crear cuenta....</string>
+    <string name="sign_in">Ingresar</string>
     
 
 </resources>

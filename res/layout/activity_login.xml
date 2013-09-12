@@ -38,16 +38,18 @@
 
         <LinearLayout
             style="@style/LoginFormContainer"
+            android:layout_height="408dp"
             android:orientation="vertical"
-            android:textAlignment="center"             
-            ><TextView
+            android:textAlignment="center" >
+
+            <TextView
                 android:id="@+id/welcome_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome"
                 android:textColor="#33B5E5"
                 android:textSize="30sp" />
-            
+
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -63,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
                 android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeActionLabel="@string/action_sign_up_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
@@ -73,18 +75,21 @@
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="46dp"
-                android:text="@string/sign_up" />
+                android:text="@string/sign_in" />
 
             <Button
                 android:id="@+id/create_account_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="46dp"
                 android:onClick="createAccountAction"
-                android:text="@string/si_queres_crearte_una_cuenta" />
+                android:text="@string/sing_up" />
 
         </LinearLayout>
+
     </ScrollView>
 
 </merge>
