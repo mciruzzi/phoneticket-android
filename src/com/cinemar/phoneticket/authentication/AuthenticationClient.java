@@ -2,6 +2,10 @@ package com.cinemar.phoneticket.authentication;
 
 import java.util.concurrent.TimeoutException;
 
+import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedUserException;
+import com.cinemar.phoneticket.exceptions.ServerSideException;
+import com.cinemar.phoneticket.exceptions.UnconfirmedException;
 import com.cinemar.phoneticket.model.User;
 import com.google.gson.Gson;
 import com.loopj.android.http.*;
@@ -10,12 +14,10 @@ import com.loopj.android.http.*;
 public class AuthenticationClient implements AuthenticationService {
 
 	// Declaracion de variables para serealziar y deserealizar objetos y cadenas JSON
-	Gson gson;
-	
-	
+	Gson gson;	
 
 	@Override
-	public User login(String user, String password) {
+	public User login(String user, String password) throws InvalidLoginInfoException, UnconfirmedException {
 		
 		RequestParams params = new RequestParams();
 		params.put("email", user);
@@ -32,6 +34,9 @@ public class AuthenticationClient implements AuthenticationService {
 			 parsedUser = gson.fromJson(response.toString(), User.class);	
 		} catch (TimeoutException e) {			 
 			e.printStackTrace();
+		} catch (ServerSideException e) {			
+			if (e.getMessage().contains("Invalid email or password")) throw new InvalidLoginInfoException();
+			if (e.getMessage().contains("You have to confirm your account before continuing.")) throw new UnconfirmedException();
 		}	
 			
 		return parsedUser;
@@ -39,7 +44,7 @@ public class AuthenticationClient implements AuthenticationService {
 	}
 	
 	@Override
-	public boolean register(User user){
+	public void register(User user) throws RepeatedUserException,InvalidLoginInfoException{
 		
 		RequestParams params = new RequestParams();
 		params.put("email", user.getEmail());
@@ -48,16 +53,16 @@ public class AuthenticationClient implements AuthenticationService {
 		String response = null;
 		try {
 			response = RestClient.post("/users.json", params);
-		 		//Deserealizamos la cadena JSON para que se convertida
-			 if(response.contains(user.getEmail())){
-				 return true;
-			 }
-			 else{
-				 return false;
-			 }
-		} catch (TimeoutException e) {			 
-			e.printStackTrace();
-			return false;
+		 	//Todavia no hay ningun codigo de OK			
+			if(response.contains(user.getEmail())){
+				 return;
+			}			
+			
+		} catch (TimeoutException e) {	 
+			e.printStackTrace();		
+		} catch (ServerSideException e) {			
+			if (e.getMessage().contains("has already been taken")) throw new RepeatedUserException(user.getEmail()) ;
+			if (e.getMessage().contains("is invalid")) throw new InvalidLoginInfoException();			
 		}	
 
 	}

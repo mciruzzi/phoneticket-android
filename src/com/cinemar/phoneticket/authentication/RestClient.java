@@ -6,6 +6,7 @@ import java.util.concurrent.TimeoutException;
 
 import android.util.Log;
 
+import com.cinemar.phoneticket.exceptions.ServerSideException;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -14,17 +15,20 @@ import com.loopj.android.http.RequestParams;
 public class RestClient {
 	  private static final String BASE_URL = "http://phoneticket-stg.herokuapp.com/api"; //url de nuestra API
 	  private static AsyncHttpClient client = new AsyncHttpClient();
-	  private static int timeout = 30;
+	  private static final int TIMEOUT = 30;	  
+	  private static final String ERROR= "ERROR";
 
 	  public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 	      client.get(getAbsoluteUrl(url), params, responseHandler);
 	  }
 
-	  public static String post(String url, RequestParams params) throws TimeoutException {
+	  public static String post(String url, RequestParams params) throws TimeoutException, ServerSideException {
 			final CountDownLatch signal = new CountDownLatch(1);
-			final StringBuilder strBuilder = new StringBuilder();
+			final StringBuilder strBuilder = new StringBuilder();			
 			final String concatUrl= getAbsoluteUrl(url);
-			final RequestParams postParams = params;			
+			final RequestParams postParams = params;
+			final StringBuilder failure = new StringBuilder();
+			
 			
 			Runnable thread = new Runnable() { // THIS IS THE KEY TO SUCCESS
 				@Override
@@ -47,7 +51,8 @@ public class RestClient {
 								public void onFailure(Throwable e, String response) {
 									Log.i("RestClient", "Failure received: "+ response);
 									Log.i("RestClient", "Error:" + e.toString());
-									strBuilder.append(response);
+									strBuilder.append(response);									
+									failure.append(ERROR);									
 								}
 
 								@Override
@@ -60,7 +65,7 @@ public class RestClient {
 			};
 			thread.run(); //magic			
 			try {
-				signal.await(timeout, TimeUnit.SECONDS); // wait for callback
+				signal.await(TIMEOUT, TimeUnit.SECONDS); // wait for callback
 			} catch (InterruptedException e) {
 				Log.i("RestClient", "Error Waiting for response");
 				e.printStackTrace();
@@ -69,8 +74,11 @@ public class RestClient {
 				throw new TimeoutException("TIMEOUT PAPA");
 			}
 			
-			return strBuilder.toString();
-	      
+			if(!failure.toString().isEmpty()){
+				throw new ServerSideException(strBuilder.toString());					
+			}					
+						
+			return strBuilder.toString();	      
 	  }
 
 	  private static String getAbsoluteUrl(String relativeUrl) {

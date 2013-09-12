@@ -4,11 +4,6 @@
     <string name="app_name">Phone-Ticket</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="DNI">DNI</string>
-    <string name="fecha_nacimiento">Fecha de Nacimiento</string>
-    <string name="name">Nombre</string>
-    <string name="last_name">Apellido</string>
-    <string name="postal_address">Direccion</string>
-    <string name="phone_number">Telefono</string>
-    <string name="DateButton">Fecha de Nacimiento</string>    
+    <string name="error">Error</string>
+
 </resources>

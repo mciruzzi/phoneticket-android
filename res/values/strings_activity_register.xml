@@ -11,6 +11,18 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_user_already_exists">This mail is already used</string>
+    <string name="error_unconfirmed_user">Unconfirmed or disabled user</string>
+    <string name="error_invalid_pass_or_email">Incorrect email or password </string>
+    
+    <string name="DNI">DNI</string>
+    <string name="fecha_nacimiento">Fecha de Nacimiento</string>
+    <string name="name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="postal_address">Direccion</string>
+    <string name="phone_number">Telefono</string>
+    <string name="DateButton">Fecha de Nacimiento</string>    
+    
     <string name="register_progress_registering">Registrando&#8230;</string>
     
 

@@ -3,6 +3,8 @@ package com.cinemar.phoneticket;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.UnconfirmedException;
 import com.cinemar.phoneticket.model.User;
 
 import android.os.AsyncTask;
@@ -18,6 +20,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.inputmethod.EditorInfo;
@@ -244,19 +249,44 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
+	
+	private void showSimpleAlert(String msg){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(msg);
+		builder.setTitle(getString(R.string.error));
+		
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {				
+				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
+			}
+		});
+		
+		builder.show();
+	}
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {	
+		Exception exception = null;	
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.					
+			// Authentication against a network service.					
 			AuthenticationService autentication = new AuthenticationClient();
-			sessionUser = autentication.login(mEmail, mPassword);
+			//TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?) 
+			try {
+				sessionUser = autentication.login(mEmail, mPassword);
+			} catch (InvalidLoginInfoException e) {	
+				exception=e;
+				return false;
+			} catch (UnconfirmedException e) {
+				exception=e;
+				return false;
+			}
 			
-			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?) 
 			return true;
 		}
 
@@ -266,16 +296,16 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				//finish();
 				//movernos hacia la pantalla principal
 				Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
 				goToMainActivity();				
-			} else {
-				//en caso de password incorrecta puedo mostrar un mensaje apropiado
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-				// TODO ver otros casos de respuesta
+			} else {				
+				if (exception instanceof InvalidLoginInfoException )
+					showSimpleAlert(getString(R.string.error_invalid_pass_or_email));
+				else if (exception instanceof UnconfirmedException){
+					mEmailView.setError(getString(R.string.error_unconfirmed_user));
+					mEmailView.requestFocus();			
+				}
 			}
 		}
 

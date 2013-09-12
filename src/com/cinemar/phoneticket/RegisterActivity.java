@@ -1,10 +1,12 @@
 package com.cinemar.phoneticket;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedUserException;
+import com.cinemar.phoneticket.exceptions.UnconfirmedException;
 import com.cinemar.phoneticket.model.User;
 
 import android.animation.Animator;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -121,7 +124,7 @@ public class RegisterActivity extends Activity {
 		mPickDate.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View arg0) {				
-				showDialog(DATE_DIALOG_ID);				
+				showDialog(DATE_DIALOG_ID);	      
 			}
 		});
 			
@@ -163,7 +166,6 @@ public class RegisterActivity extends Activity {
 		mFechaNacimientoView.setText(mDay+"-"+mMonth+"-"+mYear);
 	}
 
-	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
@@ -203,7 +205,7 @@ public class RegisterActivity extends Activity {
 		if (mAuthTask != null) {
 			return;
 		}
-
+		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -304,35 +306,52 @@ public class RegisterActivity extends Activity {
 	 * the user.
 	 */
 	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
+		Exception exception = null;	
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
+			// Authentication against a network service.
 			AuthenticationService autentication = new AuthenticationClient();
-			boolean result = autentication.register(sessionUser);
-
-			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en
-			// cada uno?)
+			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?)
+			try {
+				autentication.register(sessionUser);
+			} catch (RepeatedUserException e) {
+				exception = e; 
+				return false;
+				//mEmailView.setError(getString(R.string.error_user_already_exists));
+				//mEmailView.requestFocus();
+				
+			} catch (InvalidLoginInfoException e) {
+				exception = e; 
+				return false;
+				//mEmailView.setError(getString(R.string.error_invalid_email));
+				//mEmailView.requestFocus();
+			}
+		
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
+			
 			showProgress(false);
 
 			if (success) {
-				// finish();
 				// movernos hacia la pantalla principal
 				Log.i("RegisterActivity", "User Registered, email: "
 						+ sessionUser.getEmail());
 				goToLoginActivity();
 			} else {
-				// en caso de password incorrecta puedo mostrar un mensaje
-				// apropiado
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-				// TODO ver otros casos de respuesta
+				if (exception instanceof RepeatedUserException ){
+					mEmailView.setError(getString(R.string.error_user_already_exists));
+					mEmailView.requestFocus();					
+				}					
+				else if (exception instanceof InvalidLoginInfoException){
+					mEmailView.setError(getString(R.string.error_invalid_email));
+					mEmailView.requestFocus();								
+				}
+			
 			}
 		}
 
