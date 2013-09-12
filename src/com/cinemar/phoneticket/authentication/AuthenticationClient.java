@@ -1,26 +1,6 @@
 package com.cinemar.phoneticket.authentication;
 
-import java.io.IOException;
-import java.net.ResponseCache;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import android.util.Log;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.*;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
 import com.cinemar.phoneticket.model.User;
 import com.google.gson.Gson;
@@ -58,24 +38,28 @@ public class AuthenticationClient implements AuthenticationService {
 		
 	}
 	
-	
 	@Override
-	public User signup(String user, String Password) {
-		// TODO Auto-generated method stub
-		return new User("A","B");
-	}
-	
-	/**
-     * Metodo que recibe una cadena JSON y la convierte en un @User
-     * @param strJson (String) Cadena JSON
-     */
-    private User parseUser(String strJson){
-		//se crea el objeto que ayuda deserealizar la cadena JSON
-		gson = new Gson();
+	public boolean register(User user){
 		
- 		//Deserealizamos la cadena JSON para que se convertida
-		return gson.fromJson(strJson, User.class);	
- 
+		RequestParams params = new RequestParams();
+		params.put("email", user.getEmail());
+		params.put("password", user.getPassword());
+		
+		String response = null;
+		try {
+			response = RestClient.post("/users.json", params);
+		 		//Deserealizamos la cadena JSON para que se convertida
+			 if(response.contains(user.getEmail())){
+				 return true;
+			 }
+			 else{
+				 return false;
+			 }
+		} catch (TimeoutException e) {			 
+			e.printStackTrace();
+			return false;
+		}	
+
 	}
 
 }
