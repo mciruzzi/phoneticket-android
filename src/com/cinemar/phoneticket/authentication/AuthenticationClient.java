@@ -49,6 +49,12 @@ public class AuthenticationClient implements AuthenticationService {
 		RequestParams params = new RequestParams();
 		params.put("email", user.getEmail());
 		params.put("password", user.getPassword());
+		params.put("first_name", user.getNombre());
+		params.put("last_name", user.getApellido());
+		params.put("phone_number", user.getTelefono());
+		params.put("document", user.getDni());
+		params.put("address", user.getDireccion());
+		params.put("date_of_birth", user.getFechaNacimiento().toString());
 		
 		String response = null;
 		try {
@@ -60,8 +66,8 @@ public class AuthenticationClient implements AuthenticationService {
 			
 		} catch (TimeoutException e) {	 
 			e.printStackTrace();		
-		} catch (ServerSideException e) {			
-			if (e.getMessage().contains("has already been taken")) throw new RepeatedUserException(user.getEmail()) ;
+		} catch (ServerSideException e) {
+			if (e.getMessage().contains("has already been taken")) throw new RepeatedUserException(user.getEmail());
 			if (e.getMessage().contains("is invalid")) throw new InvalidLoginInfoException();			
 		}	
 
