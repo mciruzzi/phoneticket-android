@@ -1,10 +1,8 @@
 package com.cinemar.tests;
 
-import com.cinemar.phoneticket.LoginActivity;
-
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ActivityTestCase;
-import android.widget.TextView;
+
+import com.cinemar.phoneticket.LoginActivity;
 
 /* ASI ES UN EJEMPLO DE COMO SE PUEDE TESTEAR UNA ACTIVIDAD ENTERA INCLUSIVE ESTADO DE SU UI y etc*/
 

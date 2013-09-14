@@ -2,6 +2,7 @@ package com.cinemar.phoneticket.authentication;
 
 import java.util.concurrent.TimeoutException;
 
+import com.cinemar.phoneticket.exceptions.DisabledUserException;
 import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
 import com.cinemar.phoneticket.exceptions.RepeatedUserException;
 import com.cinemar.phoneticket.exceptions.ServerSideException;
@@ -17,7 +18,7 @@ public class AuthenticationClient implements AuthenticationService {
 	Gson gson;	
 
 	@Override
-	public User login(String user, String password) throws InvalidLoginInfoException, UnconfirmedException {
+	public User login(String user, String password) throws InvalidLoginInfoException, UnconfirmedException, ServerSideException, DisabledUserException {
 		
 		RequestParams params = new RequestParams();
 		params.put("email", user);
@@ -37,6 +38,8 @@ public class AuthenticationClient implements AuthenticationService {
 		} catch (ServerSideException e) {			
 			if (e.getMessage().contains("Invalid email or password")) throw new InvalidLoginInfoException();
 			if (e.getMessage().contains("You have to confirm your account before continuing.")) throw new UnconfirmedException();
+			if (e.getMessage().contains("Your account was disabled")) throw new DisabledUserException();
+			throw new ServerSideException(e.getMessage());
 		}	
 			
 		return parsedUser;

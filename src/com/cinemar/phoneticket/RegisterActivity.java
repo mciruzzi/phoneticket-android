@@ -2,13 +2,6 @@ package com.cinemar.phoneticket;
 
 import java.util.Calendar;
 
-import com.cinemar.phoneticket.authentication.AuthenticationClient;
-import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
-import com.cinemar.phoneticket.exceptions.RepeatedUserException;
-import com.cinemar.phoneticket.exceptions.UnconfirmedException;
-import com.cinemar.phoneticket.model.User;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -19,18 +12,24 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+
+import com.cinemar.phoneticket.authentication.AuthenticationClient;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedUserException;
+import com.cinemar.phoneticket.model.User;
 
 
 /**

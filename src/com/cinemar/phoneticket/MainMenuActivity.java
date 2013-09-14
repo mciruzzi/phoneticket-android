@@ -1,9 +1,8 @@
 package com.cinemar.phoneticket;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainMenuActivity extends Activity {

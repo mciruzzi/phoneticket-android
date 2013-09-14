@@ -1,12 +1,13 @@
 package com.cinemar.phoneticket;
 
 
-import com.cinemar.phoneticket.authentication.AuthenticationClient;
-import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
-import com.cinemar.phoneticket.exceptions.UnconfirmedException;
-import com.cinemar.phoneticket.model.User;
-
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,20 +15,20 @@ import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.view.Menu;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.authentication.AuthenticationClient;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.exceptions.DisabledUserException;
+import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.ServerSideException;
+import com.cinemar.phoneticket.exceptions.UnconfirmedException;
+import com.cinemar.phoneticket.model.User;
 
 
 
@@ -285,6 +286,12 @@ public class LoginActivity extends Activity {
 			} catch (UnconfirmedException e) {
 				exception=e;
 				return false;
+			} catch (ServerSideException e) {
+				exception=e;
+				return false;
+			} catch (DisabledUserException e) {
+				exception=e;
+				return false;
 			}
 			
 			return true;
@@ -302,8 +309,14 @@ public class LoginActivity extends Activity {
 			} else {				
 				if (exception instanceof InvalidLoginInfoException )
 					showSimpleAlert(getString(R.string.error_invalid_pass_or_email));
-				else if (exception instanceof UnconfirmedException){
+				else if (exception instanceof UnconfirmedException) {
 					mEmailView.setError(getString(R.string.error_unconfirmed_user));
+					mEmailView.requestFocus();
+				} else if (exception instanceof DisabledUserException){
+					mEmailView.setError(getString(R.string.error_disabled_user));
+					mEmailView.requestFocus();
+				} else if (exception instanceof ServerSideException){
+					mEmailView.setError(exception.getMessage());
 					mEmailView.requestFocus();			
 				}
 			}

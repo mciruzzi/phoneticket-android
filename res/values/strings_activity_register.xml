@@ -1,19 +1,19 @@
 <resources>
 
-    <string name="title_activity_register">Registration</string>
+    <string name="title_activity_register">Registración</string>
 
     <!-- Strings related to login -->
     <string name="registration_message">Registración</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_up_short"><b>Registrar</b></string>
-    <string name="action_forgot_password">Recover lost password</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="error_user_already_exists">This mail is already used</string>
-    <string name="error_unconfirmed_user">Unconfirmed or disabled user</string>
-    <string name="error_invalid_pass_or_email">Incorrect email or password </string>
+    <string name="error_invalid_email">Email inválido</string>
+    <string name="error_invalid_password">El password es demasiado corto</string>
+    <string name="error_field_required">Campo obligatorio</string>
+    <string name="error_user_already_exists">Este mail ya se encuentra en uso</string>
+    <string name="error_unconfirmed_user">Debe confirmar el usuario antes de ingresar</string>
+    <string name="error_disabled_user">Usuario deshabilitado</string>
+    <string name="error_invalid_pass_or_email">Email o password incorrecto</string>
     
     <string name="DNI">DNI</string>
     <string name="fecha_nacimiento">Fecha de Nacimiento</string>
