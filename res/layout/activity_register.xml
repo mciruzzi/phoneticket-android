@@ -58,7 +58,10 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName">
+                
+                <requestFocus />
+                </EditText>
 
             <EditText
                 android:id="@+id/apellido"
@@ -88,8 +91,7 @@
                     android:id="@+id/fecha_nac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
                     android:ems="10"
                     android:hint="@string/fecha_nacimiento"
                     android:textSize="20sp" />
@@ -112,8 +114,6 @@
                 android:ems="10"
                 android:hint="@string/DNI"
                 android:inputType="number" >
-
-                <requestFocus />
             </EditText>
 
             <EditText

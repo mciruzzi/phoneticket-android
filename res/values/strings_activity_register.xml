@@ -3,7 +3,7 @@
     <string name="title_activity_register">Registration</string>
 
     <!-- Strings related to login -->
-    <string name="registration_message">Registracion</string>
+    <string name="registration_message">Registración</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_up_short"><b>Registrar</b></string>
@@ -19,8 +19,8 @@
     <string name="fecha_nacimiento">Fecha de Nacimiento</string>
     <string name="name">Nombre</string>
     <string name="last_name">Apellido</string>
-    <string name="postal_address">Direccion</string>
-    <string name="phone_number">Telefono</string>
+    <string name="postal_address">Dirección</string>
+    <string name="phone_number">Teléfono</string>
     <string name="DateButton">Fecha de Nacimiento</string>    
     
     <string name="register_progress_registering">Registrando&#8230;</string>

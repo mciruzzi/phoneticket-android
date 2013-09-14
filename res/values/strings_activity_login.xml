@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="welcome">Bienvenido a la aplicacion de CineAR</string>
+    <string name="welcome">Bienvenido a la aplicación de CineAR</string>
     <string name="sing_up">Crear cuenta....</string>
     <string name="sign_in">Ingresar</string>
     <string name="error_incorrect_password">This password is incorrect</string>
