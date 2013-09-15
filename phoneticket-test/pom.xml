@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cinemar.phoneticket</groupId>
+    <artifactId>phoneticket-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+	<artifactId>phoneticket-test</artifactId>
+	<packaging>apk</packaging>
+	<name>Phone-Ticket - Instrumentation Test</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<platform.version>4.1.1.4</platform.version>
+		<android.plugin.version>3.6.0</android.plugin.version>
+    <android.device>test</android.device>
+    <android.enableIntegrationTest>true</android.enableIntegrationTest>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+      <scope>provided</scope>
+		</dependency>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android-test</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.cinemar.phoneticket</groupId>
+      <artifactId>phoneticket-app</artifactId>
+      <version>${project.version}</version>
+      <type>apk</type>
+    </dependency>
+	</dependencies>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<configuration>
+          <test>
+            <createReport>true</createReport>
+          </test>
+        </configuration>
+        <extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+  <profiles>
+    <profile>
+      <id>integration-tests</id>
+      <activation>
+        <property>
+          <name>integration-tests</name>
+        </property>
+      </activation>
+      <properties>
+        <android.enableIntegrationTest>true</android.enableIntegrationTest>
+      </properties>
+    </profile>
+  </profiles>
+</project>

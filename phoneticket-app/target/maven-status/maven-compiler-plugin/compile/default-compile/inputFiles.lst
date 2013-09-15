@@ -1,0 +1,15 @@
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/authentication/RestClient.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/LoginActivity.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/DisabledUserException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/UnconfirmedException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/RepeatedUserException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/MainMenuActivity.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/ServerSideException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/model/User.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/target/generated-sources/r/com/cinemar/phoneticket/BuildConfig.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/InvalidLoginInfoException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/RegisterActivity.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/target/generated-sources/r/com/cinemar/phoneticket/R.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/exceptions/RepeatedDniException.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/authentication/AuthenticationClient.java
+/Users/jbarreneche/Facultad/phoneticket-android/phoneticket-app/src/main/java/com/cinemar/phoneticket/authentication/AuthenticationService.java
