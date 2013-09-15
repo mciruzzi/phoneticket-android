@@ -37,6 +37,13 @@
       <version>${project.version}</version>
       <type>apk</type>
     </dependency>
+    <dependency>
+      <groupId>com.loopj</groupId>
+      <artifactId>android-async-http</artifactId>
+      <version>1.4.3</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../libs/android-async-http-1.4.3.jar</systemPath>
+    </dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
