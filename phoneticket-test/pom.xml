@@ -40,7 +40,6 @@
     <dependency>
       <groupId>com.loopj</groupId>
       <artifactId>android-async-http</artifactId>
-      <version>1.4.3</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/../libs/android-async-http-1.4.3.jar</systemPath>
     </dependency>
@@ -55,6 +54,9 @@
           <test>
             <createReport>true</createReport>
           </test>
+          <sdk>
+            <platform>18</platform>
+          </sdk>
         </configuration>
         <extensions>true</extensions>
 			</plugin>

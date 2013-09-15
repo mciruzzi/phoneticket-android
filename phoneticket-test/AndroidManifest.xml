@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.example.android.apis.tests"
+  package="com.cinemar.phoneticket"
   android:versionName="1.0.0-SNAPSHOT">
   <application>
     <uses-library android:name="android.test.runner"/>
@@ -8,4 +8,5 @@
   <instrumentation android:name="android.test.InstrumentationTestRunner"
     android:targetPackage="com.simpligility.android.morseflash"
     android:label="Tests for MorseFlash."/>
+  <uses-sdk android:minSdkVersion="3" />
 </manifest>

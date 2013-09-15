@@ -2,6 +2,7 @@ package com.cinemar.phoneticket;
 
 
 import android.animation.Animator;
+
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;

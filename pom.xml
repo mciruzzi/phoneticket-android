@@ -66,12 +66,35 @@
 					<version>${android.plugin.version}</version>
           <configuration>
             <sdk>
-              <path>${env.ANDROID_HOME}</path>
               <platform>18</platform>
             </sdk>
           </configuration>
 					<extensions>true</extensions>
 				</plugin>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                    <artifactId>android-maven-plugin</artifactId>
+                    <versionRange>[3.2.0,)</versionRange>
+                    <goals>
+                      <goal>manifest-update</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
