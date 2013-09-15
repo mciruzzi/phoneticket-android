@@ -1,12 +1,13 @@
 package com.cinemar.phoneticket;
 
+import java.util.Calendar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,37 +20,44 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.exceptions.DisabledUserException;
 import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedDniException;
+import com.cinemar.phoneticket.exceptions.RepeatedUserException;
 import com.cinemar.phoneticket.exceptions.ServerSideException;
-import com.cinemar.phoneticket.exceptions.UnconfirmedException;
 import com.cinemar.phoneticket.model.User;
 
 
+/**
+ * Activity which displays a login screen to the user, offering registration as
+ * well.
+ */
+public class RegisterActivity extends Activity {
 
-public class LoginActivity extends Activity {
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.register, menu);
+		return true;
+	}
 
 	/**
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
+	private static final int DATE_DIALOG_ID = 8888;
+
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private UserLoginTask mAuthTask = null;
+	private RegistrationTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -59,35 +67,36 @@ public class LoginActivity extends Activity {
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
+	private EditText mNombreView;
+	private EditText mApellidoView;
+	private EditText mDNIView;
+	private TextView mFechaNacimientoView;
+	private EditText mTelefonoView;
+	private EditText mDireccionView;
+	private Button mPickDate;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	
-	/**
-	 * Action on the Sign up button to redirect to Register Activity
-	 */
-    public void createAccountAction(View view){
-    	Intent intent = new Intent(this, RegisterActivity.class);
-    	EditText editText = (EditText) findViewById(R.id.email);
-    	String message = editText.getText().toString();
-    	intent.putExtra("mensaje para la register activity", message);
-    	startActivity(intent);   	
-    }
-    
-    public void goToMainActivity(){
-    	Intent intent = new Intent(this, MainMenuActivity.class);    	
-    	intent.putExtra("userId", sessionUser.getEmail());
-    	startActivity(intent);   	
-    }
-    
+
+	private DatePickerDialog.OnDateSetListener mDateListener;
+	private int mDay;
+	private int mMonth;
+	private int mYear;
+
+	public void goToLoginActivity() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.putExtra("userId", sessionUser.getEmail());
+		startActivity(intent);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_login);
-		setupActionBar();		
-          
-        // Set up the login form.
+		setContentView(R.layout.activity_register);
+		setupActionBar();
+
+		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
@@ -99,13 +108,41 @@ public class LoginActivity extends Activity {
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
 						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
+							attemptRegister();
 							return true;
 						}
 						return false;
 					}
 				});
 
+		mNombreView = (EditText) findViewById(R.id.nombre);
+		mApellidoView = (EditText) findViewById(R.id.apellido);
+		mDNIView = (EditText) findViewById(R.id.dni);
+		mFechaNacimientoView = (TextView) findViewById(R.id.fecha_nac);
+		mTelefonoView = (EditText) findViewById(R.id.tel);
+		mDireccionView = (EditText) findViewById(R.id.direccion);
+		mPickDate = (Button) findViewById(R.id.dateButton);
+		mPickDate.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {				
+				showDialog(DATE_DIALOG_ID);	      
+			}
+		});
+			
+		updateDisplay();
+		
+		mDateListener = new DatePickerDialog.OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				mDay = dayOfMonth;
+				mMonth = monthOfYear;
+				mYear = year;
+				updateDisplay();
+			}
+		};
+		
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -114,11 +151,20 @@ public class LoginActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						attemptLogin();
+						attemptRegister();
 					}
 				});
-		
-		
+	}
+	
+	@Override protected Dialog onCreateDialog(int id){
+		if(id == DATE_DIALOG_ID){
+			return new DatePickerDialog(this, mDateListener, mYear, mMonth, mDay);
+		}
+		return null;
+	}
+
+	private void updateDisplay() {
+		mFechaNacimientoView.setText(mDay+"-"+mMonth+"-"+mYear);
 	}
 
 	/**
@@ -151,18 +197,16 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
-
 	/**
-	 * Attempts to sign in or register the account specified by the login form.
+	 * Attempts to register the account specified by the form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
+	 * errors are presented and no actual registration attempt is made.
 	 */
-	public void attemptLogin() {
+	public void attemptRegister() {
 		if (mAuthTask != null) {
 			return;
 		}
-
+		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -170,6 +214,13 @@ public class LoginActivity extends Activity {
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
+		//sessionUser = new User(mEmail, mPassword);
+		Calendar mNacimiento = Calendar.getInstance();
+		mNacimiento.set(mYear, mMonth, mDay);
+		//
+		sessionUser = new User(mEmail,mPassword,mNombreView.getText().toString(),
+				mApellidoView.getText().toString(),mDNIView.getText().toString(),mNacimiento.getTime(),
+				mDireccionView.getText().toString(),mTelefonoView.getText().toString());
 
 		boolean cancel = false;
 		View focusView = null;
@@ -203,9 +254,9 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mLoginStatusMessageView.setText(R.string.register_progress_registering);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
+			mAuthTask = new RegistrationTask();
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -250,75 +301,69 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-	
-	private void showSimpleAlert(String msg){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-		
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {				
-				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
-			}
-		});
-		
-		builder.show();
-	}
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {	
+	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
 		Exception exception = null;	
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// Authentication against a network service.					
+			// Authentication against a network service.
 			AuthenticationService autentication = new AuthenticationClient();
-			//TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?) 
+			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?)
 			try {
-				sessionUser = autentication.login(mEmail, mPassword);
-			} catch (InvalidLoginInfoException e) {	
-				exception=e;
-				return false;
-			} catch (UnconfirmedException e) {
-				exception=e;
+				autentication.register(sessionUser);
+			} catch (RepeatedDniException e) {
+				exception = e; 
 				return false;
 			} catch (ServerSideException e) {
-				exception=e;
+				exception = e; 
 				return false;
-			} catch (DisabledUserException e) {
-				exception=e;
+			} catch (RepeatedUserException e) {
+				exception = e; 
 				return false;
+				//mEmailView.setError(getString(R.string.error_user_already_exists));
+				//mEmailView.requestFocus();
+
+			} catch (InvalidLoginInfoException e) {
+				exception = e; 
+				return false;
+				//mEmailView.setError(getString(R.string.error_invalid_email));
+				//mEmailView.requestFocus();
 			}
-			
+
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
+			
 			showProgress(false);
 
 			if (success) {
-				//movernos hacia la pantalla principal
-				Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
-				goToMainActivity();				
-			} else {				
-				if (exception instanceof InvalidLoginInfoException )
-					showSimpleAlert(getString(R.string.error_invalid_pass_or_email));
-				else if (exception instanceof UnconfirmedException) {
-					mEmailView.setError(getString(R.string.error_unconfirmed_user));
-					mEmailView.requestFocus();
-				} else if (exception instanceof DisabledUserException){
-					mEmailView.setError(getString(R.string.error_disabled_user));
-					mEmailView.requestFocus();
+				// movernos hacia la pantalla principal
+				Log.i("RegisterActivity", "User Registered, email: "
+						+ sessionUser.getEmail());
+				goToLoginActivity();
+			} else {
+				if (exception instanceof RepeatedUserException ) {
+					mEmailView.setError(getString(R.string.error_user_already_exists));
+					mEmailView.requestFocus();					
+				} else if (exception instanceof InvalidLoginInfoException){
+					mEmailView.setError(getString(R.string.error_invalid_email));
+					mEmailView.requestFocus();								
 				} else if (exception instanceof ServerSideException){
 					mEmailView.setError(exception.getMessage());
-					mEmailView.requestFocus();			
+					mEmailView.requestFocus();								
+				} else if (exception instanceof RepeatedDniException){
+					mDNIView.setError(getString(R.string.error_dni_already_exists));
+					mDNIView.requestFocus();								
 				}
+			
 			}
 		}
 
@@ -328,5 +373,5 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
-    
+
 }
