@@ -4,6 +4,7 @@ import java.util.concurrent.TimeoutException;
 
 import com.cinemar.phoneticket.exceptions.DisabledUserException;
 import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedDniException;
 import com.cinemar.phoneticket.exceptions.RepeatedUserException;
 import com.cinemar.phoneticket.exceptions.ServerSideException;
 import com.cinemar.phoneticket.exceptions.UnconfirmedException;
@@ -47,7 +48,7 @@ public class AuthenticationClient implements AuthenticationService {
 	}
 	
 	@Override
-	public void register(User user) throws RepeatedUserException,InvalidLoginInfoException{
+	public void register(User user) throws RepeatedUserException,InvalidLoginInfoException, RepeatedDniException, ServerSideException{
 		
 		RequestParams params = new RequestParams();
 		params.put("email", user.getEmail());
@@ -70,8 +71,10 @@ public class AuthenticationClient implements AuthenticationService {
 		} catch (TimeoutException e) {	 
 			e.printStackTrace();		
 		} catch (ServerSideException e) {
+			if (e.getMessage().contains("document")) throw new RepeatedDniException(user.getDni());
 			if (e.getMessage().contains("has already been taken")) throw new RepeatedUserException(user.getEmail());
 			if (e.getMessage().contains("is invalid")) throw new InvalidLoginInfoException();			
+			throw new ServerSideException(e.getMessage());
 		}	
 
 	}

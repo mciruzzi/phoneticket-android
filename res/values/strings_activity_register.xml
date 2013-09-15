@@ -11,6 +11,7 @@
     <string name="error_invalid_password">El password es demasiado corto</string>
     <string name="error_field_required">Campo obligatorio</string>
     <string name="error_user_already_exists">Este mail ya se encuentra en uso</string>
+    <string name="error_dni_already_exists">Este DNI ya se encuentra en uso</string>
     <string name="error_unconfirmed_user">Debe confirmar el usuario antes de ingresar</string>
     <string name="error_disabled_user">Usuario deshabilitado</string>
     <string name="error_invalid_pass_or_email">Email o password incorrecto</string>

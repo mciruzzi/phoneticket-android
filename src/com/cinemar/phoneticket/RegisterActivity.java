@@ -28,7 +28,9 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
+import com.cinemar.phoneticket.exceptions.RepeatedDniException;
 import com.cinemar.phoneticket.exceptions.RepeatedUserException;
+import com.cinemar.phoneticket.exceptions.ServerSideException;
 import com.cinemar.phoneticket.model.User;
 
 
@@ -306,7 +308,7 @@ public class RegisterActivity extends Activity {
 	 */
 	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
 		Exception exception = null;	
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// Authentication against a network service.
@@ -314,19 +316,25 @@ public class RegisterActivity extends Activity {
 			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?)
 			try {
 				autentication.register(sessionUser);
+			} catch (RepeatedDniException e) {
+				exception = e; 
+				return false;
+			} catch (ServerSideException e) {
+				exception = e; 
+				return false;
 			} catch (RepeatedUserException e) {
 				exception = e; 
 				return false;
 				//mEmailView.setError(getString(R.string.error_user_already_exists));
 				//mEmailView.requestFocus();
-				
+
 			} catch (InvalidLoginInfoException e) {
 				exception = e; 
 				return false;
 				//mEmailView.setError(getString(R.string.error_invalid_email));
 				//mEmailView.requestFocus();
 			}
-		
+
 			return true;
 		}
 
@@ -342,13 +350,18 @@ public class RegisterActivity extends Activity {
 						+ sessionUser.getEmail());
 				goToLoginActivity();
 			} else {
-				if (exception instanceof RepeatedUserException ){
+				if (exception instanceof RepeatedUserException ) {
 					mEmailView.setError(getString(R.string.error_user_already_exists));
 					mEmailView.requestFocus();					
-				}					
-				else if (exception instanceof InvalidLoginInfoException){
+				} else if (exception instanceof InvalidLoginInfoException){
 					mEmailView.setError(getString(R.string.error_invalid_email));
 					mEmailView.requestFocus();								
+				} else if (exception instanceof ServerSideException){
+					mEmailView.setError(exception.getMessage());
+					mEmailView.requestFocus();								
+				} else if (exception instanceof RepeatedDniException){
+					mDNIView.setError(getString(R.string.error_dni_already_exists));
+					mDNIView.requestFocus();								
 				}
 			
 			}
