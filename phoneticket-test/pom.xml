@@ -12,19 +12,11 @@
 	<packaging>apk</packaging>
 	<name>Phone-Ticket - Instrumentation Test</name>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<platform.version>4.1.1.4</platform.version>
-		<android.plugin.version>3.6.0</android.plugin.version>
-    <android.device>test</android.device>
-    <android.enableIntegrationTest>true</android.enableIntegrationTest>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-      <scope>provided</scope>
+	      <scope>provided</scope>
 		</dependency>
     <dependency>
       <groupId>com.google.android</groupId>
@@ -32,21 +24,47 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.loopj</groupId>
+      <artifactId>android-async-http</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>support-v4</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.cinemar.phoneticket</groupId>
+      <artifactId>phoneticket-app</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    <!--
+    -->
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>com.cinemar.phoneticket</groupId>
       <artifactId>phoneticket-app</artifactId>
       <version>${project.version}</version>
       <type>apk</type>
     </dependency>
-    <dependency>
-      <groupId>com.loopj</groupId>
-      <artifactId>android-async-http</artifactId>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../libs/android-async-http-1.4.3.jar</systemPath>
-    </dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+    <sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
@@ -62,17 +80,4 @@
 			</plugin>
 		</plugins>
 	</build>
-  <profiles>
-    <profile>
-      <id>integration-tests</id>
-      <activation>
-        <property>
-          <name>integration-tests</name>
-        </property>
-      </activation>
-      <properties>
-        <android.enableIntegrationTest>true</android.enableIntegrationTest>
-      </properties>
-    </profile>
-  </profiles>
 </project>

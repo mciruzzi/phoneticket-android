@@ -14,7 +14,7 @@
  *              * limitations under the License.
  *               */
 
-package com.phoneticket;
+package com.cinemar.phoneticket;
 
 import android.test.suitebuilder.TestSuiteBuilder;
 import junit.framework.Test;

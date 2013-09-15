@@ -11,14 +11,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform.version>4.1.1.4</platform.version>
-		<android.plugin.version>3.6.0</android.plugin.version>
-    <android.device>test</android.device>
-    <android.enableIntegrationTest>false</android.enableIntegrationTest>
+		<android.plugin.version>3.6.1</android.plugin.version>
 	</properties>
-  <modules>
-    <module>phoneticket-app</module>
-    <module>phoneticket-test</module>
-  </modules>
 
   <dependencyManagement>
     <dependencies>
@@ -26,8 +20,6 @@
         <groupId>com.loopj</groupId>
         <artifactId>android-async-http</artifactId>
         <version>1.4.3</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/libs/android-async-http-1.4.3.jar</systemPath>
       </dependency>
       <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -37,7 +29,6 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <scope>test</scope>
         <version>4.10</version>
       </dependency>
       <dependency>
@@ -60,6 +51,10 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3.1</version>
+        </plugin>
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
@@ -68,6 +63,12 @@
             <sdk>
               <platform>18</platform>
             </sdk>
+            <emulator>
+              <avd>23</avd>
+              <wait>10000</wait>
+              <!--<options>-no-skin</options> -->
+            </emulator>
+            <undeployBeforeDeploy>true</undeployBeforeDeploy>
           </configuration>
 					<extensions>true</extensions>
 				</plugin>
@@ -98,4 +99,14 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+  <profiles>
+    <profile>
+      <id>standard</id>
+      <activation><activeByDefault>true</activeByDefault></activation>
+      <modules>
+        <module>phoneticket-app</module>
+        <module>phoneticket-test</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

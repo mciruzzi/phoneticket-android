@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.cinemar.phoneticket"
-  android:versionName="1.0.0-SNAPSHOT">
+  android:versionName="1.0-SNAPSHOT">
+  <uses-sdk android:targetSdkVersion="18" android:minSdkVersion="3" />
+  <instrumentation 
+      android:name="android.test.InstrumentationTestRunner"
+    android:targetPackage="com.cinemar.phoneticket"
+    android:label="Tests for phoneticket."/>
   <application>
     <uses-library android:name="android.test.runner"/>
   </application>
-  <instrumentation android:name="android.test.InstrumentationTestRunner"
-    android:targetPackage="com.simpligility.android.morseflash"
-    android:label="Tests for MorseFlash."/>
-  <uses-sdk android:minSdkVersion="3" />
 </manifest>
