@@ -15,7 +15,7 @@ import com.loopj.android.http.RequestParams;
 public class RestClient {
 	  private static final String BASE_URL = "http://phoneticket-stg.herokuapp.com/api"; //url de nuestra API
 	  private static AsyncHttpClient client = new AsyncHttpClient();
-	  private static final int TIMEOUT = 30;	  
+	  private static final int TIMEOUT = 60;	  
 	  private static final String ERROR= "ERROR";
 
 	  public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

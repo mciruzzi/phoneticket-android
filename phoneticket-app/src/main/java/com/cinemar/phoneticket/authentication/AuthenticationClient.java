@@ -34,13 +34,13 @@ public class AuthenticationClient implements AuthenticationService {
 	 		//Deserealizamos la cadena JSON para que se convertida
 			 parsedUser = gson.fromJson(response.toString(), User.class);	
 		} catch (TimeoutException e) {			 
-			e.printStackTrace();
+			throw new ServerSideException(e.getMessage());
 		} catch (ServerSideException e) {			
 			if (e.getMessage().contains("Invalid email or password")) throw new InvalidLoginInfoException();
 			if (e.getMessage().contains("You have to confirm your account before continuing.")) throw new UnconfirmedException();
 			if (e.getMessage().contains("Your account was disabled")) throw new DisabledUserException();
 			throw new ServerSideException(e.getMessage());
-		}	
+		}
 			
 		return parsedUser;
 		

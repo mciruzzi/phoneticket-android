@@ -1,15 +1,15 @@
 package com.cinemar.phoneticket;
 
 
-import android.animation.Animator;
+import org.json.JSONObject;
 
+import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -23,34 +23,25 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cinemar.phoneticket.authentication.AuthenticationClient;
-import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.exceptions.DisabledUserException;
-import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
-import com.cinemar.phoneticket.exceptions.ServerSideException;
-import com.cinemar.phoneticket.exceptions.UnconfirmedException;
+import com.cinemar.phoneticket.authentication.UserClientAPI;
 import com.cinemar.phoneticket.model.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 
 public class LoginActivity extends Activity {
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
 
 	/**
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -63,48 +54,46 @@ public class LoginActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	
+
 	/**
 	 * Action on the Sign up button to redirect to Register Activity
 	 */
-    public void createAccountAction(View view){
-    	Intent intent = new Intent(this, RegisterActivity.class);
-    	EditText editText = (EditText) findViewById(R.id.email);
-    	String message = editText.getText().toString();
-    	intent.putExtra("mensaje para la register activity", message);
-    	startActivity(intent);   	
-    }
-    
-    public void goToMainActivity(){
-    	Intent intent = new Intent(this, MainMenuActivity.class);    	
-    	intent.putExtra("userId", sessionUser.getEmail());
-    	startActivity(intent);   	
-    }
-    
+	public void createAccountAction(View view){
+		Intent intent = new Intent(this, RegisterActivity.class);
+		EditText editText = (EditText) findViewById(R.id.email);
+		String message = editText.getText().toString();
+		intent.putExtra("mensaje para la register activity", message);
+		startActivity(intent);
+	}
+
+	public void goToMainActivity(){
+		Intent intent = new Intent(this, MainMenuActivity.class);
+		intent.putExtra("userId", sessionUser.getEmail());
+		startActivity(intent);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_login);
 		setupActionBar();		
-          
-        // Set up the login form.
+
+		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
-							return true;
-						}
-						return false;
-					}
-				});
+		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			public boolean onEditorAction(TextView textView, int id,
+					KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					attemptLogin();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
@@ -116,8 +105,7 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
-		
-		
+
 	}
 
 	/**
@@ -158,10 +146,6 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
-
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -204,10 +188,40 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+
+			UserClientAPI api = new UserClientAPI();
+			api.signin(mEmail, mPassword, new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(JSONObject user) {
+					sessionUser = new User(user);
+					Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+					goToMainActivity();
+				}
+
+				public void onFailure(Throwable e, JSONObject errorResponse) {
+					if (errorResponse != null) {
+						handleInvalidLoginResponse(errorResponse);
+					} else {
+						showSimpleAlert(e.getMessage());
+					}
+				}
+				public void onFinish() {
+					showProgress(false);
+				}
+			});
+
 		}
 	}
+
+	/**
+	 * Si bien en todos los casos se muestra el alert, se podría querer
+	 * tratar algún error de manera diferente 
+	 */
+	private void handleInvalidLoginResponse(JSONObject errorResponse) {
+		Log.i("LoginActivity", "JSON Error response: " + errorResponse.toString());
+		showSimpleAlert(errorResponse.optString("error"));
+	}
+
 
 	/**
 	 * Shows the progress UI and hides the login form.
@@ -223,25 +237,25 @@ public class LoginActivity extends Activity {
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
+			.alpha(show ? 1 : 0)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginStatusView.setVisibility(show ? View.VISIBLE
+							: View.GONE);
+				}
+			});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
+			.alpha(show ? 0 : 1)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginFormView.setVisibility(show ? View.GONE
+							: View.VISIBLE);
+				}
+			});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
@@ -249,82 +263,19 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-	
+
 	private void showSimpleAlert(String msg){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(msg);
 		builder.setTitle(getString(R.string.error));
-		
+
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int which) {				
 				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
 			}
 		});
-		
+
 		builder.show();
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {	
-		Exception exception = null;	
-		
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// Authentication against a network service.					
-			AuthenticationService autentication = new AuthenticationClient();
-			//TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?) 
-			try {
-				sessionUser = autentication.login(mEmail, mPassword);
-			} catch (InvalidLoginInfoException e) {	
-				exception=e;
-				return false;
-			} catch (UnconfirmedException e) {
-				exception=e;
-				return false;
-			} catch (ServerSideException e) {
-				exception=e;
-				return false;
-			} catch (DisabledUserException e) {
-				exception=e;
-				return false;
-			}
-			
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				//movernos hacia la pantalla principal
-				Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
-				goToMainActivity();				
-			} else {				
-				if (exception instanceof InvalidLoginInfoException )
-					showSimpleAlert(getString(R.string.error_invalid_pass_or_email));
-				else if (exception instanceof UnconfirmedException) {
-					mEmailView.setError(getString(R.string.error_unconfirmed_user));
-					mEmailView.requestFocus();
-				} else if (exception instanceof DisabledUserException){
-					mEmailView.setError(getString(R.string.error_disabled_user));
-					mEmailView.requestFocus();
-				} else if (exception instanceof ServerSideException){
-					mEmailView.setError(exception.getMessage());
-					mEmailView.requestFocus();			
-				}
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
-    
 }
