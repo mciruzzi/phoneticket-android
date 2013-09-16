@@ -39,12 +39,15 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.cinemar.phoneticket</groupId>
       <artifactId>phoneticket-app</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
-    <!--
-    -->
       <type>jar</type>
     </dependency>
     <dependency>
