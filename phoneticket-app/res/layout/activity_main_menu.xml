@@ -18,16 +18,25 @@
         android:layout_marginTop="14dp"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/welcome_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Bienvenido"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="184dp"
             android:layout_height="184dp"
             android:layout_gravity="center"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/pochoclo" />
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/peliculasButton"
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:scaleType="centerInside"

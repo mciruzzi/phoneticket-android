@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" >
@@ -34,10 +34,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.LoginActivity" />
         </activity>
-
         <activity
             android:name="com.cinemar.phoneticket.MainMenuActivity"
             android:label="@string/title_activity_main_menu" >
+        </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.PeliculasActivity"
+            android:label="@string/title_activity_peliculas"
+            android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.MainMenuActivity" />
         </activity>
     </application>
 
