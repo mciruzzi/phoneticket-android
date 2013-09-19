@@ -160,7 +160,7 @@ public class RegisterActivity extends Activity {
 	}
 
 	private void updateDisplay() {
-		mFechaNacimientoView.setText(mDay+"-"+mMonth+"-"+mYear);
+		mFechaNacimientoView.setText(mDay+"-"+mMonth + 1+"-"+mYear);
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class RegisterActivity extends Activity {
 					mEmailView.requestFocus();								
 				} else if (exception instanceof RepeatedDniException){
 					mDNIView.setError(getString(R.string.error_dni_already_exists));
-					mDNIView.requestFocus();								
+					mDNIView.requestFocus();
 				}
 			
 			}
