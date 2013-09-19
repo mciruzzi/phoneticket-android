@@ -2,9 +2,9 @@
 <resources>
 
     <string name="welcome">Bienvenido a la aplicación de CineAR</string>
-    <string name="sing_up">Crear cuenta....</string>
+    <string name="sing_up">Crear</string>
     <string name="sign_in">Ingresar</string>
-    <string name="error_incorrect_password">Password inválido</string>
+    <string name="error_incorrect_password">Contrasenia inválido</string>
     <string name="login_progress_signing_in">Ingresando&#8230;</string>
  
 </resources>

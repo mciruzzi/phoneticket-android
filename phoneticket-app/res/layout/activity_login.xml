@@ -76,14 +76,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="46dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/sign_in" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No tienes una cuenta aun?" />
 
             <Button
                 android:id="@+id/create_account_button"
-                android:layout_width="wrap_content"
+                android:layout_width="87dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginBottom="46dp"
                 android:onClick="createAccountAction"
                 android:text="@string/sing_up" />

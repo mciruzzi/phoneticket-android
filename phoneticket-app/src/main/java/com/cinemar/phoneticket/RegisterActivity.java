@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
@@ -62,6 +63,11 @@ public class RegisterActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private String mApellido;
+	private String mDireccion;
+	private String mDni;
+	private String mNombre;
+	private String mTelefono;
 	private User sessionUser = null;
 
 	// UI references.
@@ -73,15 +79,17 @@ public class RegisterActivity extends Activity {
 	private TextView mFechaNacimientoView;
 	private EditText mTelefonoView;
 	private EditText mDireccionView;
-	private Button mPickDate;
+	private ImageButton mPickDate;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
 	private DatePickerDialog.OnDateSetListener mDateListener;
-	private int mDay;
-	private int mMonth;
-	private int mYear;
+	private int mDay = 1;
+	private int mMonth = 0;
+	private int mYear = 1980;
+
+	
 
 	public void goToLoginActivity() {
 		Intent intent = new Intent(this, LoginActivity.class);
@@ -120,7 +128,7 @@ public class RegisterActivity extends Activity {
 		mFechaNacimientoView = (TextView) findViewById(R.id.fecha_nac);
 		mTelefonoView = (EditText) findViewById(R.id.tel);
 		mDireccionView = (EditText) findViewById(R.id.direccion);
-		mPickDate = (Button) findViewById(R.id.dateButton);
+		mPickDate = (ImageButton) findViewById(R.id.dateButton);
 		mPickDate.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View arg0) {				
 				showDialog(DATE_DIALOG_ID);	      
@@ -206,10 +214,22 @@ public class RegisterActivity extends Activity {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
+		mApellidoView.setError(null);
+		mDireccionView.setError(null);
+		mDNIView.setError(null);
+		mNombreView.setError(null);
+		mDireccionView.setError(null);
+		mTelefonoView.setError(null);
 
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
+		mApellido = mApellidoView.getText().toString();
+		mNombre = mNombreView.getText().toString();
+		mDni = mDNIView.getText().toString();
+		mTelefono = mTelefonoView.getText().toString();
+		mDireccion = mDireccionView.getText().toString();
+		
 		//sessionUser = new User(mEmail, mPassword);
 		Calendar mNacimiento = Calendar.getInstance();
 		mNacimiento.set(mYear, mMonth, mDay);
@@ -242,6 +262,33 @@ public class RegisterActivity extends Activity {
 			focusView = mEmailView;
 			cancel = true;
 		}
+		
+		//Check for a valid name
+		if (TextUtils.isEmpty(mNombre)) {
+			mNombreView.setError(getString(R.string.error_field_required));
+			focusView = mNombreView;
+			cancel = true;
+		}
+		if (TextUtils.isEmpty(mApellido)) {
+			mApellidoView.setError(getString(R.string.error_field_required));
+			focusView = mApellidoView;
+			cancel = true;
+		}		
+		
+		//Check for a valid telephone
+		if (TextUtils.isEmpty(mTelefono)) {
+			mTelefonoView.setError(getString(R.string.error_field_required));
+			focusView = mTelefonoView;
+			cancel = true;
+		}
+		
+		//Check for a valid DNI
+		if (TextUtils.isEmpty(mDni)) {
+			mDNIView.setError(getString(R.string.error_field_required));
+			focusView = mDNIView;
+			cancel = true;
+		}
+		
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
