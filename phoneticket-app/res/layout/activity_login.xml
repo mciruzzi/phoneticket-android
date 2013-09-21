@@ -42,6 +42,38 @@
             android:orientation="vertical"
             android:textAlignment="center" >
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:visibility="gone">
+                
+                <TextView
+                    android:id="@+id/textViewMessageConfirmation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="57dp"
+                    android:gravity="center"
+                    android:text="@string/message_confirmation_acount" />
+
+                <TextView
+                    android:id="@+id/textViewEmailMessageConfirmation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewMessageConfirmation"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="42dp"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewEmailMessageConfirmation"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/default_accept"
+                    android:onClick="goBack" />
+
+            </RelativeLayout>
             <TextView
                 android:id="@+id/welcome_msg"
                 android:layout_width="wrap_content"
