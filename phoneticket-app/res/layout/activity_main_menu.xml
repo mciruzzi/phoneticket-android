@@ -13,9 +13,8 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:orientation="vertical" >
 
         <TextView
@@ -41,6 +40,14 @@
             android:layout_height="68dp"
             android:scaleType="centerInside"
             android:src="@drawable/peliculas" />
+
+        <Button
+            android:id="@+id/miCuentaButton"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:scaleType="centerInside"
+            android:text="Mi Cuenta" />
+
     </LinearLayout>
 
 </RelativeLayout>
