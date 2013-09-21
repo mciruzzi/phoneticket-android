@@ -34,10 +34,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.LoginActivity" />
         </activity>
-
         <activity
             android:name="com.cinemar.phoneticket.MainMenuActivity"
             android:label="@string/title_activity_main_menu" >
+        </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.MessageConfirmationActivity"
+            android:label="@string/title_activity_message_confirmation" >
         </activity>
     </application>
 

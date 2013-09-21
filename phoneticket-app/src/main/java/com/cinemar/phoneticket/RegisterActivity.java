@@ -8,6 +8,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cinemar.phoneticket.authentication.AuthenticationClient;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
@@ -89,14 +92,37 @@ public class RegisterActivity extends Activity {
 	private int mMonth = 0;
 	private int mYear = 1980;
 
+	private boolean showLogin = false;
 	
-
+	protected void onResume(){
+		super.onResume();
+		
+		if (showLogin)
+		{
+			this.goToLoginActivity();
+			finish();
+		}
+		
+	}
+	
+	protected void onPause() {
+		super.onPause();
+		showLogin = true;
+	}
+	
 	public void goToLoginActivity() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.putExtra("userId", sessionUser.getEmail());
 		startActivity(intent);
 	}
 
+	public void goToMessageConfirmationActivity() {
+		
+		Intent intent = new Intent(this, MessageConfirmationActivity.class);
+		intent.putExtra("email", sessionUser.getEmail());
+		startActivity(intent);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -297,10 +323,12 @@ public class RegisterActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
+
 			mLoginStatusMessageView.setText(R.string.register_progress_registering);
 			showProgress(true);
 			mAuthTask = new RegistrationTask();
 			mAuthTask.execute((Void) null);
+
 		}
 	}
 
@@ -391,7 +419,9 @@ public class RegisterActivity extends Activity {
 				// movernos hacia la pantalla principal
 				Log.i("RegisterActivity", "User Registered, email: "
 						+ sessionUser.getEmail());
-				goToLoginActivity();
+				
+				goToMessageConfirmationActivity();
+				
 			} else {
 				if (exception instanceof RepeatedUserException ) {
 					mEmailView.setError(getString(R.string.error_user_already_exists));
