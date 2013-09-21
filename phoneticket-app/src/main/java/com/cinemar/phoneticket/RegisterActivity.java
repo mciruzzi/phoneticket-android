@@ -168,7 +168,7 @@ public class RegisterActivity extends Activity {
 	}
 
 	private void updateDisplay() {
-		mFechaNacimientoView.setText(mDay+"-"+mMonth + 1+"-"+mYear);
+		mFechaNacimientoView.setText(mDay+"-"+(mMonth + 1)+"-"+mYear);
 	}
 
 	/**
