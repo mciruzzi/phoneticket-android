@@ -5,16 +5,16 @@
     <!-- Strings related to login -->
     <string name="registration_message">Registración</string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Contrasenia</string>
+    <string name="prompt_password">Contraseña</string>
     <string name="action_sign_up_short"><b>Registrar</b></string>
     <string name="error_invalid_email">Email inválido</string>
-    <string name="error_invalid_password">El contrasenia es demasiado corto</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
     <string name="error_field_required">Campo obligatorio</string>
     <string name="error_user_already_exists">Este mail ya se encuentra en uso</string>
     <string name="error_dni_already_exists">Este DNI ya se encuentra en uso</string>
     <string name="error_unconfirmed_user">Debe confirmar el usuario antes de ingresar</string>
     <string name="error_disabled_user">Usuario deshabilitado</string>
-    <string name="error_invalid_pass_or_email">Email o contrasernia invalida</string>
+    <string name="error_invalid_pass_or_email">Email o contraseña inválida</string>
     
     <string name="DNI">DNI</string>
     <string name="fecha_nacimiento">Fecha de Nacimiento</string>

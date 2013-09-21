@@ -74,8 +74,11 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/name"
-                    android:inputType="textPersonName" />
-
+                    android:inputType="textPersonName">
+                    
+   	                <requestFocus />
+                </EditText>
+                    
             </RelativeLayout>
 
             <RelativeLayout
@@ -92,7 +95,6 @@
                     android:hint="@string/last_name"
                     android:inputType="textPersonName" >
 
-                    <requestFocus />
                 </EditText>
 
                 <TextView

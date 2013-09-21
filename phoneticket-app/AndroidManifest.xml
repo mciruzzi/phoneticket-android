@@ -29,7 +29,7 @@
             android:name="com.cinemar.phoneticket.RegisterActivity"
             android:label="@string/title_activity_register"
             android:parentActivityName="com.cinemar.phoneticket.LoginActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustPan|stateVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.LoginActivity" />
