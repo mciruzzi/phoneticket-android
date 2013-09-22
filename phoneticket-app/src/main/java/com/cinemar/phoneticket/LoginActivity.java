@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -59,18 +60,47 @@ public class LoginActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
+	private View mMessageConfirmationLayout;
+	private TextView mMessageConfirmationEmail;
+
+	private static final int REQUEST_REGISTER = 0;
 
 	/**
 	 * Action on the Sign up button to redirect to Register Activity
 	 */
 	public void createAccountAction(View view){
+		
 		Intent intent = new Intent(this, RegisterActivity.class);
+		
+		//No entiendo para que se le pasa este mensaje al registrar.
 		EditText editText = (EditText) findViewById(R.id.email);
 		String message = editText.getText().toString();
 		intent.putExtra("mensaje para la register activity", message);
-		startActivity(intent);
+		
+		startActivityForResult(intent, REQUEST_REGISTER);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		if (requestCode == REQUEST_REGISTER)
+		{
+			if (resultCode == RESULT_OK) 
+			{
+		        String email = data.getStringExtra("email");
+		        mMessageConfirmationEmail.setText(email);
+		        mMessageConfirmationLayout.setVisibility(View.VISIBLE);
+		        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+	        }
+		}
+	}
+	
+	public void hideMessageConfirmation(View view) {
+		
+		mMessageConfirmationLayout.setVisibility(View.GONE);
+	}
+	
 	public void goToMainActivity(){
 		Intent intent = new Intent(this, MainMenuActivity.class);
 		intent.putExtra("userId", sessionUser.getEmail());
@@ -111,6 +141,8 @@ public class LoginActivity extends Activity {
 					}
 				});
 
+		mMessageConfirmationLayout = findViewById(R.id.messageConfirmationLayout);
+		mMessageConfirmationEmail = (TextView) findViewById (R.id.messageConfirmationEmail);
 	}
 
 	/**
@@ -151,13 +183,9 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		// Reset errors.
-		mEmailView.setError(null);
-		mPasswordView.setError(null);
 
-		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
+		resetErrors();
+		storeValues();
 
 		boolean cancel = false;
 		View focusView = null;
@@ -227,6 +255,16 @@ public class LoginActivity extends Activity {
 			});
 
 		}
+	}
+
+	private void storeValues() {
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
+	}
+
+	private void resetErrors() {
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
 	}
 
 	/**

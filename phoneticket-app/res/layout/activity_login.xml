@@ -41,6 +41,42 @@
             android:layout_height="408dp"
             android:orientation="vertical"
             android:textAlignment="center" >
+            
+            <RelativeLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:visibility="gone"
+			    android:id="@+id/messageConfirmationLayout">
+			
+			    <TextView
+			        android:id="@+id/messageConfirmationMainMessage"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_alignParentTop="true"
+			        android:layout_centerHorizontal="true"
+			        android:layout_marginTop="40dp"
+			        android:gravity="center"
+			        android:text="@string/message_confirmation_acount" />
+			
+			    <TextView
+			        android:id="@+id/messageConfirmationEmail"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_below="@+id/messageConfirmationMainMessage"
+			        android:layout_centerHorizontal="true"
+			        android:layout_marginTop="20dp"/>
+			
+			    <Button
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_below="@+id/messageConfirmationEmail"
+			        android:layout_centerHorizontal="true"
+			        android:layout_marginTop="20dp"
+			        style="?android:attr/buttonStyleSmall"
+			        android:text="@string/default_accept"
+			        android:onClick="hideMessageConfirmation" />
+			
+			</RelativeLayout>
 
             <TextView
                 android:id="@+id/welcome_msg"
@@ -79,17 +115,11 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/sign_in" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-            </FrameLayout>
-
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No tienes una cuenta aun?" />
+                android:text="¿No tienes una cuenta aún?" />
 
             <Button
                 android:id="@+id/create_account_button"

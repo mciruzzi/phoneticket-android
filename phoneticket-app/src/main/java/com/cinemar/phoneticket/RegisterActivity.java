@@ -82,37 +82,19 @@ public class RegisterActivity extends Activity {
 	private int mMonth = 0;
 	private int mYear = 1980;
 
-	private boolean showLogin = false;
-
-	@Override
-	protected void onResume(){
-		super.onResume();
-
-		if (showLogin)
-		{
-			this.goToLoginActivity();
-			finish();
-		}
-
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		showLogin = true;
-	}
-
-	public void goToLoginActivity() {
-		Intent intent = new Intent(this, LoginActivity.class);
-		intent.putExtra("userId", sessionUser.getEmail());
-		startActivity(intent);
-	}
-
-	public void goToMessageConfirmationActivity() {
-
-		Intent intent = new Intent(this, MessageConfirmationActivity.class);
-		intent.putExtra("email", sessionUser.getEmail());
-		startActivity(intent);
+//	public void goToLoginActivity() {
+//		Intent intent = new Intent(this, LoginActivity.class);
+//		intent.putExtra("userId", sessionUser.getEmail());
+//		startActivity(intent);
+//	}
+	
+	private void returnToLoginActivity() {
+		
+		Intent data = new Intent();
+		data.putExtra("email", sessionUser.getEmail());
+	
+		setResult(RESULT_OK, data);
+		finish();
 	}
 
 	@Override
@@ -226,23 +208,9 @@ public class RegisterActivity extends Activity {
 	 * errors are presented and no actual registration attempt is made.
 	 */
 	public void attemptRegister() {
-		// Reset errors.
-		mEmailView.setError(null);
-		mPasswordView.setError(null);
-		mApellidoView.setError(null);
-		mDireccionView.setError(null);
-		mDNIView.setError(null);
-		mNombreView.setError(null);
-		mDireccionView.setError(null);
-		mTelefonoView.setError(null);
 
-		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
-		mApellido = mApellidoView.getText().toString();
-		mNombre = mNombreView.getText().toString();
-		mDni = mDNIView.getText().toString();
-		mTelefono = mTelefonoView.getText().toString();
+		resetErrors();
+		storeValues();
 
 		//sessionUser = new User(mEmail, mPassword);
 		Calendar mNacimiento = Calendar.getInstance();
@@ -313,39 +281,60 @@ public class RegisterActivity extends Activity {
 			// perform the user login attempt.
 
 			mLoginStatusMessageView.setText(R.string.register_progress_registering);
-			showProgress(true);
-			AuthenticationService authenticationClient = new APIAuthentication();
-			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
-				@Override
-				public void onSuccess(JSONObject response) {
-					goToMessageConfirmationActivity();
-				}
-
-				@Override
-				public void onFailure(Throwable exception, JSONObject errors) {
-					try {
-						if (errors != null) {
-								assignValidationErrors(errors);
-						} else {
-							showSimpleAlert(exception.getMessage());
-						}
-					} catch (JSONException e) {
-						showSimpleAlert("Error al ingresar. Intente más tarde");
-					}
-				}
-
-				@Override
-				public void onFailure(Throwable arg0, String arg1) {
-					showSimpleAlert("Error de conexión. Intente más tarde.");
-				}
-
-				@Override
-				public void onFinish() {
-					showProgress(false);
-				}
-			});
+			this.returnToLoginActivity();
+//			showProgress(true);
+//			AuthenticationService authenticationClient = new APIAuthentication();
+//			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
+//				@Override
+//				public void onSuccess(JSONObject response) {
+//					returnToLoginActivity();
+//				}
+//
+//				@Override
+//				public void onFailure(Throwable exception, JSONObject errors) {
+//					try {
+//						if (errors != null) {
+//								assignValidationErrors(errors);
+//						} else {
+//							showSimpleAlert(exception.getMessage());
+//						}
+//					} catch (JSONException e) {
+//						showSimpleAlert("Error al ingresar. Intente más tarde");
+//					}
+//				}
+//
+//				@Override
+//				public void onFailure(Throwable arg0, String arg1) {
+//					showSimpleAlert("Error de conexión. Intente más tarde.");
+//				}
+//
+//				@Override
+//				public void onFinish() {
+//					showProgress(false);
+//				}
+//			});
 
 		}
+	}
+
+	private void storeValues() {
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
+		mApellido = mApellidoView.getText().toString();
+		mNombre = mNombreView.getText().toString();
+		mDni = mDNIView.getText().toString();
+		mTelefono = mTelefonoView.getText().toString();
+	}
+
+	private void resetErrors() {
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+		mApellidoView.setError(null);
+		mDireccionView.setError(null);
+		mDNIView.setError(null);
+		mNombreView.setError(null);
+		mDireccionView.setError(null);
+		mTelefonoView.setError(null);
 	}
 
 	private void assignValidationErrors(JSONObject errors) throws JSONException {
