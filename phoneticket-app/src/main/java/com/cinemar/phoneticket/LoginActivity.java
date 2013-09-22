@@ -46,6 +46,8 @@ public class LoginActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
+	public static final String SIGNIN_ACTION = "com.cinemar.phoneticket.SIGNIN";
+
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -198,8 +200,7 @@ public class LoginActivity extends Activity {
 				public void onSuccess(JSONObject user) {
 					try {
 						sessionUser = new User(user);
-						Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
-						goToMainActivity();
+						completeLogin(sessionUser);
 					} catch (ParseException e) {
 						showSimpleAlert("Error en la identificación. Intente más tarde.");
 					}
@@ -237,6 +238,19 @@ public class LoginActivity extends Activity {
 		showSimpleAlert(errorResponse.optString("error"));
 	}
 
+	private void completeLogin(User sessionUser) {
+		Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+
+		if (getIntent().getAction().equals(SIGNIN_ACTION)) {
+			Intent data = new Intent();
+			data.putExtra("userId", sessionUser.getEmail());
+
+			setResult(RESULT_OK, data);
+			finish();
+		} else {
+			goToMainActivity();
+		}
+	}
 
 	/**
 	 * Shows the progress UI and hides the login form.
