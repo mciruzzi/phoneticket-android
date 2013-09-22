@@ -11,21 +11,30 @@ import com.cinemar.phoneticket.authentication.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
+public class PeliculasActivity extends AbstractApiConsumerActivity {
+	
+	public PeliculasActivity() {
+		super();
+	}
 
-public class PeliculasActivity extends Activity {
-	
-	List<Film> filmsList = new ArrayList<Film>(); 
-	
+	List<Film> filmsList = new ArrayList<Film>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
+		
 		setContentView(R.layout.activity_peliculas);
 		
+		//** Important to get in order to use the showProgress method**//
+		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
+		mStatusView = findViewById(R.id.peliculas_status);
+		mStatusMessageView = (TextView) findViewById(R.id.peliculas_status_message);		
+
 		this.requestPeliculas();
 	}
 
@@ -34,42 +43,60 @@ public class PeliculasActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.peliculas, menu);
 		return true;
-	}	
-	
-	private void requestPeliculas() {		
+	}
+
+	private void requestPeliculas() {
+		mStatusMessageView.setText(R.string.peliculas_progress_getting);
+		showProgress(true);
+		
 
 		FilmsClientAPI api = new FilmsClientAPI();
 		api.getFilms(new JsonHttpResponseHandler() {
-			
+
 			@Override
-			public void onSuccess(JSONObject films) {				
+			public void onSuccess(JSONObject films) {
 				Log.i("Peliculas Activity", "Peliculas Recibidas Como Object");
 			}
-			
-			@Override
-			public void onSuccess(JSONArray films) {				
-				Log.i("Peliculas Activity", "Peliculas Recibidas");
-				
-				for (int i=0 ; i < films.length()-1 ; i++ ){
-					try {
-						filmsList.add(new Film(films.getJSONObject(i)));
-						Log.i("Peliculas Activity", "Pelicula" + films.getJSONObject(i) +"recibida" );
-					} catch (JSONException e) {					 
-						e.printStackTrace();
-					}					
-				}			
-			}
 
-			public void onFailure(Throwable e, JSONObject errorResponse) {
-				Log.i("Peliculas Activity", "ERROR PAPA");
-				if (errorResponse != null) {					
-					//handleInvalidLoginResponse(errorResponse);
-				} else {
-					//showSimpleAlert(e.getMessage());
+			@Override
+			public void onSuccess(JSONArray films) {
+				Log.i("Peliculas Activity", "Peliculas Recibidas");
+				try {					
+					for (int i = 0; i < films.length(); i++) {
+						filmsList.add(new Film(films.getJSONObject(i)));
+						Log.i("Peliculas Activity","Pelicula" + films.getJSONObject(i)+ "recibida");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				Log.i("Peliculas Activity", "ERROR PAPA");
+				if (errorResponse != null) {
+					// handleInvalidLoginResponse(errorResponse);
+				} else {
+					// showSimpleAlert(e.getMessage());
+				}
+			}
+			
+			public void onFinish() {
+				showProgress(false);
+				displayFilms();
+			}
+
 		});
 
+	}	
+
+	private void displayFilms() {
+		TextView peliculasText = (TextView) findViewById(R.id.peliculasText);
+		for (Film film : filmsList) {
+			peliculasText.setText(peliculasText.getText().toString() + "\n"
+					+ film.getTitle());
+		}
+		
 	}
 
 }
