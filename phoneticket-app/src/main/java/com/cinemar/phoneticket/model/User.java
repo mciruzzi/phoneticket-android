@@ -1,9 +1,6 @@
 package com.cinemar.phoneticket.model;
 
-import java.util.Calendar;
 import java.util.Date;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class User {
