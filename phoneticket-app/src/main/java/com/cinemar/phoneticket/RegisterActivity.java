@@ -2,40 +2,36 @@ package com.cinemar.phoneticket;
 
 import java.util.Calendar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cinemar.phoneticket.authentication.AuthenticationClient;
+import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.exceptions.InvalidLoginInfoException;
-import com.cinemar.phoneticket.exceptions.RepeatedDniException;
-import com.cinemar.phoneticket.exceptions.RepeatedUserException;
-import com.cinemar.phoneticket.exceptions.ServerSideException;
 import com.cinemar.phoneticket.model.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 /**
@@ -58,16 +54,10 @@ public class RegisterActivity extends Activity {
 
 	private static final int DATE_DIALOG_ID = 8888;
 
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private RegistrationTask mAuthTask = null;
-
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
 	private String mApellido;
-	private String mDireccion;
 	private String mDni;
 	private String mNombre;
 	private String mTelefono;
@@ -93,23 +83,25 @@ public class RegisterActivity extends Activity {
 	private int mYear = 1980;
 
 	private boolean showLogin = false;
-	
+
+	@Override
 	protected void onResume(){
 		super.onResume();
-		
+
 		if (showLogin)
 		{
 			this.goToLoginActivity();
 			finish();
 		}
-		
+
 	}
-	
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 		showLogin = true;
 	}
-	
+
 	public void goToLoginActivity() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.putExtra("userId", sessionUser.getEmail());
@@ -117,12 +109,12 @@ public class RegisterActivity extends Activity {
 	}
 
 	public void goToMessageConfirmationActivity() {
-		
+
 		Intent intent = new Intent(this, MessageConfirmationActivity.class);
 		intent.putExtra("email", sessionUser.getEmail());
 		startActivity(intent);
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -155,16 +147,17 @@ public class RegisterActivity extends Activity {
 		mTelefonoView = (EditText) findViewById(R.id.tel);
 		mDireccionView = (EditText) findViewById(R.id.direccion);
 		mPickDate = (ImageButton) findViewById(R.id.dateButton);
-		mPickDate.setOnClickListener(new View.OnClickListener() {			
-			public void onClick(View arg0) {				
-				showDialog(DATE_DIALOG_ID);	      
+		mPickDate.setOnClickListener(new View.OnClickListener() {
+			@SuppressWarnings("deprecation")
+			public void onClick(View arg0) {
+				showDialog(DATE_DIALOG_ID);
 			}
 		});
-			
+
 		updateDisplay();
-		
+
 		mDateListener = new DatePickerDialog.OnDateSetListener() {
-			
+
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
 				mDay = dayOfMonth;
@@ -173,7 +166,7 @@ public class RegisterActivity extends Activity {
 				updateDisplay();
 			}
 		};
-		
+
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -185,7 +178,7 @@ public class RegisterActivity extends Activity {
 					}
 				});
 	}
-	
+
 	@Override protected Dialog onCreateDialog(int id){
 		if(id == DATE_DIALOG_ID){
 			return new DatePickerDialog(this, mDateListener, mYear, mMonth, mDay);
@@ -233,10 +226,6 @@ public class RegisterActivity extends Activity {
 	 * errors are presented and no actual registration attempt is made.
 	 */
 	public void attemptRegister() {
-		if (mAuthTask != null) {
-			return;
-		}
-		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -254,8 +243,7 @@ public class RegisterActivity extends Activity {
 		mNombre = mNombreView.getText().toString();
 		mDni = mDNIView.getText().toString();
 		mTelefono = mTelefonoView.getText().toString();
-		mDireccion = mDireccionView.getText().toString();
-		
+
 		//sessionUser = new User(mEmail, mPassword);
 		Calendar mNacimiento = Calendar.getInstance();
 		mNacimiento.set(mYear, mMonth, mDay);
@@ -288,7 +276,7 @@ public class RegisterActivity extends Activity {
 			focusView = mEmailView;
 			cancel = true;
 		}
-		
+
 		//Check for a valid name
 		if (TextUtils.isEmpty(mNombre)) {
 			mNombreView.setError(getString(R.string.error_field_required));
@@ -299,22 +287,22 @@ public class RegisterActivity extends Activity {
 			mApellidoView.setError(getString(R.string.error_field_required));
 			focusView = mApellidoView;
 			cancel = true;
-		}		
-		
+		}
+
 		//Check for a valid telephone
 		if (TextUtils.isEmpty(mTelefono)) {
 			mTelefonoView.setError(getString(R.string.error_field_required));
 			focusView = mTelefonoView;
 			cancel = true;
 		}
-		
+
 		//Check for a valid DNI
 		if (TextUtils.isEmpty(mDni)) {
 			mDNIView.setError(getString(R.string.error_field_required));
 			focusView = mDNIView;
 			cancel = true;
 		}
-		
+
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -326,12 +314,58 @@ public class RegisterActivity extends Activity {
 
 			mLoginStatusMessageView.setText(R.string.register_progress_registering);
 			showProgress(true);
-			mAuthTask = new RegistrationTask();
-			mAuthTask.execute((Void) null);
+			AuthenticationService authenticationClient = new APIAuthentication();
+			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
+				@Override
+				public void onSuccess(JSONObject response) {
+					goToMessageConfirmationActivity();
+				}
+
+				@Override
+				public void onFailure(Throwable exception, JSONObject errors) {
+					try {
+						if (errors != null) {
+								assignValidationErrors(errors);
+						} else {
+							showSimpleAlert(exception.getMessage());
+						}
+					} catch (JSONException e) {
+						showSimpleAlert("Error al ingresar. Intente más tarde");
+					}
+				}
+
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					showSimpleAlert("Error de conexión. Intente más tarde.");
+				}
+
+				@Override
+				public void onFinish() {
+					showProgress(false);
+				}
+			});
 
 		}
 	}
 
+	private void assignValidationErrors(JSONObject errors) throws JSONException {
+
+		if (errors.has("error")) {
+			showSimpleAlert(errors.optString("error"));
+			return;
+		}
+
+		errors = (JSONObject)errors.get("errors");
+		if (errors.has("document")) {
+			mDNIView.requestFocus();
+			mDNIView.setError(errors.getJSONArray("document").get(0).toString());
+		}
+		if (errors.has("email")) {
+			mEmailView.requestFocus();
+			mEmailView.setError(errors.getJSONArray("email").get(0).toString());
+		}
+
+	}
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
@@ -373,78 +407,18 @@ public class RegisterActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
-		Exception exception = null;	
+	private void showSimpleAlert(String msg){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(msg);
+		builder.setTitle(getString(R.string.error));
 
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// Authentication against a network service.
-			AuthenticationService autentication = new AuthenticationClient();
-			// TODO: handlear caso exitoso y casos no exitosos (que mostrar en cada uno?)
-			try {
-				autentication.register(sessionUser);
-			} catch (RepeatedDniException e) {
-				exception = e; 
-				return false;
-			} catch (ServerSideException e) {
-				exception = e; 
-				return false;
-			} catch (RepeatedUserException e) {
-				exception = e; 
-				return false;
-				//mEmailView.setError(getString(R.string.error_user_already_exists));
-				//mEmailView.requestFocus();
-
-			} catch (InvalidLoginInfoException e) {
-				exception = e; 
-				return false;
-				//mEmailView.setError(getString(R.string.error_invalid_email));
-				//mEmailView.requestFocus();
+		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
 			}
+		});
 
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			
-			showProgress(false);
-
-			if (success) {
-				// movernos hacia la pantalla principal
-				Log.i("RegisterActivity", "User Registered, email: "
-						+ sessionUser.getEmail());
-				
-				goToMessageConfirmationActivity();
-				
-			} else {
-				if (exception instanceof RepeatedUserException ) {
-					mEmailView.setError(getString(R.string.error_user_already_exists));
-					mEmailView.requestFocus();					
-				} else if (exception instanceof InvalidLoginInfoException){
-					mEmailView.setError(getString(R.string.error_invalid_email));
-					mEmailView.requestFocus();								
-				} else if (exception instanceof ServerSideException){
-					mEmailView.setError(exception.getMessage());
-					mEmailView.requestFocus();								
-				} else if (exception instanceof RepeatedDniException){
-					mDNIView.setError(getString(R.string.error_dni_already_exists));
-					mDNIView.requestFocus();
-				}
-			
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
+		builder.show();
 	}
 
 }

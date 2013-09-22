@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket;
 
 
+import java.text.ParseException;
+
 import org.json.JSONObject;
 
 import android.animation.Animator;
@@ -23,7 +25,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cinemar.phoneticket.authentication.UserClientAPI;
+import com.cinemar.phoneticket.authentication.APIAuthentication;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -76,7 +79,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		setupActionBar();		
+		setupActionBar();
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -189,15 +192,20 @@ public class LoginActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 
-			UserClientAPI api = new UserClientAPI();
-			api.signin(mEmail, mPassword, new JsonHttpResponseHandler() {
+			AuthenticationService api = new APIAuthentication();
+			api.login(mEmail, mPassword, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(JSONObject user) {
-					sessionUser = new User(user);
-					Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
-					goToMainActivity();
+					try {
+						sessionUser = new User(user);
+						Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+						goToMainActivity();
+					} catch (ParseException e) {
+						showSimpleAlert("Error en la identificación. Intente más tarde.");
+					}
 				}
 
+				@Override
 				public void onFailure(Throwable e, JSONObject errorResponse) {
 					if (errorResponse != null) {
 						handleInvalidLoginResponse(errorResponse);
@@ -205,6 +213,13 @@ public class LoginActivity extends Activity {
 						showSimpleAlert(e.getMessage());
 					}
 				}
+
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					showSimpleAlert("Error de conexión. Intente más tarde.");
+				}
+
+				@Override
 				public void onFinish() {
 					showProgress(false);
 				}
@@ -215,7 +230,7 @@ public class LoginActivity extends Activity {
 
 	/**
 	 * Si bien en todos los casos se muestra el alert, se podría querer
-	 * tratar algún error de manera diferente 
+	 * tratar algún error de manera diferente
 	 */
 	private void handleInvalidLoginResponse(JSONObject errorResponse) {
 		Log.i("LoginActivity", "JSON Error response: " + errorResponse.toString());
@@ -269,8 +284,8 @@ public class LoginActivity extends Activity {
 		builder.setMessage(msg);
 		builder.setTitle(getString(R.string.error));
 
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
-			public void onClick(DialogInterface dialog, int which) {				
+		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
 				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
 			}
 		});
