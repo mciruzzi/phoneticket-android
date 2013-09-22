@@ -2,7 +2,7 @@ package com.cinemar.phoneticket.authentication;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+
 
 public class FilmsClientAPI {
 
@@ -14,9 +14,8 @@ public class FilmsClientAPI {
 		client = new AsyncHttpClient();
 	}
 	
-	public void getFilms(JsonHttpResponseHandler responseHandler){
-		RequestParams params = new RequestParams();		
-		client.post(getAbsoluteUrl("movies"), params, responseHandler);		
+	public void getFilms(JsonHttpResponseHandler responseHandler){			
+		client.get(getAbsoluteUrl("movies.json"), responseHandler);		
 	}
 
 	private static String getAbsoluteUrl(String relativeUrl) {
