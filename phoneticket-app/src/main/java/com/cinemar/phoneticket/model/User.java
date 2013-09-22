@@ -98,7 +98,7 @@ public class User {
 		this.dni = user.optString("document");
 		this.direccion = user.optString("address");
 		this.telefono = user.optString("phone_number");
-		if (user.has("date_of_birth")) {
+		if (!user.isNull("date_of_birth")) {
 			this.fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(user.optString("date_of_birth"));
 		}
 	}
