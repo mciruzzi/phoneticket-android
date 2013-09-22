@@ -39,10 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.cinemar.phoneticket.MessageConfirmationActivity"
-            android:label="@string/title_activity_message_confirmation" >
-        </activity>
+
     </application>
 
 </manifest>

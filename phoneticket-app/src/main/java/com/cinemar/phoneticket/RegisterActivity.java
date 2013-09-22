@@ -82,11 +82,6 @@ public class RegisterActivity extends Activity {
 	private int mMonth = 0;
 	private int mYear = 1980;
 
-//	public void goToLoginActivity() {
-//		Intent intent = new Intent(this, LoginActivity.class);
-//		intent.putExtra("userId", sessionUser.getEmail());
-//		startActivity(intent);
-//	}
 	
 	private void returnToLoginActivity() {
 		
@@ -281,38 +276,37 @@ public class RegisterActivity extends Activity {
 			// perform the user login attempt.
 
 			mLoginStatusMessageView.setText(R.string.register_progress_registering);
-			this.returnToLoginActivity();
-//			showProgress(true);
-//			AuthenticationService authenticationClient = new APIAuthentication();
-//			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
-//				@Override
-//				public void onSuccess(JSONObject response) {
-//					returnToLoginActivity();
-//				}
-//
-//				@Override
-//				public void onFailure(Throwable exception, JSONObject errors) {
-//					try {
-//						if (errors != null) {
-//								assignValidationErrors(errors);
-//						} else {
-//							showSimpleAlert(exception.getMessage());
-//						}
-//					} catch (JSONException e) {
-//						showSimpleAlert("Error al ingresar. Intente más tarde");
-//					}
-//				}
-//
-//				@Override
-//				public void onFailure(Throwable arg0, String arg1) {
-//					showSimpleAlert("Error de conexión. Intente más tarde.");
-//				}
-//
-//				@Override
-//				public void onFinish() {
-//					showProgress(false);
-//				}
-//			});
+			showProgress(true);
+			AuthenticationService authenticationClient = new APIAuthentication();
+			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
+				@Override
+				public void onSuccess(JSONObject response) {
+					returnToLoginActivity();
+				}
+
+				@Override
+				public void onFailure(Throwable exception, JSONObject errors) {
+					try {
+						if (errors != null) {
+								assignValidationErrors(errors);
+						} else {
+							showSimpleAlert(exception.getMessage());
+						}
+					} catch (JSONException e) {
+						showSimpleAlert("Error al ingresar. Intente más tarde");
+					}
+				}
+
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					showSimpleAlert("Error de conexión. Intente más tarde.");
+				}
+
+				@Override
+				public void onFinish() {
+					showProgress(false);
+				}
+			});
 
 		}
 	}

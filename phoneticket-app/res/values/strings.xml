@@ -6,7 +6,6 @@
         
     <string name="default_accept">Aceptar</string>
     
-    <string name="title_activity_message_confirmation">Registración</string>
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
     
 </resources>
