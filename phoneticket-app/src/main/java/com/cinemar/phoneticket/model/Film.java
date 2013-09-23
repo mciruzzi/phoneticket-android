@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 public class Film {
 	
+	private String Id;
 	private String title;
 	private String synopsis;
 	private String youTubeTrailerURL;
@@ -12,9 +13,10 @@ public class Film {
 	private Film(){		
 	}
 	
-	public Film(String title, String synopsis, String youTubeTrailerURL,
+	public Film(String Id, String title, String synopsis, String youTubeTrailerURL,
 			String coverURL) {
 		super();
+		this.Id = Id;
 		this.title = title;
 		this.synopsis = synopsis;
 		this.youTubeTrailerURL = youTubeTrailerURL;
@@ -45,15 +47,23 @@ public class Film {
 	public void setCoverURL(String coverURL) {
 		this.coverURL = coverURL;
 	}	
+	public String getId() {
+		return Id;
+	}
+	public void setId(String id) {
+		Id = id;
+	}
 
 	public Film(JSONObject JSONfilm) {
 		this();
+		this.setId(JSONfilm.optString("id"));
 		this.title = JSONfilm.optString("title");
 		this.synopsis = JSONfilm.optString("syponsis");
 		this.youTubeTrailerURL = JSONfilm.optString("youtube_trailer");
 		this.coverURL = JSONfilm.optString("cover_url");	
 		
 	}
+
 	
 
 }

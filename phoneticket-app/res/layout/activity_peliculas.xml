@@ -1,10 +1,9 @@
- 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PeliculasActivity" >
 
-    
     <!-- Processing Layout... -->
+
     <LinearLayout
         android:id="@+id/peliculas_status"
         android:layout_width="wrap_content"
@@ -36,11 +35,21 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <TextView
+        <!-- para mostrar los nombres de pelis -->
+        <!--
+             TextView
             android:id="@+id/peliculasText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="" />
+            android:text="" /
+        -->
+
+        <RelativeLayout
+            android:id="@+id/peliculasImageContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </RelativeLayout>
+        
     </HorizontalScrollView>
 
 </merge>

@@ -7,13 +7,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.cinemar.phoneticket.authentication.FilmsClientAPI;
+import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PeliculasActivity extends AbstractApiConsumerActivity {
@@ -34,6 +39,8 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
 		mStatusView = findViewById(R.id.peliculas_status);
 		mStatusMessageView = (TextView) findViewById(R.id.peliculas_status_message);		
+		
+		HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.peliculasHorizontalScrollView);
 
 		this.requestPeliculas();
 	}
@@ -91,10 +98,19 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	}	
 
 	private void displayFilms() {
-		TextView peliculasText = (TextView) findViewById(R.id.peliculasText);
+		//TextView peliculasText = (TextView) findViewById(R.id.peliculasText);
+		RelativeLayout imageContainer = (RelativeLayout) findViewById (R.id.peliculasImageContainer);
+		
 		for (Film film : filmsList) {
-			peliculasText.setText(peliculasText.getText().toString() + "\n"
-					+ film.getTitle());
+			//peliculasText.setText(peliculasText.getText().toString() + "\n" + film.getTitle());
+			ImageView imageView = new ImageView(this);
+			imageView.setImageResource(R.drawable.film_cover_missing);			
+			new DownloadImageTask(imageView).execute(film.getCoverURL());	
+					
+			
+			
+			imageContainer.addView(imageView);
+			
 		}
 		
 	}

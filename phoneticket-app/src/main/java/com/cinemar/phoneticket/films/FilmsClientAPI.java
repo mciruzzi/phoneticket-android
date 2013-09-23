@@ -1,4 +1,4 @@
-package com.cinemar.phoneticket.authentication;
+package com.cinemar.phoneticket.films;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
