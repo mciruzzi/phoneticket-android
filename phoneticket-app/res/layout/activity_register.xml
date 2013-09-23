@@ -215,9 +215,6 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_up_short"
-                    android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -255,8 +252,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_up_short"
+                android:imeOptions="actionUnspecified"
                 android:hint="@string/postal_address"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress"/>
 
             <Button
                 android:id="@+id/register_button"

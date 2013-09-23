@@ -1,13 +1,14 @@
 package com.cinemar.phoneticket.model;
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class User {
-	
+
 	private String email;
 	private String password; //TODO reemplazar por token de sesion
 	private String nombre;
@@ -16,7 +17,7 @@ public class User {
 	private Date fechaNacimiento;
 	private String direccion;
 	private String telefono;
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -72,7 +73,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public User(String email, String password) {
 		super();
 		this.email = email;
@@ -90,14 +91,16 @@ public class User {
 		this.telefono = telefono;
 	}
 
-	public User(JSONObject user) {
+	public User(JSONObject user) throws ParseException {
 		this(user.optString("email"), user.optString("password"));
 		this.nombre = user.optString("first_name");
 		this.apellido = user.optString("last_name");
 		this.dni = user.optString("document");
-//		this.fechaNacimiento = Calendaruser.getString("date_of_birth");
 		this.direccion = user.optString("address");
 		this.telefono = user.optString("phone_number");
+		if (!user.isNull("date_of_birth")) {
+			this.fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(user.optString("date_of_birth"));
+		}
 	}
 
 	public String getPassword() {
@@ -109,7 +112,7 @@ public class User {
 	}
 
 
-	
+
 
 
 }

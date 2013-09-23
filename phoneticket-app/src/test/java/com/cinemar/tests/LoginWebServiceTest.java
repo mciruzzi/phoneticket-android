@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
-import com.cinemar.phoneticket.authentication.AuthenticationClient;
+import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.google.gson.Gson;
