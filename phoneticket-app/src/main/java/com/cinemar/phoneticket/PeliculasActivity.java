@@ -12,12 +12,15 @@ import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import android.app.ActionBar.LayoutParams;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -112,12 +115,14 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			
 			imageView.setImageResource(R.drawable.film_cover_missing);			
 			new DownloadImageTask(imageView).execute(film.getCoverURL());		
-			imageView.setAdjustViewBounds(true);
-			imageView.setCropToPadding(true);
-			imageView.setMaxHeight(R.dimen.activity_vertical_margin);			
-			imageView.setMaxWidth(500);
-			imageView.setPadding(10, 10, 10, 10);
-			
+	
+			//position parameters
+			LayoutParams layoutParams= new LayoutParams(Gravity.CENTER);
+			layoutParams.height = LayoutParams.MATCH_PARENT;
+			layoutParams.width = LayoutParams.MATCH_PARENT;
+			imageView.setLayoutParams(layoutParams);		
+			imageView.setScaleType(ScaleType.FIT_XY);
+			imageView.setPadding(10, 10, 10, 10);		
 			
 						
 			imageContainer.addView(imageView);
