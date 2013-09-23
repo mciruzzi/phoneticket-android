@@ -12,12 +12,13 @@ import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -98,17 +99,27 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	}	
 
 	private void displayFilms() {
-		//TextView peliculasText = (TextView) findViewById(R.id.peliculasText);
-		RelativeLayout imageContainer = (RelativeLayout) findViewById (R.id.peliculasImageContainer);
+		LinearLayout imageContainer = (LinearLayout) findViewById (R.id.peliculasImageContainer);
 		
 		for (Film film : filmsList) {
-			//peliculasText.setText(peliculasText.getText().toString() + "\n" + film.getTitle());
+
 			ImageView imageView = new ImageView(this);
+			imageView.setOnClickListener(new View.OnClickListener() {			
+				public void onClick(View arg0) {				
+					//TODO setearle el on click para que valla a la activity de esa pelicula 
+				}
+			});
+			
 			imageView.setImageResource(R.drawable.film_cover_missing);			
-			new DownloadImageTask(imageView).execute(film.getCoverURL());	
-					
+			new DownloadImageTask(imageView).execute(film.getCoverURL());		
+			imageView.setAdjustViewBounds(true);
+			imageView.setCropToPadding(true);
+			imageView.setMaxHeight(R.dimen.activity_vertical_margin);			
+			imageView.setMaxWidth(500);
+			imageView.setPadding(10, 10, 10, 10);
 			
 			
+						
 			imageContainer.addView(imageView);
 			
 		}
