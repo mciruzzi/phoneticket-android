@@ -72,12 +72,6 @@ public class LoginActivity extends Activity {
 	public void createAccountAction(View view){
 		
 		Intent intent = new Intent(this, RegisterActivity.class);
-		
-		//No entiendo para que se le pasa este mensaje al registrar.
-		EditText editText = (EditText) findViewById(R.id.email);
-		String message = editText.getText().toString();
-		intent.putExtra("mensaje para la register activity", message);
-		
 		startActivityForResult(intent, REQUEST_REGISTER);
 	}
 
