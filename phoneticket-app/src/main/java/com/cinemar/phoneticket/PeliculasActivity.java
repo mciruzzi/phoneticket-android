@@ -7,11 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.films.FilmsClientAPI;
-import com.cinemar.phoneticket.model.Film;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
 import android.app.ActionBar.LayoutParams;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +17,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.films.FilmsClientAPI;
+import com.cinemar.phoneticket.model.Film;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasActivity extends AbstractApiConsumerActivity {
 	

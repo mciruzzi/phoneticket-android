@@ -15,6 +15,8 @@ public class MainMenuActivity extends Activity {
 	private ImageButton peliculasButton;
 	private Button miCuentaButton;
 
+	public static int REQUEST_LOGIN = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,7 +27,7 @@ public class MainMenuActivity extends Activity {
 		String userName = getIntent().getStringExtra("userId");
 
 		if (userName != null) {
-			welcomeView.setText("Hola " + userName);
+			displayUser(userName);
 		} else {
 			welcomeView.setText("Bienvenido");
 		}
@@ -55,8 +57,33 @@ public class MainMenuActivity extends Activity {
 	}
 
 	protected void goToLoginActivity() {
+		String userName = getIntent().getStringExtra("userId");
+		if (userName == null) {
+			requestLogin();
+		} else {
+			displayUser(userName);
+		}
+
+	}
+
+	private void requestLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		intent.setAction(LoginActivity.SIGNIN_ACTION);
+		startActivityForResult(intent, REQUEST_LOGIN);
+	}
+
+	private void displayUser(String userName) {
+		welcomeView.setText("Hola " + userName);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_LOGIN) {
+			if (resultCode == RESULT_OK) {
+				String userName = data.getStringExtra("userId");
+				displayUser(userName);
+			}
+		}
 	}
 
 	@Override

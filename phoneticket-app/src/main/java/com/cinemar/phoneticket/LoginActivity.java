@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket;
 
 
+import java.text.ParseException;
+
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
@@ -14,18 +16,27 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cinemar.phoneticket.authentication.UserClientAPI;
+import com.cinemar.phoneticket.authentication.APIAuthentication;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 
 public class LoginActivity extends AbstractApiConsumerActivity {
-	
+
+	/**
+	 * The default email to populate the email field with.
+	 */
+	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
+
+	public static final String SIGNIN_ACTION = "com.cinemar.phoneticket.SIGNIN";
+
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -35,6 +46,29 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 	private EditText mEmailView;
 	private EditText mPasswordView;
 
+	private View mMessageConfirmationLayout;
+	private TextView mMessageConfirmationEmail;
+
+	private static final int REQUEST_REGISTER = 0;
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == REQUEST_REGISTER) {
+			if (resultCode == RESULT_OK) {
+				String email = data.getStringExtra("email");
+				mMessageConfirmationEmail.setText(email);
+				mMessageConfirmationLayout.setVisibility(View.VISIBLE);
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			}
+		}
+	}
+	
+	public void hideMessageConfirmation(View view) {
+		
+		mMessageConfirmationLayout.setVisibility(View.GONE);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -51,7 +85,6 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		this.mStatusView = findViewById(R.id.login_status);
 		this.mStatusMessageView = (TextView) findViewById(R.id.login_status_message);	
 		setupActionBar();		
-		
 
 		// Set up the login form.		
 		mEmailView = (EditText) findViewById(R.id.email);
@@ -76,6 +109,8 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 					}
 				});
 
+		mMessageConfirmationLayout = findViewById(R.id.messageConfirmationLayout);
+		mMessageConfirmationEmail = (TextView) findViewById (R.id.messageConfirmationEmail);
 	}
 
 	/**
@@ -114,17 +149,9 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 	 */
 	public void createAccountAction(View view){
 		Intent intent = new Intent(this, RegisterActivity.class);
-		EditText editText = (EditText) findViewById(R.id.email);
-		String message = editText.getText().toString();
-		intent.putExtra("mensaje para la register activity", message);
-		startActivity(intent);
+		startActivityForResult(intent, REQUEST_REGISTER);
 	}
 
-	public void goToMainActivity(){
-		Intent intent = new Intent(this, MainMenuActivity.class);
-		intent.putExtra("userId", sessionUser.getEmail());
-		startActivity(intent);
-	}
 
 
 
@@ -134,13 +161,9 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		// Reset errors.
-		mEmailView.setError(null);
-		mPasswordView.setError(null);
 
-		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
+		resetErrors();
+		storeValues();
 
 		boolean cancel = false;
 		View focusView = null;
@@ -177,15 +200,19 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 			mStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 
-			UserClientAPI api = new UserClientAPI();
-			api.signin(mEmail, mPassword, new JsonHttpResponseHandler() {
+			AuthenticationService api = new APIAuthentication();
+			api.login(mEmail, mPassword, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(JSONObject user) {
-					sessionUser = new User(user);
-					Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
-					goToMainActivity();
+					try {
+						sessionUser = new User(user);
+						completeLogin(sessionUser);
+					} catch (ParseException e) {
+						showSimpleAlert("Error en la identificación. Intente más tarde.");
+					}
 				}
 
+				@Override
 				public void onFailure(Throwable e, JSONObject errorResponse) {
 					if (errorResponse != null) {
 						handleInvalidLoginResponse(errorResponse);
@@ -193,6 +220,13 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 						showSimpleAlert(e.getMessage());
 					}
 				}
+
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					showSimpleAlert("Error de conexión. Intente más tarde.");
+				}
+
+				@Override
 				public void onFinish() {
 					showProgress(false);
 				}
@@ -201,13 +235,43 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		}
 	}
 
+	private void storeValues() {
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
+	}
+
+	private void resetErrors() {
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+	}
+
 	/**
 	 * Si bien en todos los casos se muestra el alert, se podría querer
-	 * tratar algún error de manera diferente 
+	 * tratar algún error de manera diferente
 	 */
 	private void handleInvalidLoginResponse(JSONObject errorResponse) {
 		Log.i("LoginActivity", "JSON Error response: " + errorResponse.toString());
 		showSimpleAlert(errorResponse.optString("error"));
+	}
+
+	private void completeLogin(User sessionUser) {
+		Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+
+		if (getIntent().getAction().equals(SIGNIN_ACTION)) {
+			Intent data = new Intent();
+			data.putExtra("userId", sessionUser.getEmail());
+
+			setResult(RESULT_OK, data);
+			finish();
+		} else {
+			goToMainActivity();
+		}
+	}
+
+	public void goToMainActivity(){
+		Intent intent = new Intent(this, MainMenuActivity.class);
+		intent.putExtra("userId", sessionUser.getEmail());
+		startActivity(intent);
 	}
 
 }
