@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.films.FilmOnClickListener;
 import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -85,9 +87,9 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			public void onFailure(Throwable e, JSONObject errorResponse) {
 				Log.i("Peliculas Activity", "ERROR PAPA");
 				if (errorResponse != null) {
-					// handleInvalidLoginResponse(errorResponse);
+					showSimpleAlert(errorResponse.optString("error"));
 				} else {
-					// showSimpleAlert(e.getMessage());
+					showSimpleAlert(e.getMessage());
 				}
 			}
 			
@@ -99,6 +101,14 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		});
 
 	}	
+	
+
+	private void goToFuncionActivity(String filmId) {
+		Intent intent = new Intent(this, PeliculasFuncionActivity.class);
+		intent.putExtra("filmId", filmId);
+		startActivity(intent);
+		
+	}
 
 	private void displayFilms() {
 		LinearLayout imageContainer = (LinearLayout) findViewById (R.id.peliculasImageContainer);
@@ -106,23 +116,19 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		for (Film film : filmsList) {
 
 			ImageView imageView = new ImageView(this);
-			imageView.setOnClickListener(new View.OnClickListener() {			
-				public void onClick(View arg0) {				
-					//TODO setearle el on click para que valla a la activity de esa pelicula 
+			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {			
+				public void onClick(View arg0) {					
+					goToFuncionActivity(filmId); 
 				}
+
 			});
 			
 			imageView.setImageResource(R.drawable.film_cover_missing);			
 			new DownloadImageTask(imageView).execute(film.getCoverURL());		
 	
-			//position parameters
-			LayoutParams layoutParams= new LayoutParams(Gravity.CENTER);
-			layoutParams.height = LayoutParams.MATCH_PARENT;
-			layoutParams.width = LayoutParams.MATCH_PARENT;
-			imageView.setLayoutParams(layoutParams);		
-			imageView.setScaleType(ScaleType.FIT_XY);
+			//position parameters	
 			imageView.setPadding(10, 10, 10, 10);		
-			
+			//TODO investigate a bit more how to resize images
 						
 			imageContainer.addView(imageView);
 			
