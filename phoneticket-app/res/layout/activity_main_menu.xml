@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +17,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+		android:layout_gravity="center" >
 
         <TextView
             android:id="@+id/welcome_message"
@@ -34,19 +37,23 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/pochoclo" />
 
-        <ImageButton
+        <Button
             android:id="@+id/peliculasButton"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/peliculas" />
+			style="@style/ButtonMenu"
+			android:drawableStart="@drawable/peliculas"
+            android:text="@string/cartelera" />
+        
+       <Button
+           android:id="@+id/complejoButton"
+           style="@style/ButtonMenu"
+           android:text="@string/complejo"
+           android:drawableStart="@drawable/peliculas" />
 
         <Button
             android:id="@+id/miCuentaButton"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:scaleType="centerInside"
-            android:text="Mi Cuenta" />
+			style="@style/ButtonMenu"
+            android:text="@string/mi_cuenta"
+			android:drawableStart="@drawable/peliculas"/>
 
     </LinearLayout>
 
