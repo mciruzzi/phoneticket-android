@@ -19,6 +19,10 @@ public class APIClient implements RestClient {
 		client.post(getAbsoluteUrl(path), params, responseHandler);
 	}
 
+	public void get(String path, JsonHttpResponseHandler responseHandler) {
+		client.get(getAbsoluteUrl(path), responseHandler);
+	}
+
 	private String getAbsoluteUrl(String relativeUrl) {
 		return BASE_URL + relativeUrl;
 	}

@@ -1,24 +1,20 @@
 package com.cinemar.phoneticket.films;
 
-import com.loopj.android.http.AsyncHttpClient;
+import com.cinemar.phoneticket.external.APIClient;
+import com.cinemar.phoneticket.external.RestClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 public class FilmsClientAPI {
 
-	private static final String BASE_URL = "http://phoneticket-stg.herokuapp.com/api/";
-
-	private AsyncHttpClient client;
+	private RestClient client;
 
 	public FilmsClientAPI() {
-		client = new AsyncHttpClient();
+		client = new APIClient();
 	}
 	
 	public void getFilms(JsonHttpResponseHandler responseHandler){			
-		client.get(getAbsoluteUrl("movies.json"), responseHandler);		
+		client.get("movies.json", responseHandler);		
 	}
 
-	private static String getAbsoluteUrl(String relativeUrl) {
-		return BASE_URL + relativeUrl;
-	}
 }

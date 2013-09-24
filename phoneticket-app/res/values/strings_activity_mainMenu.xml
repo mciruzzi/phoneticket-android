@@ -1,7 +1,8 @@
 <resources>
 
-    <string name="title_activity_main_menu">MainMenuActivity</string>
-
-    <!-- Strings related to main menu -->
-    
+    <string name="title_activity_main_menu">Menú</string>
+    <string name="cartelera">Cartelera</string>
+    <string name="complejo">Complejo</string>
+    <string name="mi_cuenta">Mi cuenta</string>
+        
 </resources>

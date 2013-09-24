@@ -62,7 +62,7 @@ public class AbstractApiConsumerActivity extends Activity {
 		builder.setMessage(msg);
 		builder.setTitle(getString(R.string.error));
 	
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
+		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int which) {				
 				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
 			}

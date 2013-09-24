@@ -1,10 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Phone-Ticket</string>
     <string name="action_settings">Configuración</string>
     <string name="error">Error</string>
     <string name="default_accept">Aceptar</string>
-    
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
-    
+    <string name="title_activity_peliculas_funcion">PeliculasFuncionActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class MainMenuActivity extends Activity {
 	//Referencias a UI
 	private TextView welcomeView;
-	private ImageButton peliculasButton;
+	private Button peliculasButton;
 	private Button miCuentaButton;
 
 	public static int REQUEST_LOGIN = 0;
@@ -32,7 +32,7 @@ public class MainMenuActivity extends Activity {
 			welcomeView.setText("Bienvenido");
 		}
 
-		peliculasButton = (ImageButton) findViewById(R.id.peliculasButton);
+		peliculasButton = (Button) findViewById(R.id.peliculasButton);
 		peliculasButton.setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View view) {
