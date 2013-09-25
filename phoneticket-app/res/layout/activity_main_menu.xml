@@ -47,13 +47,13 @@
            android:id="@+id/complejoButton"
            style="@style/ButtonMenu"
            android:text="@string/complejo"
-           android:drawableStart="@drawable/peliculas" />
+           android:drawableStart="@drawable/complejosicon" />
 
         <Button
             android:id="@+id/miCuentaButton"
 			style="@style/ButtonMenu"
             android:text="@string/mi_cuenta"
-			android:drawableStart="@drawable/peliculas"/>
+			android:drawableStart="@drawable/micuentaicon"/>
 
     </LinearLayout>
 
