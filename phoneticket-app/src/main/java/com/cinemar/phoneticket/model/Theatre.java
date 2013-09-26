@@ -1,5 +1,6 @@
 package com.cinemar.phoneticket.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -21,7 +22,8 @@ public class Theatre {
 		this.latitude = cinema.getInt("latitude");
 		this.longitude = cinema.getInt("longitude");
 		this.address = cinema.getString("address");
-		this.PhotoUrl = cinema.getString("id");				
+		this.PhotoUrl = cinema.getString("id");
+		shows = new ArrayList<Show>();
 		JSONArray showsArray = cinema.getJSONArray("shows");
 
 		for (int j = 0; j < showsArray.length(); j++) {

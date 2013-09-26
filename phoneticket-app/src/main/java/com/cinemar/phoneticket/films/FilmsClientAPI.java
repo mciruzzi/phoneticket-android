@@ -19,7 +19,7 @@ public class FilmsClientAPI {
 	}
 	
 	public void getFunciones(Film film, JsonHttpResponseHandler responseHandler){
-		client.get("movies/" + film.toString() + ".json", responseHandler);
+		client.get("movies/" + film.getId() + ".json", responseHandler);
 	}
 	
 

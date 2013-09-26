@@ -20,8 +20,9 @@ public class Show {
 		super();
 		
 		this.showId = showObject.getString("id");
-		this.startTimeString = showObject.getString("startTime");
-		//TODO How to parse string into a date Calendar				
+		this.startTimeString = showObject.getString("starts_at");
+		//TODO How to parse string into a date Calendar		
+		//TODO Tambien bajar la sala/room donde se proyecta el show vienw bajo el showObject.getJSONObject("room")
 	}	
 		
 	public String getShowId() {
