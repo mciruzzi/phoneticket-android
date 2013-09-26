@@ -29,7 +29,7 @@
 		<item name="android:shadowDx">1</item>
 		<item name="android:shadowDy">1</item>
 		<item name="android:shadowRadius">2</item>
-		<item name="android:background">@drawable/button_menu</item>
+<!-- 		<item name="android:background">@drawable/button_menu</item> -->
 		
 		
 	</style>

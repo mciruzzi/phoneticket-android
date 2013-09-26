@@ -1,5 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".PeliculasFuncionActivity" >
 
      <!-- Processing Layout... -->
@@ -42,12 +44,6 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".PeliculasFuncionActivity" >
 
-        <TextView
-            android:id="@+id/funciones_pelicula_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="" />
-
         <ScrollView
             android:id="@+id/scrollViewFunciones"
             android:layout_width="match_parent"
@@ -56,6 +52,7 @@
             android:layout_alignParentLeft="true" >
 
             <LinearLayout
+                android:id="@+id/principalFuncionList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
@@ -75,7 +72,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="left" >
 
                     <LinearLayout
@@ -86,17 +83,28 @@
                         <TextView
                             android:id="@+id/sinopsisText"
                             android:layout_width="195dp"
-                            android:layout_height="57dp"
-                            android:layout_weight="2.05"
-                            android:text="Sinopsis"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.88"
+                            android:ellipsize="end"
+                            android:maxHeight="50dp"
+                            android:maxLines="8"
+                            android:overScrollMode="ifContentScrolls"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical|none"
+                            android:text="Sinopsisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccc"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="11sp" />
 
                         <ImageView
                             android:id="@+id/filmCoverImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="14dp"
+                            android:layout_width="60dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="100"
+                            android:scaleType="centerInside"
+        					android:gravity="right|center_vertical"                          
                             android:src="@drawable/film_cover_missing" />
+
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -141,14 +149,14 @@
                     android:layout_gravity="center" >
 
                     <ImageButton
-                        android:id="@+id/imageButton1"
+                        android:id="@+id/reservarButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:src="@drawable/ic_reservar" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/comprarButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

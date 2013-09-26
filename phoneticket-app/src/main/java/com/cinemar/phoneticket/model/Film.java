@@ -58,7 +58,7 @@ public class Film {
 		this();
 		this.setId(JSONfilm.optString("id"));
 		this.title = JSONfilm.optString("title");
-		this.synopsis = JSONfilm.optString("syponsis");
+		this.synopsis = JSONfilm.optString("synopsis");
 		this.youTubeTrailerURL = JSONfilm.optString("youtube_trailer");
 		this.coverURL = JSONfilm.optString("cover_url");	
 		

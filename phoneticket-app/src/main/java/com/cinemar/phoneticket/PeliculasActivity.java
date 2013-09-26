@@ -1,7 +1,9 @@
 package com.cinemar.phoneticket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +34,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		super();
 	}
 
-	List<Film> filmsList = new ArrayList<Film>();
+	Map<String,Film> filmsMap = new HashMap<String,Film>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,8 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				Log.i("Peliculas Activity", "Peliculas Recibidas");
 				try {					
 					for (int i = 0; i < films.length(); i++) {
-						filmsList.add(new Film(films.getJSONObject(i)));
+						Film film = new Film(films.getJSONObject(i));
+						filmsMap.put(film.getId(), film);
 						Log.i("Peliculas Activity","Pelicula" + films.getJSONObject(i)+ "recibida");
 					}
 				} catch (JSONException e) {
@@ -105,7 +108,12 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 	private void goToFuncionActivity(String filmId) {
 		Intent intent = new Intent(this, PeliculasFuncionActivity.class);
+		Film filmSelected = filmsMap.get(filmId);
 		intent.putExtra("filmId", filmId);
+		intent.putExtra("filmTitle",filmSelected.getTitle());		
+		intent.putExtra("filmSinopsis",filmSelected.getSynopsis());
+		intent.putExtra("filmCoverUrl",filmSelected.getCoverURL());
+		intent.putExtra("filmYouTubeTrailer",filmSelected.getYouTubeTrailerURL());
 		startActivity(intent);
 		
 	}
@@ -113,7 +121,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	private void displayFilms() {
 		LinearLayout imageContainer = (LinearLayout) findViewById (R.id.peliculasImageContainer);
 		
-		for (Film film : filmsList) {
+		for (Film film : filmsMap.values()) {
 
 			ImageView imageView = new ImageView(this);
 			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {			
@@ -124,7 +132,8 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			});
 			
 			imageView.setImageResource(R.drawable.film_cover_missing);			
-			new DownloadImageTask(imageView).execute(film.getCoverURL());		
+			new DownloadImageTask(imageView).execute(film.getCoverURL());	
+			//asincronicamente carga la imagen en la imageView pasado como argumento
 	
 			//position parameters	
 			imageView.setPadding(10, 10, 10, 10);		
