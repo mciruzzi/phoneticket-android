@@ -2,28 +2,27 @@ package com.cinemar.phoneticket.model;
 
 import java.util.Calendar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Show {
 	String showId;
 	Calendar startTime;
-	
-	
-	
+	String startTimeString;	
+
 	public Show(String showId, Calendar startTime) {
 		super();
 		this.showId = showId;
 		this.startTime = startTime;		
 	}
 	
-	public Show(JSONObject showObject) {
+	public Show(JSONObject showObject) throws JSONException {
 		super();
 		
-		//TODO
-		
-		
-	}
-	
+		this.showId = showObject.getString("id");
+		this.startTimeString = showObject.getString("startTime");
+		//TODO How to parse string into a date Calendar				
+	}	
 		
 	public String getShowId() {
 		return showId;
@@ -40,6 +39,15 @@ public class Show {
 	public void setStartTime(Calendar startTime) {
 		this.startTime = startTime;
 	}
+		
+	public String getStartTimeString() {
+		return startTimeString;
+	}
+
+	public void setStartTimeString(String startTimeString) {
+		this.startTimeString = startTimeString;
+	}
+
 
 
 

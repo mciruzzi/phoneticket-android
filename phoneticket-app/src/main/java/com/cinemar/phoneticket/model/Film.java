@@ -84,28 +84,16 @@ public class Film {
 		this.coverURL = JSONfilm.optString("cover_url");
 
 	}
-
 	
 	public void addFunciones(JSONObject filmShows) throws JSONException {
-		/*String cinemasArrString = filmShows.optString("theatres");
+		String cinemasArrString = filmShows.optString("theatres");
 		JSONArray cinemasArray = filmShows.optJSONArray("theatres");
-		String cinemaId;
-		Show showToAdd;
 
 		for (int i = 0; i < cinemasArray.length(); i++) {
-
-			cinemaId = cinemasArray.getJSONObject(i).optString("id");
-			// podrian bajarse otros parametros del cine si hiciesen falta
-			JSONArray showsArray = cinemasArray.getJSONObject(i).getJSONArray(
-					"shows");
-
-			for (int j = 0; j < showsArray.length(); j++) {
-				JSONObject showObject = showsArray.optJSONObject(j);
-				showToAdd = new Show(showObject, cinemaId, this);
-				shows.put("cinema", )
-			}
+			Theatre cinema = new Theatre(cinemasArray.getJSONObject(i));			
+			this.cinemas.add(cinema);
 		}
-*/
+
 	}
 
 	public void clearFunciones() {

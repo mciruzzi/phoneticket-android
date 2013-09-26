@@ -2,6 +2,8 @@ package com.cinemar.phoneticket.model;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Theatre {
@@ -13,7 +15,19 @@ public class Theatre {
 	String PhotoUrl;
 	List<Show> shows;
 	
-	public Theatre(JSONObject theatre) {
+	public Theatre(JSONObject cinema) throws JSONException  {
+		this.id = cinema.getString("id");
+		this.name = cinema.getString("name");
+		this.latitude = cinema.getInt("latitude");
+		this.longitude = cinema.getInt("longitude");
+		this.address = cinema.getString("address");
+		this.PhotoUrl = cinema.getString("id");				
+		JSONArray showsArray = cinema.getJSONArray("shows");
+
+		for (int j = 0; j < showsArray.length(); j++) {
+			JSONObject showObject = showsArray.optJSONObject(j);
+			shows.add( new Show(showObject));			
+		}
 		
 	}
 	
@@ -59,6 +73,10 @@ public class Theatre {
 	}
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
+	}
+	
+	public void addShow(Show show) {
+		this.addShow(show);
 	}
 
 }
