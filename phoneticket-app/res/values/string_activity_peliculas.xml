@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="peliculas_progress_getting">Obteniendo Cartelera&#8230;</string>
+    <string name="funciones_progress_getting">Obteniendo Funciones&#8230;</string>
     <string name="title_activity_peliculas">PeliculasActivity</string>
     <string name="films">Peliculas</string>
  

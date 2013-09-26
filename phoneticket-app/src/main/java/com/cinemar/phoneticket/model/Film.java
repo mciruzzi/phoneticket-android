@@ -1,55 +1,76 @@
 package com.cinemar.phoneticket.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
+
 public class Film {
-	
+
 	private String Id;
 	private String title;
 	private String synopsis;
 	private String youTubeTrailerURL;
 	private String coverURL;
-	
-	private Film(){		
+	private List<Theatre> cinemas;
+
+	private Film() {
+		this.cinemas = new ArrayList<Theatre>();
 	}
-	
-	public Film(String Id, String title, String synopsis, String youTubeTrailerURL,
-			String coverURL) {
+
+	public Film(String Id, String title, String synopsis,
+			String youTubeTrailerURL, String coverURL) {
 		super();
 		this.Id = Id;
 		this.title = title;
 		this.synopsis = synopsis;
 		this.youTubeTrailerURL = youTubeTrailerURL;
 		this.coverURL = coverURL;
+		this.cinemas = new ArrayList<Theatre>();
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getSynopsis() {
 		return synopsis;
 	}
+
 	public void setSynopsis(String synopsis) {
 		this.synopsis = synopsis;
 	}
+
 	public String getYouTubeTrailerURL() {
 		return youTubeTrailerURL;
 	}
+
 	public void setYouTubeTrailerURL(String youTubeTrailerURL) {
 		this.youTubeTrailerURL = youTubeTrailerURL;
 	}
+
 	public String getCoverURL() {
 		return coverURL;
 	}
+
 	public void setCoverURL(String coverURL) {
 		this.coverURL = coverURL;
-	}	
+	}
+
 	public String getId() {
 		return Id;
 	}
+
 	public void setId(String id) {
 		Id = id;
 	}
@@ -60,10 +81,36 @@ public class Film {
 		this.title = JSONfilm.optString("title");
 		this.synopsis = JSONfilm.optString("synopsis");
 		this.youTubeTrailerURL = JSONfilm.optString("youtube_trailer");
-		this.coverURL = JSONfilm.optString("cover_url");	
-		
+		this.coverURL = JSONfilm.optString("cover_url");
+
 	}
 
+	
+	public void addFunciones(JSONObject filmShows) throws JSONException {
+		/*String cinemasArrString = filmShows.optString("theatres");
+		JSONArray cinemasArray = filmShows.optJSONArray("theatres");
+		String cinemaId;
+		Show showToAdd;
+
+		for (int i = 0; i < cinemasArray.length(); i++) {
+
+			cinemaId = cinemasArray.getJSONObject(i).optString("id");
+			// podrian bajarse otros parametros del cine si hiciesen falta
+			JSONArray showsArray = cinemasArray.getJSONObject(i).getJSONArray(
+					"shows");
+
+			for (int j = 0; j < showsArray.length(); j++) {
+				JSONObject showObject = showsArray.optJSONObject(j);
+				showToAdd = new Show(showObject, cinemaId, this);
+				shows.put("cinema", )
+			}
+		}
+*/
+	}
+
+	public void clearFunciones() {
+		this.cinemas.clear();
+	}
 	
 
 }

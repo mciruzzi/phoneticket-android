@@ -2,6 +2,7 @@ package com.cinemar.phoneticket.films;
 
 import com.cinemar.phoneticket.external.APIClient;
 import com.cinemar.phoneticket.external.RestClient;
+import com.cinemar.phoneticket.model.Film;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
@@ -16,5 +17,10 @@ public class FilmsClientAPI {
 	public void getFilms(JsonHttpResponseHandler responseHandler){			
 		client.get("movies.json", responseHandler);		
 	}
+	
+	public void getFunciones(Film film, JsonHttpResponseHandler responseHandler){
+		client.get("movies/" + film.toString() + ".json", responseHandler);
+	}
+	
 
 }

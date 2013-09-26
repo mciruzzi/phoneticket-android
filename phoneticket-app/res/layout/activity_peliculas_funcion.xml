@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     tools:context=".PeliculasFuncionActivity" >
 
-     <!-- Processing Layout... -->
+    <!-- Processing Layout... -->
 
     <LinearLayout
         android:id="@+id/funciones_status"
@@ -30,11 +30,11 @@
             android:text="@string/login_progress_signing_in"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
-    
+
     <RelativeLayout
-        android:id="@+id/funciones_main_view"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/funciones_main_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -58,8 +58,9 @@
                 android:orientation="vertical" >
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
+ >
 
                     <TextView
                         android:id="@+id/filmTitleText"
@@ -67,7 +68,6 @@
                         android:layout_height="wrap_content"
                         android:text="Titulo"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -78,7 +78,10 @@
                     <LinearLayout
                         android:id="@+id/linearLayout1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:padding="10dip" >
+ >
 
                         <TextView
                             android:id="@+id/sinopsisText"
@@ -101,12 +104,10 @@
                             android:layout_height="100dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="100"
+                            android:gravity="right|center_vertical"
                             android:scaleType="centerInside"
-        					android:gravity="right|center_vertical"                          
                             android:src="@drawable/film_cover_missing" />
-
                     </LinearLayout>
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -134,7 +135,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:src="@drawable/youtube" />
-
                 </LinearLayout>
 
                 <ExpandableListView
@@ -161,12 +161,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:src="@drawable/ic_comprar" />
-
                 </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
-
     </RelativeLayout>
 
 </merge>

@@ -1,10 +1,17 @@
 package com.cinemar.phoneticket;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cinemar.phoneticket.films.DownloadImageTask;
 import com.cinemar.phoneticket.films.FilmOnClickListener;
+import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,26 +25,30 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		
-		mFilm = new Film(getIntent().getStringExtra("filmId"), getIntent().getStringExtra("filmTitle"), getIntent().getStringExtra("filmSinopsis"), getIntent().getStringExtra("filmYouTubeTrailer"), getIntent().getStringExtra("filmCoverUrl"));
-		
+
+		mFilm = new Film(getIntent().getStringExtra("filmId"), getIntent()
+				.getStringExtra("filmTitle"), getIntent().getStringExtra(
+				"filmSinopsis"), getIntent().getStringExtra(
+				"filmYouTubeTrailer"), getIntent().getStringExtra(
+				"filmCoverUrl"));
+
 		setContentView(R.layout.activity_peliculas_funcion);
-		
-		//** Important to get in order to use the showProgress method**//
+
+		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.funciones_main_view);
 		mStatusView = findViewById(R.id.funciones_status);
 		mStatusMessageView = (TextView) findViewById(R.id.funciones_status_message);
-		
+
 		TextView idPeliculaText = (TextView) findViewById(R.id.filmTitleText);
 		idPeliculaText.setText(mFilm.getTitle());
-		
+
 		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
 		idSinopsisText.setText(mFilm.getSynopsis());
-		
-		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);					
+
+		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
-	
+
+		this.getFunciones();
 	}
 
 	@Override
@@ -45,5 +56,53 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		getMenuInflater().inflate(R.menu.peliculas, menu);
 		return true;
 	}
+
+	private void getFunciones() {
+		mStatusMessageView.setText(R.string.funciones_progress_getting);
+		showProgress(true);
+
+		FilmsClientAPI api = new FilmsClientAPI();
+		api.getFunciones(mFilm, responseHandler);
+	}
+
+	private void displayFunciones() {
+
+	}
+
+	JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
+		@Override
+		public void onSuccess(JSONObject film) {
+			Log.i("Funciones Activity", "Funciones Recibidas");
+			Log.i("Funciones Activity",	"Funciones" + film + "recibida");
+			
+			mFilm.clearFunciones();
+			try {
+				mFilm.addFunciones(film);
+			} catch (JSONException e) {
+				this.onFailure(e, "Error while parsing funciones JSON object");
+			}
+		}
+
+		@Override
+		public void onFailure(Throwable arg0, String arg1) {
+			showSimpleAlert(arg1);
+		};
+
+		@Override
+		public void onFailure(Throwable e, JSONObject errorResponse) {
+			Log.i("Funciones Activity", "Failure pidiendo funciones");
+			if (errorResponse != null) {
+				showSimpleAlert(errorResponse.optString("error"));
+			} else {
+				showSimpleAlert(e.getMessage());
+			}
+		}
+
+		public void onFinish() {
+			showProgress(false);
+			displayFunciones();
+		}
+
+	};
 
 }

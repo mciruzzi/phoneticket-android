@@ -65,12 +65,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		
 
 		FilmsClientAPI api = new FilmsClientAPI();
-		api.getFilms(new JsonHttpResponseHandler() {
-
-			@Override
-			public void onSuccess(JSONObject films) {
-				Log.i("Peliculas Activity", "Peliculas Recibidas Como Object");
-			}
+		api.getFilms(new JsonHttpResponseHandler() {	
 
 			@Override
 			public void onSuccess(JSONArray films) {
@@ -88,13 +83,17 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
-				Log.i("Peliculas Activity", "ERROR PAPA");
+				Log.i("Peliculas Activity", "Failure recibiendo peliculas");
 				if (errorResponse != null) {
 					showSimpleAlert(errorResponse.optString("error"));
 				} else {
 					showSimpleAlert(e.getMessage());
 				}
 			}
+			
+			@Override public void onFailure(Throwable arg0, String arg1) {
+				showSimpleAlert(arg1);			
+			};
 			
 			public void onFinish() {
 				showProgress(false);
