@@ -1,5 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".PeliculasFuncionActivity" >
@@ -31,139 +31,125 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/funciones_main_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".PeliculasFuncionActivity" >
+        android:background="#dcf6ff"
+        android:orientation="vertical"
+        android:scrollbars="vertical" >
 
-        <ScrollView
-            android:id="@+id/scrollViewFunciones"
+        <TextView
+            android:id="@+id/filmTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="18dp"
+            android:text="Titulo"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/border"
+            android:padding="10dip" >
+
+            <TextView
+                android:id="@+id/sinopsisText"
+                android:layout_width="195dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.88"
+                android:ellipsize="end"
+                android:maxHeight="50dp"
+                android:maxLines="8"
+                android:overScrollMode="ifContentScrolls"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical|none"
+                android:text="Sinopsisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccc"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="11sp" />
+
+            <ImageView
+                android:id="@+id/filmCoverImage"
+                android:layout_width="60dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="100"
+                android:gravity="right|center_vertical"
+                android:scaleType="centerInside"
+                android:src="@drawable/film_cover_missing" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" >
+
+            <ImageView
+                android:id="@+id/facebookImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/facebook" />
+
+            <ImageView
+                android:id="@+id/twitterImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/twitter" />
+
+            <ImageView
+                android:id="@+id/youtubeImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/youtube" />
+        </LinearLayout>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/funciones_main_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true" >
+            android:layout_height="134dp"
+            android:gravity="center"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context=".PeliculasFuncionActivity" >
 
-            <LinearLayout
-                android:id="@+id/principalFuncionList"
+            <ExpandableListView
+                android:id="@+id/funcionesList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" >
+            </ExpandableListView>
+        </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
- >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="16dp" >
 
-                    <TextView
-                        android:id="@+id/filmTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Titulo"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-                </RelativeLayout>
+            <ImageButton
+                android:id="@+id/reservarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_reservar" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="left" >
+            <ImageButton
+                android:id="@+id/comprarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_comprar" />
+        </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/border"
-                        android:padding="10dip" >
- >
-
-                        <TextView
-                            android:id="@+id/sinopsisText"
-                            android:layout_width="195dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.88"
-                            android:ellipsize="end"
-                            android:maxHeight="50dp"
-                            android:maxLines="8"
-                            android:overScrollMode="ifContentScrolls"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical|none"
-                            android:text="Sinopsisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccc"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="11sp" />
-
-                        <ImageView
-                            android:id="@+id/filmCoverImage"
-                            android:layout_width="60dp"
-                            android:layout_height="100dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="100"
-                            android:gravity="right|center_vertical"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/film_cover_missing" />
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" >
-
-                    <ImageView
-                        android:id="@+id/facebookImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/facebook" />
-
-                    <ImageView
-                        android:id="@+id/twitterImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/twitter" />
-
-                    <ImageView
-                        android:id="@+id/youtubeImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/youtube" />
-                </LinearLayout>
-
-                <ExpandableListView
-                    android:id="@+id/funcionesList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                </ExpandableListView>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" >
-
-                    <ImageButton
-                        android:id="@+id/reservarButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/ic_reservar" />
-
-                    <ImageButton
-                        android:id="@+id/comprarButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/ic_comprar" />
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+    </LinearLayout>
 
 </merge>

@@ -86,7 +86,6 @@ public class Film {
 	}
 	
 	public void addFunciones(JSONObject filmShows) throws JSONException {
-		String cinemasArrString = filmShows.optString("theatres");
 		JSONArray cinemasArray = filmShows.optJSONArray("theatres");
 
 		for (int i = 0; i < cinemasArray.length(); i++) {
@@ -98,6 +97,10 @@ public class Film {
 
 	public void clearFunciones() {
 		this.cinemas.clear();
+	}	
+
+	public List<Theatre> getCinemas() {
+		return cinemas;
 	}
 	
 
