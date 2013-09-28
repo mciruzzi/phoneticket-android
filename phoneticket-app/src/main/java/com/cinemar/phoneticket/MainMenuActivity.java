@@ -59,8 +59,6 @@ public class MainMenuActivity extends Activity {
 	protected void goToLoginActivity() {
 		String userName = getIntent().getStringExtra("userId");
 		
-		welcomeView.setText("Hola aaaa " + userName );
-
 		if (userName == null) {
 			requestLogin();
 		} else {
