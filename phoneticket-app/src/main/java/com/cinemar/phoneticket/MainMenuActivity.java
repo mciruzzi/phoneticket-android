@@ -16,6 +16,7 @@ public class MainMenuActivity extends Activity {
 	private Button miCuentaButton;
 
 	public static int REQUEST_LOGIN = 0;
+	private static int REQUEST_COUNT = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,10 @@ public class MainMenuActivity extends Activity {
 	}
 
 	private void displayUser(String userName) {
-		welcomeView.setText("Hola aaaa" );
+		Intent intent = new Intent(this, MainMyAccountActivity.class);
+//		intent.setAction(MainMyAccountActivity.SHOW_DATA_COUNT_ACTION);
+		intent.putExtra("email", userName);
+		startActivityForResult(intent, REQUEST_COUNT);
 	}
 
 	@Override
@@ -83,6 +87,12 @@ public class MainMenuActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				String userName = data.getStringExtra("userId");
 				displayUser(userName);
+			}
+		} 
+		else if (requestCode == REQUEST_COUNT) {
+
+			if (resultCode == RESULT_OK) {
+				welcomeView.setText("holaa!");
 			}
 		}
 	}
