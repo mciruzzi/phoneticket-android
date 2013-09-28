@@ -44,4 +44,11 @@ public class APIAuthentication implements AuthenticationService {
 		client.post("users.json", params, responseHandler);
 	}
 
+	public void getUser(String email, JsonHttpResponseHandler responseHandler) {
+		RequestParams params = new RequestParams();
+		params.put("email", email);
+
+		client.get("users/me.json", params, responseHandler);
+	}
+
 }
