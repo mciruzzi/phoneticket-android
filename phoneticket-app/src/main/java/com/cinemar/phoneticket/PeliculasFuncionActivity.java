@@ -52,7 +52,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		mStatusMessageView = (TextView) findViewById(R.id.funciones_status_message);
 
 		mYoutubeImage = (ImageView) findViewById(R.id.youtubeImage);
-		if (mFilm.getYouTubeTrailerURL() != null) {
+		if (mFilm.getYouTubeTrailerURL() != null && !mFilm.getYouTubeTrailerURL().isEmpty()) {
 			mYoutubeImage.setClickable(true);
 			mYoutubeImage.setOnClickListener(new OnClickListener() {
 
