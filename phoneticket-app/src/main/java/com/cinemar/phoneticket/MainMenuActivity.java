@@ -58,6 +58,9 @@ public class MainMenuActivity extends Activity {
 
 	protected void goToLoginActivity() {
 		String userName = getIntent().getStringExtra("userId");
+		
+		welcomeView.setText("Hola aaaa " + userName );
+
 		if (userName == null) {
 			requestLogin();
 		} else {
@@ -73,7 +76,7 @@ public class MainMenuActivity extends Activity {
 	}
 
 	private void displayUser(String userName) {
-		welcomeView.setText("Hola " + userName);
+		welcomeView.setText("Hola aaaa" );
 	}
 
 	@Override

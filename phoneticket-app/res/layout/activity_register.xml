@@ -39,7 +39,7 @@
         <LinearLayout
             style="@style/LoginFormContainer"
             android:layout_gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/welcome_msg"

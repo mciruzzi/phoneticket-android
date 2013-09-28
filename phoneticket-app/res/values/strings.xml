@@ -8,5 +8,7 @@
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
     <string name="title_activity_peliculas_funcion">PeliculasFuncionActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_my_account">MyAccount</string>
+    <string name="title_activity_main_my_account">MainMyAccountActivity</string>
 
 </resources>
