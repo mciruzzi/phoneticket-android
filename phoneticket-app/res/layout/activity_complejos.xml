@@ -47,6 +47,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/complejoName01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MockComplejo"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/complejosDireccion01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/complejoName01"
+                    android:drawableTop="@drawable/border"
+                    android:text="Direccion" />
+
+                <ImageView
+                    android:id="@+id/complejosPhoto01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/film_cover_missing" />
+
+                <ImageButton
+                    android:id="@+id/imageButton1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/complejosDireccion01"
+                    android:src="@drawable/ic_position_map" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/imageButton1"
+                    android:src="@drawable/peliculas" />
+
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 
