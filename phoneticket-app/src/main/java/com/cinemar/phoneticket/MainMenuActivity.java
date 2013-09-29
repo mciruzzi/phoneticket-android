@@ -14,9 +14,6 @@ public class MainMenuActivity extends Activity {
 	private Button peliculasButton;
 	private Button miCuentaButton;
 
-	public static int REQUEST_LOGIN = 0;
-	private static int REQUEST_COUNT = 1;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,7 +24,7 @@ public class MainMenuActivity extends Activity {
 		String userName = getIntent().getStringExtra("userId");
 
 		if (userName != null) {
-			displayUser(userName);
+			welcomeView.setText("Bienvenido " + userName);
 		} else {
 			welcomeView.setText("Bienvenido");
 		}
@@ -43,7 +40,7 @@ public class MainMenuActivity extends Activity {
 		miCuentaButton.setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View view) {
-						goToLoginActivity();
+						goToMyAccountActivity();
 					}
 
 				});
@@ -56,44 +53,9 @@ public class MainMenuActivity extends Activity {
 		startActivity(intent);
 	}
 
-	protected void goToLoginActivity() {
-		String userName = getIntent().getStringExtra("userId");
-		
-		if (userName == null) {
-			requestLogin();
-		} else {
-			displayUser(userName);
-		}
-
-	}
-
-	private void requestLogin() {
-		Intent intent = new Intent(this, LoginActivity.class);
-		intent.setAction(LoginActivity.SIGNIN_ACTION);
-		startActivityForResult(intent, REQUEST_LOGIN);
-	}
-
-	private void displayUser(String userName) {
+	protected void goToMyAccountActivity() {
 		Intent intent = new Intent(this, MainMyAccountActivity.class);
-//		intent.setAction(MainMyAccountActivity.SHOW_DATA_COUNT_ACTION);
-		intent.putExtra("email", userName);
-		startActivityForResult(intent, REQUEST_COUNT);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_LOGIN) {
-			if (resultCode == RESULT_OK) {
-				String userName = data.getStringExtra("userId");
-				displayUser(userName);
-			}
-		} 
-		else if (requestCode == REQUEST_COUNT) {
-
-			if (resultCode == RESULT_OK) {
-				welcomeView.setText("holaa!");
-			}
-		}
+		startActivity(intent);
 	}
 
 	@Override

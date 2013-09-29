@@ -6,6 +6,22 @@ import java.util.Calendar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
@@ -13,26 +29,12 @@ import com.cinemar.phoneticket.util.UIDateUtil;
 import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TabHost;
-import android.widget.TextView;
-import android.widget.TabHost.TabSpec;
-
 public class MainMyAccountActivity extends Activity {
+	public static int REQUEST_LOGIN = 0;
 
 	private String email;
 	private User user;
-	
+
 	private EditText mName;
 	private EditText mLastName;
 	private EditText mDNI;
@@ -40,25 +42,49 @@ public class MainMyAccountActivity extends Activity {
 	private EditText mPhoneNumber;
 	private EditText mAddress;
 	private UIDateUtil utilDate;
-	
+
 //	private View mLoginFormView;
 //	private View mLoginStatusView;
 //	private TextView mLoginStatusMessageView;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main_my_account);
-		
-		Intent intent = getIntent();
-		
-		email = intent.getStringExtra("email");
-		
+
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		email = settings.getString("email", "");
+
+		if (email.isEmpty()) {
+			requestLogin();
+		} else {
+			setupContent();
+		}
+	}
+
+	private void setupContent() {
 		setTitle(email);
 		addTabs();
 		getUIElement();
 		getDataOfServer();
+	}
+
+	private void requestLogin() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.setAction(LoginActivity.SIGNIN_ACTION);
+		startActivityForResult(intent, REQUEST_LOGIN);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_LOGIN) {
+			if (resultCode == RESULT_OK) {
+				email = data.getStringExtra("userId");
+				setupContent();
+			}
+		}
 	}
 
 	@Override
@@ -67,16 +93,16 @@ public class MainMyAccountActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main_my_account, menu);
 		return true;
 	}
-	
+
 	private void getDataOfServer() {
-		
+
 		AuthenticationService api = new APIAuthentication();
-		
+
 		api.getUser(email, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject userData) {
 				try {
-					
+
 					user = new User(userData);
 					completeDataRequest();
 				} catch (ParseException e) {
@@ -103,9 +129,9 @@ public class MainMyAccountActivity extends Activity {
 				//showProgress(false);
 			}
 		});
-		
+
 	}
-	
+
 	private void getUIElement() {
 
 		mName = (EditText) findViewById(R.id.accountName);
@@ -120,25 +146,25 @@ public class MainMyAccountActivity extends Activity {
 				this);
 
 		findViewById(R.id.accountSave).setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View view) {
-			
+
 				saveChanges();
 			}
 		});
 
 	}
-	
-	@Override 
+
+	@Override
 	protected Dialog onCreateDialog(int id){
 		return utilDate.createDialogWindow(id);
 	}
-	
+
 	private void addTabs() {
-		
+
 		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
 		tabHost.setup();
-		
+
 		TabSpec spec1 = tabHost.newTabSpec("tabFunctions");
         spec1.setIndicator("Funciones", null);
         spec1.setContent(R.id.myReservesBuys);
@@ -149,41 +175,41 @@ public class MainMyAccountActivity extends Activity {
         spec2.setContent(R.id.myAccountData);
         tabHost.addTab(spec2);
 	}
-	
+
 	private void completeDataRequest() {
-		
+
 		mName.setText(user.getNombre());
 		mLastName.setText(user.getApellido());
 		mDNI.setText(user.getDni());
 		mPassword.setText(user.getPassword());
 		mPhoneNumber.setText(user.getTelefono());
 		mAddress.setText(user.getDireccion());
-		
+
 		utilDate.setDate(user.getFechaNacimiento());
 		utilDate.update();
 	}
 
 	protected void showSimpleAlert(String msg) {
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(msg);
 		builder.setTitle(getString(R.string.error));
-	
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
-			public void onClick(DialogInterface dialog, int which) {				
+
+		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
 			}
 		});
-	
+
 		builder.show();
 	}
-	
+
 	private void saveChanges() {
 
 		resetErrors();
 		View focusView = validateData();
 
 		if (focusView != null) {
-			
+
 			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
@@ -191,15 +217,15 @@ public class MainMyAccountActivity extends Activity {
 
 //			mLoginStatusMessageView.setText(R.string.register_progress_registering);
 //			showProgress(true);
-			
+
 			updateData();
-			
+
 			AuthenticationService authenticationClient = new APIAuthentication();
 			authenticationClient.update(user, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject response) {
 					//no pasa nada, se queda en la misma ventana
-					
+
 					showSimpleAlert("Cambios guardados");
 				}
 
@@ -214,7 +240,7 @@ public class MainMyAccountActivity extends Activity {
 					} catch (JSONException e) {
 						showSimpleAlert("Error al guardar los cambios. Intente más tarde");
 					}
-					
+
 					showSimpleAlert("Errorr!!!");
 
 				}
@@ -231,9 +257,9 @@ public class MainMyAccountActivity extends Activity {
 			});
 
 		}
-		
+
 	}
-	
+
 	private void assignValidationErrors(JSONObject errors) throws JSONException {
 
 		if (errors.has("error")) {
@@ -253,21 +279,21 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private void updateData() {
-		
+
 		Calendar mBirthDate = Calendar.getInstance();
 		mBirthDate.set(utilDate.getYear(), utilDate.getMonth(), utilDate.getDay());
-		
+
 		user.setNombre(mName.getText().toString());
 		user.setApellido(mLastName.getText().toString());
 		user.setDireccion(mAddress.getText().toString());
 		user.setTelefono(mPhoneNumber.getText().toString());
 		user.setDni(mDNI.getText().toString());
 		user.setFechaNacimiento(mBirthDate.getTime());
-		
+
 		if ( isChangedPassword() )
 			user.setPassword(mPassword.getText().toString());
 	}
-	
+
 	private void resetErrors() {
 		mName.setError(null);
 		mLastName.setError(null);
@@ -275,9 +301,9 @@ public class MainMyAccountActivity extends Activity {
 		mPassword.setError(null);
 		mPhoneNumber.setError(null);
 	}
-	
+
 	private View validateData() {
-		
+
 		View focusView = null;
 
 		if (!UserDataValidatorUtil.isValidPhoneNumber(mPhoneNumber.getText().toString(), this)) {
@@ -286,26 +312,27 @@ public class MainMyAccountActivity extends Activity {
 		}
 
 		if ( isChangedPassword() ) {
-			//si está No vacía la pass entoces se fija que cumpla con las condiciones
+			// si está No vacía la pass entoces se fija que cumpla con las
+			// condiciones
 			if ( !UserDataValidatorUtil.isValidPassword(mPassword.getText().toString(), this) )
 			{
 				mPassword.setError(UserDataValidatorUtil.getError());
 				focusView = mPassword;
 			}
 		}
-		
+
 		if (!UserDataValidatorUtil.isValidDNI(mDNI.getText().toString(), this)) {
 			mDNI.setError(UserDataValidatorUtil.getError());
 			focusView = mDNI;
 		}
-			
+
 		if (!UserDataValidatorUtil.isValidLastName(mLastName.getText().toString(), this)) {
 			mLastName.setError(UserDataValidatorUtil.getError());
 			focusView = mLastName;
 		}
 
 		if (!UserDataValidatorUtil.isValidName(mName.getText().toString(), this)) {
-			
+
 			mName.setError(UserDataValidatorUtil.getError());
 			focusView = mName;
 		}
@@ -313,7 +340,7 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private boolean isChangedPassword() {
-		
+
 		return !TextUtils.isEmpty(mPassword.getText().toString());
 	}
 }
