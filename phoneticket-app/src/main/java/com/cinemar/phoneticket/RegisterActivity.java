@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +29,7 @@ import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.cinemar.phonoticket.util.UIDateUtil;
+import com.cinemar.phonoticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 /**
@@ -180,59 +180,9 @@ public class RegisterActivity extends Activity {
 				mApellidoView.getText().toString(),mDNIView.getText().toString(),mNacimiento.getTime(),
 				mDireccionView.getText().toString(),mTelefonoView.getText().toString());
 
-		boolean cancel = false;
-		View focusView = null;
+		View focusView = validateData();
 
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
-		}
-
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
-
-		//Check for a valid name
-		if (TextUtils.isEmpty(mNombre)) {
-			mNombreView.setError(getString(R.string.error_field_required));
-			focusView = mNombreView;
-			cancel = true;
-		}
-		if (TextUtils.isEmpty(mApellido)) {
-			mApellidoView.setError(getString(R.string.error_field_required));
-			focusView = mApellidoView;
-			cancel = true;
-		}
-
-		//Check for a valid telephone
-		if (TextUtils.isEmpty(mTelefono)) {
-			mTelefonoView.setError(getString(R.string.error_field_required));
-			focusView = mTelefonoView;
-			cancel = true;
-		}
-
-		//Check for a valid DNI
-		if (TextUtils.isEmpty(mDni)) {
-			mDNIView.setError(getString(R.string.error_field_required));
-			focusView = mDNIView;
-			cancel = true;
-		}
-
-
-		if (cancel) {
+		if (focusView != null) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
@@ -274,6 +224,45 @@ public class RegisterActivity extends Activity {
 			});
 
 		}
+	}
+
+	private View validateData() {
+		
+		View focusView = null;
+
+		if (!UserDataValidatorUtil.isValidPhoneNumber(mTelefono, this)) {
+			mTelefonoView.setError((UserDataValidatorUtil.getError()));
+			focusView = mTelefonoView;
+		}
+
+		if (!UserDataValidatorUtil.isValidPassword(mPassword, this)) {
+			
+			mPasswordView.setError(UserDataValidatorUtil.getError());
+			focusView = mPasswordView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidDNI(mDni, this)) {
+			mDNIView.setError(UserDataValidatorUtil.getError());
+			focusView = mDNIView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidEmail(mEmail, this)) {
+			
+			mEmailView.setError(UserDataValidatorUtil.getError());
+			focusView = mEmailView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidLastName(mApellido, this)) {
+			mApellidoView.setError(UserDataValidatorUtil.getError());
+			focusView = mApellidoView;
+		}
+
+		if (!UserDataValidatorUtil.isValidName(mNombre, this)) {
+			
+			mNombreView.setError(UserDataValidatorUtil.getError());
+			focusView = mNombreView;
+		}
+		return focusView;
 	}
 
 	private void storeValues() {

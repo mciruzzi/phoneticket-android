@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phonoticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
@@ -165,32 +166,21 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		resetErrors();
 		storeValues();
 
-		boolean cancel = false;
 		View focusView = null;
 
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+		if (!UserDataValidatorUtil.isValidPassword(mPassword, this)) {
+
+			mPasswordView.setError((UserDataValidatorUtil.getError()));
 			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
 		}
 
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+		if (!UserDataValidatorUtil.isValidEmail(mEmail, this)) {
+			
+			mEmailView.setError((UserDataValidatorUtil.getError()));
 			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
 		}
 
-		if (cancel) {
+		if (focusView  != null) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
