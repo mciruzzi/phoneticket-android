@@ -46,6 +46,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				"filmYouTubeTrailer"), getIntent().getStringExtra(
 				"filmCoverUrl"));
 
+		setTitle(mFilm.getTitle());
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.funciones_main_view);
 		mStatusView = findViewById(R.id.funciones_status);
@@ -65,9 +66,6 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		} else {
 			mYoutubeImage.setVisibility(View.GONE);
 		}
-
-		TextView idPeliculaText = (TextView) findViewById(R.id.filmTitleText);
-		idPeliculaText.setText(mFilm.getTitle());
 
 		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
 		idSinopsisText.setText(mFilm.getSynopsis());

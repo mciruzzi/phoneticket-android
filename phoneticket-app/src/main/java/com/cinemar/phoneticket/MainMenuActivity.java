@@ -2,6 +2,7 @@ package com.cinemar.phoneticket;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -14,9 +15,6 @@ public class MainMenuActivity extends Activity {
 	private Button peliculasButton;
 	private Button miCuentaButton;
 
-	public static int REQUEST_LOGIN = 0;
-	private static int REQUEST_COUNT = 1;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,14 +22,6 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.activity_main_menu);
 
 		welcomeView = (TextView) findViewById(R.id.welcome_message);
-		String userName = getIntent().getStringExtra("userId");
-
-		if (userName != null) {
-			displayUser(userName);
-		} else {
-			welcomeView.setText("Bienvenido");
-		}
-
 		peliculasButton = (Button) findViewById(R.id.peliculasButton);
 		peliculasButton.setOnClickListener(
 				new View.OnClickListener() {
@@ -39,14 +29,30 @@ public class MainMenuActivity extends Activity {
 						goToPeliculasActivity();
 					}
 				});
+
 		miCuentaButton = (Button) findViewById(R.id.miCuentaButton);
 		miCuentaButton.setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View view) {
-						goToLoginActivity();
+						goToMyAccountActivity();
 					}
 
 				});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		String userName = settings.getString("nombre", "");
+
+		if (!userName.isEmpty()) {
+			welcomeView.setText("Bienvenido " + userName);
+		} else {
+			welcomeView.setText("Bienvenido");
+		}
+
 	}
 
 	protected void goToPeliculasActivity() {
@@ -56,44 +62,9 @@ public class MainMenuActivity extends Activity {
 		startActivity(intent);
 	}
 
-	protected void goToLoginActivity() {
-		String userName = getIntent().getStringExtra("userId");
-		
-		if (userName == null) {
-			requestLogin();
-		} else {
-			displayUser(userName);
-		}
-
-	}
-
-	private void requestLogin() {
-		Intent intent = new Intent(this, LoginActivity.class);
-		intent.setAction(LoginActivity.SIGNIN_ACTION);
-		startActivityForResult(intent, REQUEST_LOGIN);
-	}
-
-	private void displayUser(String userName) {
+	protected void goToMyAccountActivity() {
 		Intent intent = new Intent(this, MainMyAccountActivity.class);
-//		intent.setAction(MainMyAccountActivity.SHOW_DATA_COUNT_ACTION);
-		intent.putExtra("email", userName);
-		startActivityForResult(intent, REQUEST_COUNT);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_LOGIN) {
-			if (resultCode == RESULT_OK) {
-				String userName = data.getStringExtra("userId");
-				displayUser(userName);
-			}
-		} 
-		else if (requestCode == REQUEST_COUNT) {
-
-			if (resultCode == RESULT_OK) {
-				welcomeView.setText("holaa!");
-			}
-		}
+		startActivity(intent);
 	}
 
 	@Override

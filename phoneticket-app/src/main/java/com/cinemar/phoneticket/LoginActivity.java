@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -26,6 +28,7 @@ import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class LoginActivity extends AbstractApiConsumerActivity {
+	public static final String PREFS_NAME = "LOGIN_INFORMATION";
 
 	/**
 	 * The default email to populate the email field with.
@@ -60,12 +63,12 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 			}
 		}
 	}
-	
+
 	public void hideMessageConfirmation(View view) {
-		
+
 		mMessageConfirmationLayout.setVisibility(View.GONE);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -80,10 +83,10 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 
 		this.mMainView = findViewById(R.id.login_form);
 		this.mStatusView = findViewById(R.id.login_status);
-		this.mStatusMessageView = (TextView) findViewById(R.id.login_status_message);	
-		setupActionBar();		
+		this.mStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		setupActionBar();
 
-		// Set up the login form.		
+		// Set up the login form.
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
@@ -140,7 +143,7 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
+
 	/**
 	 * Action on the Sign up button to redirect to Register Activity
 	 */
@@ -171,7 +174,7 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		}
 
 		if (!UserDataValidatorUtil.isValidEmail(mEmail, this)) {
-			
+
 			mEmailView.setError((UserDataValidatorUtil.getError()));
 			focusView = mEmailView;
 		}
@@ -232,8 +235,8 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 	}
 
 	/**
-	 * Si bien en todos los casos se muestra el alert, se podría querer
-	 * tratar algún error de manera diferente
+	 * Si bien en todos los casos se muestra el alert, se podría querer tratar
+	 * algún error de manera diferente
 	 */
 	private void handleInvalidLoginResponse(JSONObject errorResponse) {
 		Log.i("LoginActivity", "JSON Error response: " + errorResponse.toString());
@@ -242,6 +245,14 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 
 	private void completeLogin(User sessionUser) {
 		Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+
+		// Store preferences for future uses
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		Editor edit = settings.edit();
+		edit.putString("email", sessionUser.getEmail());
+		edit.putString("nombre", sessionUser.getNombre());
+		edit.putString("apellido", sessionUser.getApellido());
+		edit.commit();
 
 		if (getIntent().getAction().equals(SIGNIN_ACTION)) {
 			Intent data = new Intent();
