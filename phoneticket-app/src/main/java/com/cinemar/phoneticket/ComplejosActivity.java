@@ -14,14 +14,20 @@ import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -112,7 +118,81 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 		LinearLayout theatresContainer = (LinearLayout) findViewById (R.id.complejosContainer);
 		
 		for (Theatre theatre : theatresMap.values()) {
-			//TODO: armar cada item					
+			RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+			        ViewGroup.LayoutParams.WRAP_CONTENT);
+			layout.setMargins(5,5,5,5);		 //no se porqua no me da bola con esto	
+			
+			RelativeLayout theatreLayout = new RelativeLayout(this);			
+			theatreLayout.setBackgroundResource(R.drawable.border);
+			theatreLayout.setLayoutParams(layout);			
+			
+			//Title
+			TextView titleText = new TextView(this);
+			titleText.setId(View.generateViewId());
+			titleText.setTypeface(null, Typeface.BOLD);
+			titleText.setText(theatre.getName());
+			
+			//Direccion
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			        ViewGroup.LayoutParams.WRAP_CONTENT);
+			p.addRule(RelativeLayout.BELOW, titleText.getId());
+
+			TextView dirText = new TextView(this);
+			dirText.setId(View.generateViewId());
+			dirText.setLayoutParams(p);
+			dirText.setText(theatre.getAddress());			
+			
+			//Cover
+			RelativeLayout.LayoutParams photoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			        ViewGroup.LayoutParams.WRAP_CONTENT);
+			photoLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);		
+			
+			
+			ImageView theatrePhotoView = new ImageView(this);
+			theatrePhotoView.setLayoutParams(photoLayout);
+			theatrePhotoView.setMaxHeight(50);
+			theatrePhotoView.setMaxWidth(50);
+			
+			theatrePhotoView.setImageResource(R.drawable.film_cover_missing);
+			//new DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());			
+			
+			//Map Button
+			RelativeLayout.LayoutParams mapButtonLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			        ViewGroup.LayoutParams.WRAP_CONTENT);
+			mapButtonLayout.addRule(RelativeLayout.BELOW, dirText.getId());
+			mapButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			mapButtonLayout.height = 70;
+			mapButtonLayout.width = 70;
+			
+			
+			ImageView MapButtonView = new ImageButton(this);
+			MapButtonView.setId(View.generateViewId());
+			MapButtonView.setLayoutParams(mapButtonLayout);
+			MapButtonView.setScaleType(ScaleType.CENTER);
+			
+			MapButtonView.setImageResource(R.drawable.ic_position_map);			
+			
+			//Films Button
+			RelativeLayout.LayoutParams filmsButtonLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			        ViewGroup.LayoutParams.WRAP_CONTENT);
+			filmsButtonLayout.addRule(RelativeLayout.RIGHT_OF, MapButtonView.getId());
+			filmsButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			filmsButtonLayout.height = 70;
+			filmsButtonLayout.width = 70;
+						
+			ImageView FilmButtonView = new ImageButton(this);
+			FilmButtonView.setLayoutParams(filmsButtonLayout);
+			FilmButtonView.setScaleType(ScaleType.CENTER);
+			
+			FilmButtonView.setImageResource(R.drawable.peliculas);						
+			
+			theatreLayout.addView(titleText);
+			theatreLayout.addView(dirText);
+			theatreLayout.addView(theatrePhotoView);
+			theatreLayout.addView(MapButtonView);
+			theatreLayout.addView(FilmButtonView);
+			
+			theatresContainer.addView(theatreLayout);
 		}
 		
 	}
