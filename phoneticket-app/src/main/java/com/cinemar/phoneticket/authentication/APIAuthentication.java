@@ -30,7 +30,21 @@ public class APIAuthentication implements AuthenticationService {
 	}
 
 	public void signup(User user, JsonHttpResponseHandler responseHandler) {
+		client.post("users.json", toParams(user), responseHandler);
+	}
 
+	public void getUser(String email, JsonHttpResponseHandler responseHandler) {
+		RequestParams params = new RequestParams();
+		params.put("email", email);
+
+		client.get("users/me.json", params, responseHandler);
+	}
+
+	public void update(User user, JsonHttpResponseHandler responseHandler) {
+		client.put("users/me.json", toParams(user), responseHandler);
+	}
+
+	private RequestParams toParams(User user) {
 		RequestParams params = new RequestParams();
 		params.put("email", user.getEmail());
 		params.put("password", user.getPassword());
@@ -40,8 +54,7 @@ public class APIAuthentication implements AuthenticationService {
 		params.put("document", user.getDni());
 		params.put("address", user.getDireccion());
 		params.put("date_of_birth", new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(user.getFechaNacimiento()));
-
-		client.post("users.json", params, responseHandler);
+		return params;
 	}
 
 }

@@ -10,20 +10,17 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -31,8 +28,9 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.util.UIDateUtil;
+import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -52,8 +50,6 @@ public class RegisterActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	private static final int DATE_DIALOG_ID = 8888;
-
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -69,19 +65,13 @@ public class RegisterActivity extends Activity {
 	private EditText mNombreView;
 	private EditText mApellidoView;
 	private EditText mDNIView;
-	private TextView mFechaNacimientoView;
 	private EditText mTelefonoView;
 	private EditText mDireccionView;
-	private ImageButton mPickDate;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
-	private DatePickerDialog.OnDateSetListener mDateListener;
-	private int mDay = 1;
-	private int mMonth = 0;
-	private int mYear = 1980;
-
+	private UIDateUtil utilDate;
 	
 	private void returnToLoginActivity() {
 		
@@ -120,30 +110,12 @@ public class RegisterActivity extends Activity {
 		mNombreView = (EditText) findViewById(R.id.nombre);
 		mApellidoView = (EditText) findViewById(R.id.apellido);
 		mDNIView = (EditText) findViewById(R.id.dni);
-		mFechaNacimientoView = (TextView) findViewById(R.id.fecha_nac);
 		mTelefonoView = (EditText) findViewById(R.id.tel);
 		mDireccionView = (EditText) findViewById(R.id.direccion);
-		mPickDate = (ImageButton) findViewById(R.id.dateButton);
-		mPickDate.setOnClickListener(new View.OnClickListener() {
-			@SuppressWarnings("deprecation")
-			public void onClick(View arg0) {
-				showDialog(DATE_DIALOG_ID);
-			}
-		});
-
-		updateDisplay();
-
-		mDateListener = new DatePickerDialog.OnDateSetListener() {
-
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-				mDay = dayOfMonth;
-				mMonth = monthOfYear;
-				mYear = year;
-				updateDisplay();
-			}
-		};
-
+				
+		utilDate = new UIDateUtil ((TextView) findViewById(R.id.fecha_nac),
+				(ImageButton) findViewById(R.id.dateButton), this);
+		
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -157,14 +129,7 @@ public class RegisterActivity extends Activity {
 	}
 
 	@Override protected Dialog onCreateDialog(int id){
-		if(id == DATE_DIALOG_ID){
-			return new DatePickerDialog(this, mDateListener, mYear, mMonth, mDay);
-		}
-		return null;
-	}
-
-	private void updateDisplay() {
-		mFechaNacimientoView.setText(mDay+"-"+(mMonth + 1)+"-"+mYear);
+		return utilDate.createDialogWindow(id);
 	}
 
 	/**
@@ -209,65 +174,15 @@ public class RegisterActivity extends Activity {
 
 		//sessionUser = new User(mEmail, mPassword);
 		Calendar mNacimiento = Calendar.getInstance();
-		mNacimiento.set(mYear, mMonth, mDay);
+		mNacimiento.set(utilDate.getYear(), utilDate.getMonth(), utilDate.getDay());
 		//
 		sessionUser = new User(mEmail,mPassword,mNombreView.getText().toString(),
 				mApellidoView.getText().toString(),mDNIView.getText().toString(),mNacimiento.getTime(),
 				mDireccionView.getText().toString(),mTelefonoView.getText().toString());
 
-		boolean cancel = false;
-		View focusView = null;
+		View focusView = validateData();
 
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
-		}
-
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
-
-		//Check for a valid name
-		if (TextUtils.isEmpty(mNombre)) {
-			mNombreView.setError(getString(R.string.error_field_required));
-			focusView = mNombreView;
-			cancel = true;
-		}
-		if (TextUtils.isEmpty(mApellido)) {
-			mApellidoView.setError(getString(R.string.error_field_required));
-			focusView = mApellidoView;
-			cancel = true;
-		}
-
-		//Check for a valid telephone
-		if (TextUtils.isEmpty(mTelefono)) {
-			mTelefonoView.setError(getString(R.string.error_field_required));
-			focusView = mTelefonoView;
-			cancel = true;
-		}
-
-		//Check for a valid DNI
-		if (TextUtils.isEmpty(mDni)) {
-			mDNIView.setError(getString(R.string.error_field_required));
-			focusView = mDNIView;
-			cancel = true;
-		}
-
-
-		if (cancel) {
+		if (focusView != null) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
@@ -309,6 +224,45 @@ public class RegisterActivity extends Activity {
 			});
 
 		}
+	}
+
+	private View validateData() {
+		
+		View focusView = null;
+
+		if (!UserDataValidatorUtil.isValidPhoneNumber(mTelefono, this)) {
+			mTelefonoView.setError((UserDataValidatorUtil.getError()));
+			focusView = mTelefonoView;
+		}
+
+		if (!UserDataValidatorUtil.isValidPassword(mPassword, this)) {
+			
+			mPasswordView.setError(UserDataValidatorUtil.getError());
+			focusView = mPasswordView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidDNI(mDni, this)) {
+			mDNIView.setError(UserDataValidatorUtil.getError());
+			focusView = mDNIView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidEmail(mEmail, this)) {
+			
+			mEmailView.setError(UserDataValidatorUtil.getError());
+			focusView = mEmailView;
+		}
+		
+		if (!UserDataValidatorUtil.isValidLastName(mApellido, this)) {
+			mApellidoView.setError(UserDataValidatorUtil.getError());
+			focusView = mApellidoView;
+		}
+
+		if (!UserDataValidatorUtil.isValidName(mNombre, this)) {
+			
+			mNombreView.setError(UserDataValidatorUtil.getError());
+			focusView = mNombreView;
+		}
+		return focusView;
 	}
 
 	private void storeValues() {

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" >
@@ -17,9 +17,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
+            android:name="com.cinemar.phoneticket.MainMenuActivity"
+            android:label="@string/title_activity_main_menu" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.cinemar.phoneticket.LoginActivity"
-            android:label="@string/app_name" 
-            android:windowSoftInputMode="adjustPan">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.RegisterActivity"
@@ -31,15 +40,28 @@
                 android:value="com.cinemar.phoneticket.LoginActivity" />
         </activity>
         <activity
-            android:name="com.cinemar.phoneticket.MainMenuActivity"
-            android:label="@string/title_activity_main_menu" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name="com.cinemar.phoneticket.PeliculasActivity"
+            android:label="@string/title_activity_peliculas"
+            android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.MainMenuActivity" />
         </activity>
-
+        <activity
+            android:name="com.cinemar.phoneticket.PeliculasFuncionActivity"
+            android:parentActivityName="com.cinemar.phoneticket.PeliculasActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.PeliculasActivity" />
+        </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.MainMyAccountActivity"
+            android:label="@string/title_activity_main_my_account"
+            android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity"> 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.MainMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

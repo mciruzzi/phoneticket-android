@@ -1,21 +1,16 @@
 package com.cinemar.phoneticket;
 
-
 import java.text.ParseException;
 
 import org.json.JSONObject;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -29,18 +24,11 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-
-
-public class LoginActivity extends Activity {
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
+public class LoginActivity extends AbstractApiConsumerActivity {
+	public static final String PREFS_NAME = "LOGIN_INFORMATION";
 
 	/**
 	 * The default email to populate the email field with.
@@ -57,58 +45,48 @@ public class LoginActivity extends Activity {
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
-	
+
 	private View mMessageConfirmationLayout;
 	private TextView mMessageConfirmationEmail;
 
 	private static final int REQUEST_REGISTER = 0;
 
-	/**
-	 * Action on the Sign up button to redirect to Register Activity
-	 */
-	public void createAccountAction(View view){
-		
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivityForResult(intent, REQUEST_REGISTER);
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == REQUEST_REGISTER) {
+			if (resultCode == RESULT_OK) {
+				String email = data.getStringExtra("email");
+				mMessageConfirmationEmail.setText(email);
+				mMessageConfirmationLayout.setVisibility(View.VISIBLE);
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			}
+		}
+	}
+
+	public void hideMessageConfirmation(View view) {
+
+		mMessageConfirmationLayout.setVisibility(View.GONE);
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		if (requestCode == REQUEST_REGISTER)
-		{
-			if (resultCode == RESULT_OK) 
-			{
-		        String email = data.getStringExtra("email");
-		        mMessageConfirmationEmail.setText(email);
-		        mMessageConfirmationLayout.setVisibility(View.VISIBLE);
-		        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-	        }
-		}
-	}
-	
-	public void hideMessageConfirmation(View view) {
-		
-		mMessageConfirmationLayout.setVisibility(View.GONE);
-	}
-	
-	public void goToMainActivity(){
-		Intent intent = new Intent(this, MainMenuActivity.class);
-		intent.putExtra("userId", sessionUser.getEmail());
-		startActivity(intent);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		this.mMainView = findViewById(R.id.login_form);
+		this.mStatusView = findViewById(R.id.login_status);
+		this.mStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		setupActionBar();
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
@@ -123,10 +101,6 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 		});
-
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		findViewById(R.id.register_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -170,6 +144,16 @@ public class LoginActivity extends Activity {
 	}
 
 
+	/**
+	 * Action on the Sign up button to redirect to Register Activity
+	 */
+	public void createAccountAction(View view){
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivityForResult(intent, REQUEST_REGISTER);
+	}
+
+
+
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
@@ -181,39 +165,28 @@ public class LoginActivity extends Activity {
 		resetErrors();
 		storeValues();
 
-		boolean cancel = false;
 		View focusView = null;
 
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+		if (!UserDataValidatorUtil.isValidPassword(mPassword, this)) {
+
+			mPasswordView.setError((UserDataValidatorUtil.getError()));
 			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
 		}
 
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+		if (!UserDataValidatorUtil.isValidEmail(mEmail, this)) {
+
+			mEmailView.setError((UserDataValidatorUtil.getError()));
 			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
 		}
 
-		if (cancel) {
+		if (focusView  != null) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 
 			AuthenticationService api = new APIAuthentication();
@@ -262,8 +235,8 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Si bien en todos los casos se muestra el alert, se podría querer
-	 * tratar algún error de manera diferente
+	 * Si bien en todos los casos se muestra el alert, se podría querer tratar
+	 * algún error de manera diferente
 	 */
 	private void handleInvalidLoginResponse(JSONObject errorResponse) {
 		Log.i("LoginActivity", "JSON Error response: " + errorResponse.toString());
@@ -272,6 +245,14 @@ public class LoginActivity extends Activity {
 
 	private void completeLogin(User sessionUser) {
 		Log.i("LoginActivity", "User Authenticated, email: " + sessionUser.getEmail());
+
+		// Store preferences for future uses
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		Editor edit = settings.edit();
+		edit.putString("email", sessionUser.getEmail());
+		edit.putString("nombre", sessionUser.getNombre());
+		edit.putString("apellido", sessionUser.getApellido());
+		edit.commit();
 
 		if (getIntent().getAction().equals(SIGNIN_ACTION)) {
 			Intent data = new Intent();
@@ -284,59 +265,10 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Shows the progress UI and hides the login form.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private void showProgress(final boolean show) {
-		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-		// for very easy animations. If available, use these APIs to fade-in
-		// the progress spinner.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			int shortAnimTime = getResources().getInteger(
-					android.R.integer.config_shortAnimTime);
-
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
-			.alpha(show ? 1 : 0)
-			.setListener(new AnimatorListenerAdapter() {
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					mLoginStatusView.setVisibility(show ? View.VISIBLE
-							: View.GONE);
-				}
-			});
-
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
-			.alpha(show ? 0 : 1)
-			.setListener(new AnimatorListenerAdapter() {
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					mLoginFormView.setVisibility(show ? View.GONE
-							: View.VISIBLE);
-				}
-			});
-		} else {
-			// The ViewPropertyAnimator APIs are not available, so simply show
-			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
-	}
-
-	private void showSimpleAlert(String msg){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
-			}
-		});
-
-		builder.show();
+	public void goToMainActivity(){
+		Intent intent = new Intent(this, MainMenuActivity.class);
+		intent.putExtra("userId", sessionUser.getEmail());
+		startActivity(intent);
 	}
 
 }

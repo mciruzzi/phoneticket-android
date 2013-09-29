@@ -6,5 +6,7 @@
     <string name="sign_in">Ingresar</string>
     <string name="error_incorrect_password">Contraseña inválida</string>
     <string name="login_progress_signing_in">Ingresando&#8230;</string>
+    <string name="action_sign_in_short"><b>Ingresar</b></string>
+
  
 </resources>
