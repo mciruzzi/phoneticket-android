@@ -9,15 +9,14 @@ import org.json.JSONObject;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.UIDateUtil;
 import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -70,6 +69,7 @@ public class MainMyAccountActivity extends Activity {
 	
 	private void getDataOfServer() {
 		
+		final MainMyAccountActivity activity = this;
 		AuthenticationService api = new APIAuthentication();
 		
 		api.getUser(email, new JsonHttpResponseHandler() {
@@ -79,8 +79,11 @@ public class MainMyAccountActivity extends Activity {
 					
 					user = new User(userData);
 					completeDataRequest();
+					
 				} catch (ParseException e) {
-					showSimpleAlert("Error al obtener los datos. Intente más tarde.");
+					NotificationUtil.showSimpleAlert(getString(R.string.error),
+							"Error al obtener los datos. Intente más tarde.",
+							activity);
 				}
 			}
 
@@ -89,13 +92,18 @@ public class MainMyAccountActivity extends Activity {
 				if (errorResponse != null) {
 				//	handleInvalidLoginResponse(errorResponse);
 				} else {
-					showSimpleAlert(e.getMessage());
+					NotificationUtil.showSimpleAlert(getString(R.string.error),
+							"Error al guardar los datos. Intente más tarde.",
+							activity);
 				}
 			}
 
 			@Override
 			public void onFailure(Throwable arg0, String arg1) {
-				showSimpleAlert("Error de conexión. Intente más tarde.");
+
+				NotificationUtil.showSimpleAlert(getString(R.string.error),
+						"Error de conexión. Intente más tarde.",
+						activity);
 			}
 
 			@Override
@@ -162,22 +170,10 @@ public class MainMyAccountActivity extends Activity {
 		utilDate.setDate(user.getFechaNacimiento());
 		utilDate.update();
 	}
-
-	protected void showSimpleAlert(String msg) {
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-	
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
-			public void onClick(DialogInterface dialog, int which) {				
-			}
-		});
-	
-		builder.show();
-	}
 	
 	private void saveChanges() {
+
+		final MainMyAccountActivity activity = this;
 
 		resetErrors();
 		View focusView = validateData();
@@ -198,30 +194,34 @@ public class MainMyAccountActivity extends Activity {
 			authenticationClient.update(user, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject response) {
-					//no pasa nada, se queda en la misma ventana
-					
-					showSimpleAlert("Cambios guardados");
+					NotificationUtil.showSimpleAlert("",
+							"Cambios guardados",
+							activity);
 				}
 
 				@Override
 				public void onFailure(Throwable exception, JSONObject errors) {
 					try {
-						if (errors != null) {
-								assignValidationErrors(errors);
-						} else {
-							showSimpleAlert(exception.getMessage());
-						}
+						if (errors != null) 
+							assignValidationErrors(errors);
+						else 
+							NotificationUtil.showSimpleAlert(getString(R.string.error),
+									exception.getMessage(),
+									activity);
+						
 					} catch (JSONException e) {
-						showSimpleAlert("Error al guardar los cambios. Intente más tarde");
-					}
-					
-					showSimpleAlert("Errorr!!!");
 
+						NotificationUtil.showSimpleAlert(getString(R.string.error),
+								"Error al guardar los cambios. Intente más tarde.",
+								activity);
+					}				
 				}
 
 				@Override
 				public void onFailure(Throwable arg0, String arg1) {
-					showSimpleAlert("Error de conexión. Intente más tarde.");
+					NotificationUtil.showSimpleAlert(getString(R.string.error),
+							"Error de conexión. Intente más tarde.",
+							activity);
 				}
 
 				@Override
@@ -237,17 +237,17 @@ public class MainMyAccountActivity extends Activity {
 	private void assignValidationErrors(JSONObject errors) throws JSONException {
 
 		if (errors.has("error")) {
-			showSimpleAlert(errors.optString("error"));
+			NotificationUtil.showSimpleAlert(getString(R.string.error),
+					errors.optString("error"),
+					this);
 			return;
 		}
 
 		errors = (JSONObject)errors.get("errors");
+
 		if (errors.has("document")) {
 			mDNI.requestFocus();
 			mDNI.setError(errors.getJSONArray("document").get(0).toString());
-		}
-		if (errors.has("email")) {
-			showSimpleAlert("email");
 		}
 
 	}
