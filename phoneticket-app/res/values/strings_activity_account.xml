@@ -2,5 +2,7 @@
 <resources>
 	
     <string name="action_save_short">Guardar</string>
- 
+    <string name="load_progress">Cargando&#8230;</string>
+    <string name="save_progress">Guardando&#8230;</string>
+    
 </resources>

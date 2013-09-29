@@ -24,6 +24,7 @@ import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.cinemar.phoneticket.util.NotificationUtil;
+import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.cinemar.phoneticket.util.UIDateUtil;
 import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -41,11 +42,8 @@ public class MainMyAccountActivity extends Activity {
 	private EditText mPhoneNumber;
 	private EditText mAddress;
 	private UIDateUtil utilDate;
-
-//	private View mLoginFormView;
-//	private View mLoginStatusView;
-//	private TextView mLoginStatusMessageView;
-
+	private ProcessBarUtil utilBar;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -99,6 +97,10 @@ public class MainMyAccountActivity extends Activity {
 
 	private void getDataOfServer() {
 		
+		utilBar.setMessage(getString(R.string.load_progress));
+		utilBar.showProgress(true);
+		
+		
 		final MainMyAccountActivity activity = this;
 		AuthenticationService api = new APIAuthentication();
 
@@ -138,7 +140,7 @@ public class MainMyAccountActivity extends Activity {
 
 			@Override
 			public void onFinish() {
-				//showProgress(false);
+				utilBar.showProgress(false);
 			}
 		});
 
@@ -164,6 +166,12 @@ public class MainMyAccountActivity extends Activity {
 				saveChanges();
 			}
 		});
+		
+		utilBar = new ProcessBarUtil( findViewById(R.id.accountForm),
+			findViewById(R.id.accountBar),
+			(TextView) findViewById(R.id.accountMessageStatus),
+			this);
+		
 
 	}
 
@@ -213,11 +221,9 @@ public class MainMyAccountActivity extends Activity {
 
 			focusView.requestFocus();
 		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
 
-//			mLoginStatusMessageView.setText(R.string.register_progress_registering);
-//			showProgress(true);
+			utilBar.setMessage(getString(R.string.save_progress));
+			utilBar.showProgress(true);
 
 			updateData();
 
@@ -256,7 +262,7 @@ public class MainMyAccountActivity extends Activity {
 
 				@Override
 				public void onFinish() {
-//					showProgress(false);
+					utilBar.showProgress(false);
 				}
 			});
 
