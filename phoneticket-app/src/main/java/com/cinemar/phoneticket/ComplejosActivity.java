@@ -160,8 +160,7 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 			theatrePhotoView.setMaxWidth(50);
 
 			theatrePhotoView.setImageResource(R.drawable.film_cover_missing);
-			// new
-			// DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());
+			new DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());
 
 			// Map Button
 			RelativeLayout.LayoutParams mapButtonLayout = new RelativeLayout.LayoutParams(

@@ -48,7 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="@drawable/border" >
+                android:background="@drawable/border"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/complejoName01"
@@ -86,52 +87,6 @@
                     android:layout_height="50sp"
                     android:layout_alignParentBottom="true"
                     android:layout_toRightOf="@+id/imageButton1"
-                    android:src="@drawable/peliculas" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/RelativeLayout01"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/border" >
-
-                <TextView
-                    android:id="@+id/TextView02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MockComplejo"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/TextView01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/TextView02"
-                    android:text="Direccion" />
-
-                <ImageView
-                    android:id="@+id/ImageView01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/film_cover_missing" />
-
-                <ImageButton
-                    android:id="@+id/ImageButton02"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/TextView01"
-                    android:src="@drawable/ic_position_map" />
-
-                <ImageButton
-                    android:id="@+id/ImageButton01"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@+id/ImageButton02"
                     android:src="@drawable/peliculas" />
             </RelativeLayout>
 

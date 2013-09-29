@@ -22,7 +22,7 @@ public class Theatre {
 		this.latitude = cinema.getInt("latitude");
 		this.longitude = cinema.getInt("longitude");
 		this.address = cinema.getString("address");
-		this.PhotoUrl = cinema.getString("id");
+		this.PhotoUrl = cinema.getString("photo_url");
 		shows = new ArrayList<Show>();
 
 		if (cinema.has("shows")) {
