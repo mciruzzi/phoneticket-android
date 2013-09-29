@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.films.DownloadImageTask;
 import com.cinemar.phoneticket.films.ExpandableListAdapter;
-import com.cinemar.phoneticket.films.FilmOnClickListener;
 import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.cinemar.phoneticket.model.Show;
 import com.cinemar.phoneticket.model.Theatre;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
@@ -33,6 +33,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	ExpandableListView expListView;
 	List<String> listDataHeader = new ArrayList<String>();
 	HashMap<String, List<String>> listDataChild = new HashMap<String,List<String>>();
+	private ImageView mYoutubeImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,21 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		mStatusView = findViewById(R.id.funciones_status);
 		mStatusMessageView = (TextView) findViewById(R.id.funciones_status_message);
 
+		mYoutubeImage = (ImageView) findViewById(R.id.youtubeImage);
+		if (mFilm.getYouTubeTrailerURL() != null && !mFilm.getYouTubeTrailerURL().isEmpty()) {
+			mYoutubeImage.setClickable(true);
+			mYoutubeImage.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(mFilm.getYouTubeTrailerURL()));
+					startActivity(intent);
+				}
+
+			});
+		} else {
+			mYoutubeImage.setVisibility(View.GONE);
+		}
+
 		TextView idPeliculaText = (TextView) findViewById(R.id.filmTitleText);
 		idPeliculaText.setText(mFilm.getTitle());
 
@@ -58,8 +74,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
-		
-		this.getFunciones();		   
+
+		this.getFunciones();
 	}
 
 	@Override
@@ -74,40 +90,39 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 		FilmsClientAPI api = new FilmsClientAPI();
 		api.getFunciones(mFilm, responseHandler);
-	}		
-	
-    private void prepareFuncionesList() {
-        expListView = (ExpandableListView) findViewById(R.id.funcionesList);
-    	
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
- 
-        for (Theatre cinema : mFilm.getCinemas()){
-        	//TODO Formate funcion date properly
-        	String key = cinema.getName()+ "\n" +cinema.getAddress(); 
-        	listDataHeader.add(key);
-        	
-        	List<String> showsDate = new ArrayList<String>();
-        	for (Show show : cinema.getShows()){
-        		showsDate.add(show.getStartTimeString());        		
-        	}	
-        	
-        	listDataChild.put(key,showsDate);        		
-        }
-        
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-        // setting list adapter
-        expListView.setAdapter(listAdapter);
-    }
+	}
 
-	
+	private void prepareFuncionesList() {
+		expListView = (ExpandableListView) findViewById(R.id.funcionesList);
+
+		listDataHeader = new ArrayList<String>();
+		listDataChild = new HashMap<String, List<String>>();
+
+		for (Theatre cinema : mFilm.getCinemas()){
+			//TODO Formate funcion date properly
+			String key = cinema.getName()+ "\n" +cinema.getAddress();
+			listDataHeader.add(key);
+
+			List<String> showsDate = new ArrayList<String>();
+			for (Show show : cinema.getShows()){
+				showsDate.add(show.getStartTimeString());
+			}
+
+			listDataChild.put(key,showsDate);
+		}
+
+		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		// setting list adapter
+		expListView.setAdapter(listAdapter);
+	}
+
 
 	JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
 		@Override
 		public void onSuccess(JSONObject film) {
 			Log.i("Funciones Activity", "Funciones Recibidas");
 			Log.i("Funciones Activity",	"Funciones" + film + "recibida");
-			
+
 			mFilm.clearFunciones();
 			try {
 				mFilm.addFunciones(film);
@@ -131,6 +146,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 			}
 		}
 
+		@Override
 		public void onFinish() {
 			showProgress(false);
 			prepareFuncionesList();
