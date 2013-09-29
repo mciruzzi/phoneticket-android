@@ -120,8 +120,9 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		api.getCarteleraComplejo(theatreId, new JsonHttpResponseHandler() {	
 
 			@Override
-			public void onSuccess(JSONArray films) {
-				Log.i("Peliculas Activity", "Peliculas Recibidas");
+			public void onSuccess(JSONObject theatre) {
+				Log.i("Peliculas Activity", "Peliculas x Complejo Recibidas");
+				JSONArray films = theatre.optJSONArray("movies");
 				try {					
 					for (int i = 0; i < films.length(); i++) {
 						Film film = new Film(films.getJSONObject(i));
@@ -146,7 +147,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			@Override public void onFailure(Throwable arg0, String arg1) {
 				showSimpleAlert(arg1);			
 			};
-
+			
 			public void onFinish() {
 				showProgress(false);
 				displayFilms();
