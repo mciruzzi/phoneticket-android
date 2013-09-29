@@ -9,6 +9,9 @@ public interface RestClient {
 
 	void get(String path, JsonHttpResponseHandler responseHandler);
 
-	void get(String string, RequestParams params, JsonHttpResponseHandler responseHandler);
+	void get(String path, RequestParams params, JsonHttpResponseHandler responseHandler);
+
+	void put(String path, RequestParams params,
+			JsonHttpResponseHandler responseHandler);
 
 }

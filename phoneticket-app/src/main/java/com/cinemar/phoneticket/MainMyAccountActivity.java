@@ -195,7 +195,7 @@ public class MainMyAccountActivity extends Activity {
 			updateData();
 			
 			AuthenticationService authenticationClient = new APIAuthentication();
-			authenticationClient.signup(user, new JsonHttpResponseHandler(){
+			authenticationClient.update(user, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject response) {
 					//no pasa nada, se queda en la misma ventana
