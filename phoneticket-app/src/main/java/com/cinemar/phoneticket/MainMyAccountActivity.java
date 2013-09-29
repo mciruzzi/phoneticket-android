@@ -83,6 +83,10 @@ public class MainMyAccountActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				email = data.getStringExtra("userId");
 				setupContent();
+			} else {
+				// If the user didn't successfully login, finish account
+				// activity
+				finish();
 			}
 		}
 	}
