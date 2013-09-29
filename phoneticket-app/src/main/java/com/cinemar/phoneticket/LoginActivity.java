@@ -250,6 +250,8 @@ public class LoginActivity extends AbstractApiConsumerActivity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Editor edit = settings.edit();
 		edit.putString("email", sessionUser.getEmail());
+		edit.putString("nombre", sessionUser.getNombre());
+		edit.putString("apellido", sessionUser.getApellido());
 		edit.commit();
 
 		if (getIntent().getAction().equals(SIGNIN_ACTION)) {

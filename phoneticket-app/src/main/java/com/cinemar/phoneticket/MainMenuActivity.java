@@ -2,6 +2,7 @@ package com.cinemar.phoneticket;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -21,14 +22,6 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.activity_main_menu);
 
 		welcomeView = (TextView) findViewById(R.id.welcome_message);
-		String userName = getIntent().getStringExtra("userId");
-
-		if (userName != null) {
-			welcomeView.setText("Bienvenido " + userName);
-		} else {
-			welcomeView.setText("Bienvenido");
-		}
-
 		peliculasButton = (Button) findViewById(R.id.peliculasButton);
 		peliculasButton.setOnClickListener(
 				new View.OnClickListener() {
@@ -36,6 +29,7 @@ public class MainMenuActivity extends Activity {
 						goToPeliculasActivity();
 					}
 				});
+
 		miCuentaButton = (Button) findViewById(R.id.miCuentaButton);
 		miCuentaButton.setOnClickListener(
 				new View.OnClickListener() {
@@ -44,6 +38,21 @@ public class MainMenuActivity extends Activity {
 					}
 
 				});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		String userName = settings.getString("nombre", "");
+
+		if (!userName.isEmpty()) {
+			welcomeView.setText("Bienvenido " + userName);
+		} else {
+			welcomeView.setText("Bienvenido");
+		}
+
 	}
 
 	protected void goToPeliculasActivity() {
