@@ -3,13 +3,14 @@ package com.cinemar.phoneticket;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
-import com.cinemar.phonoticket.util.UIDateUtil;
-import com.cinemar.phonoticket.util.UserDataValidatorUtil;
+import com.cinemar.phoneticket.util.UIDateUtil;
+import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -178,19 +180,7 @@ public class MainMyAccountActivity extends Activity {
 	private void saveChanges() {
 
 		resetErrors();
-//		storeValues();
-
-		Calendar mNacimiento = Calendar.getInstance();
-		mNacimiento.set(utilDate.getYear(), utilDate.getMonth(), utilDate.getDay());
-	
-
-//		sessionUser = new User(mEmail,mPassword,mNombreView.getText().toString(),
-//				mApellidoView.getText().toString(),mDNIView.getText().toString(),mNacimiento.getTime(),
-//				mDireccionView.getText().toString(),mTelefonoView.getText().toString());
-
 		View focusView = validateData();
-
-
 
 		if (focusView != null) {
 			
@@ -201,39 +191,81 @@ public class MainMyAccountActivity extends Activity {
 
 //			mLoginStatusMessageView.setText(R.string.register_progress_registering);
 //			showProgress(true);
-//			AuthenticationService authenticationClient = new APIAuthentication();
-//			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
-//				@Override
-//				public void onSuccess(JSONObject response) {
-//					returnToLoginActivity();
-//				}
-//
-//				@Override
-//				public void onFailure(Throwable exception, JSONObject errors) {
-//					try {
-//						if (errors != null) {
-//								assignValidationErrors(errors);
-//						} else {
-//							showSimpleAlert(exception.getMessage());
-//						}
-//					} catch (JSONException e) {
-//						showSimpleAlert("Error al ingresar. Intente más tarde");
-//					}
-//				}
-//
-//				@Override
-//				public void onFailure(Throwable arg0, String arg1) {
-//					showSimpleAlert("Error de conexión. Intente más tarde.");
-//				}
-//
-//				@Override
-//				public void onFinish() {
+			
+			updateData();
+			
+			AuthenticationService authenticationClient = new APIAuthentication();
+			authenticationClient.signup(user, new JsonHttpResponseHandler(){
+				@Override
+				public void onSuccess(JSONObject response) {
+					//no pasa nada, se queda en la misma ventana
+					
+					showSimpleAlert("Cambios guardados");
+				}
+
+				@Override
+				public void onFailure(Throwable exception, JSONObject errors) {
+					try {
+						if (errors != null) {
+								assignValidationErrors(errors);
+						} else {
+							showSimpleAlert(exception.getMessage());
+						}
+					} catch (JSONException e) {
+						showSimpleAlert("Error al guardar los cambios. Intente más tarde");
+					}
+					
+					showSimpleAlert("Errorr!!!");
+
+				}
+
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					showSimpleAlert("Error de conexión. Intente más tarde.");
+				}
+
+				@Override
+				public void onFinish() {
 //					showProgress(false);
-//				}
-//			});
+				}
+			});
 
 		}
 		
+	}
+	
+	private void assignValidationErrors(JSONObject errors) throws JSONException {
+
+		if (errors.has("error")) {
+			showSimpleAlert(errors.optString("error"));
+			return;
+		}
+
+		errors = (JSONObject)errors.get("errors");
+		if (errors.has("document")) {
+			mDNI.requestFocus();
+			mDNI.setError(errors.getJSONArray("document").get(0).toString());
+		}
+		if (errors.has("email")) {
+			showSimpleAlert("email");
+		}
+
+	}
+
+	private void updateData() {
+		
+		Calendar mBirthDate = Calendar.getInstance();
+		mBirthDate.set(utilDate.getYear(), utilDate.getMonth(), utilDate.getDay());
+		
+		user.setNombre(mName.getText().toString());
+		user.setApellido(mLastName.getText().toString());
+		user.setDireccion(mAddress.getText().toString());
+		user.setTelefono(mPhoneNumber.getText().toString());
+		user.setDni(mDNI.getText().toString());
+		user.setFechaNacimiento(mBirthDate.getTime());
+		
+		if ( isChangedPassword() )
+			user.setPassword(mPassword.getText().toString());
 	}
 	
 	private void resetErrors() {
@@ -253,10 +285,13 @@ public class MainMyAccountActivity extends Activity {
 			focusView = mPhoneNumber;
 		}
 
-		if (!UserDataValidatorUtil.isValidPassword(mPassword.getText().toString(), this)) {
-			
-			mPassword.setError(UserDataValidatorUtil.getError());
-			focusView = mPassword;
+		if ( isChangedPassword() ) {
+			//si está No vacía la pass entoces se fija que cumpla con las condiciones
+			if ( !UserDataValidatorUtil.isValidPassword(mPassword.getText().toString(), this) )
+			{
+				mPassword.setError(UserDataValidatorUtil.getError());
+				focusView = mPassword;
+			}
 		}
 		
 		if (!UserDataValidatorUtil.isValidDNI(mDNI.getText().toString(), this)) {
@@ -275,5 +310,10 @@ public class MainMyAccountActivity extends Activity {
 			focusView = mName;
 		}
 		return focusView;
+	}
+
+	private boolean isChangedPassword() {
+		
+		return !TextUtils.isEmpty(mPassword.getText().toString());
 	}
 }

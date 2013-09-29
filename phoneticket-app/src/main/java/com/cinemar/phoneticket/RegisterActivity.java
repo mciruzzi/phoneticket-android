@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
-import com.cinemar.phonoticket.util.UIDateUtil;
-import com.cinemar.phonoticket.util.UserDataValidatorUtil;
+import com.cinemar.phoneticket.util.UIDateUtil;
+import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 /**
