@@ -1,0 +1,46 @@
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    tools:context=".MyAccountActivity"
+    android:id="@+id/tabsHost">
+            
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TabWidget>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <!-- Inclusión de la vista reserva/compras -->
+             <include
+                android:id="@+id/myReservesBuys"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/activity_show_reserve_buy" >
+            </include>
+
+            <!-- Inclusión de la vista datos -->
+            <include
+                android:id="@+id/myAccountData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/activity_my_account" >
+            </include>
+
+        </FrameLayout>
+    </LinearLayout>
+</TabHost>
