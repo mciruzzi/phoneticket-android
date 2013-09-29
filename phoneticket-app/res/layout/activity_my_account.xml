@@ -1,205 +1,233 @@
+<ScrollView
+    android:id="@+id/login_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".MainMyAccountActivity"  >
 
-
-    <!-- form -->
-
-    <ScrollView
-        android:id="@+id/login_form"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-    	xmlns:tools="http://schemas.android.com/tools"
-    	tools:context=".MainMyAccountActivity"  >
-
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
         <LinearLayout
-            style="@style/LoginFormContainer"
-            android:layout_gravity="center"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="*"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <EditText
-                    android:id="@+id/accountName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/name"
-                    android:inputType="textPersonName">
-                    
-   	                <requestFocus />
-                </EditText>
-                    
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <EditText
-                    android:id="@+id/accountLastName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/last_name"
-                    android:inputType="textPersonName" >
-
-                </EditText>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="*"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:id="@+id/accountBirthDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:ems="10"
-                    android:hint="@string/fecha_nacimiento"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:id="@+id/accountBirthDayButton"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/ic_stat_calendar" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="*"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <EditText
-                    android:id="@+id/accountDNI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/DNI"
-                    android:inputType="number" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="*"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <EditText
-                    android:id="@+id/accountPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/prompt_password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="*"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <EditText
-                    android:id="@+id/accountPhoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/phone_number"
-                    android:inputType="phone" />
-
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/accountAddress"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_up_short"
-                android:imeOptions="actionUnspecified"
-                android:hint="@string/postal_address"
-                android:inputType="textPostalAddress"/>
-
-            <Button
-                android:id="@+id/accountSave"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="@string/action_save_short" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Los campos con * son obligatorios"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="9sp" />
-
+	        android:id="@+id/accountBar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:gravity="center_horizontal"
+	        android:orientation="vertical"
+	        android:visibility="gone" >
+	
+	        <ProgressBar
+	            style="?android:attr/progressBarStyleLarge"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="8dp" />
+	
+	        <TextView
+	            android:id="@+id/accountMessageStatus"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="16dp"
+	            android:fontFamily="sans-serif-light"
+	            android:text="@string/login_progress_signing_in"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	    </LinearLayout>
+	    
+        <LinearLayout
+			style="@style/LoginFormContainer"
+			android:layout_gravity="center"
+			android:orientation="vertical"
+			android:id="@+id/accountForm" >
+	        
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:text="*"
+	                android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	            <EditText
+	                android:id="@+id/accountName"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:hint="@string/name"
+	                android:inputType="textPersonName">
+	                
+	                <requestFocus />
+	            </EditText>
+	                
+	        </RelativeLayout>
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <EditText
+	                android:id="@+id/accountLastName"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:hint="@string/last_name"
+	                android:inputType="textPersonName" >
+	
+	            </EditText>
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:text="*"
+	                android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	        </RelativeLayout>
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <TextView
+	                android:id="@+id/accountBirthDay"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerInParent="true"
+	                android:ems="10"
+	                android:hint="@string/fecha_nacimiento"
+	                android:textSize="20sp" />
+	
+	            <ImageButton
+	                android:id="@+id/accountBirthDayButton"
+	                style="?android:attr/buttonStyleSmall"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentRight="true"
+	                android:layout_alignParentTop="true"
+	                android:src="@drawable/ic_stat_calendar" />
+	
+	        </RelativeLayout>
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:text="*"
+	                android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	            <EditText
+	                android:id="@+id/accountDNI"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:hint="@string/DNI"
+	                android:inputType="number" />
+	
+	        </RelativeLayout>
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:text="*"
+	                android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	            <EditText
+	                android:id="@+id/accountPassword"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:hint="@string/prompt_password"
+	                android:inputType="textPassword"
+	                android:maxLines="1"
+	                android:singleLine="true" />
+	
+	        </RelativeLayout>
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1" >
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true"
+	                android:text="*"
+	                android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	            <EditText
+	                android:id="@+id/accountPhoneNumber"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:hint="@string/phone_number"
+	                android:inputType="phone" />
+	
+	        </RelativeLayout>
+	
+	        <EditText
+	            android:id="@+id/accountAddress"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1"
+	            android:ems="10"
+	            android:imeActionId="@+id/login"
+	            android:imeActionLabel="@string/action_sign_up_short"
+	            android:imeOptions="actionUnspecified"
+	            android:hint="@string/postal_address"
+	            android:inputType="textPostalAddress"/>
+	
+	        <Button
+	            android:id="@+id/accountSave"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_gravity="right"
+	            android:layout_marginTop="16dp"
+	            android:layout_weight="1"
+	            android:paddingLeft="32dp"
+	            android:paddingRight="32dp"
+	            android:text="@string/action_save_short" />
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_weight="1"
+	            android:text="Los campos con * son obligatorios"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textSize="9sp" />
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
+</ScrollView>
 
