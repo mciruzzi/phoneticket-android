@@ -55,7 +55,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.PeliculasActivity" />
         </activity>
-
+        <activity
+            android:name="com.cinemar.phoneticket.ComplejosActivity"
+            android:label="@string/title_activity_complejos" >
+        </activity>
     </application>
 
 </manifest>

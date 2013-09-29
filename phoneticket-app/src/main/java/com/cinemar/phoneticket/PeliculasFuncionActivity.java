@@ -29,6 +29,7 @@ import android.widget.TextView;
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 	Film mFilm;
+	String theatreId;
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader = new ArrayList<String>();
@@ -45,6 +46,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				"filmYouTubeTrailer"), getIntent().getStringExtra(
 				"filmCoverUrl"));
 
+		theatreId = getIntent().getStringExtra("theatreId");
+		
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.funciones_main_view);
 		mStatusView = findViewById(R.id.funciones_status);
@@ -73,7 +76,12 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		showProgress(true);
 
 		FilmsClientAPI api = new FilmsClientAPI();
-		api.getFunciones(mFilm, responseHandler);
+		if(theatreId == null){ //Funciones sin filtrado
+			api.getFunciones(mFilm, responseHandler);
+		}
+		else{
+			api.getFuncionesEnComplejo(mFilm.getId(), theatreId, responseHandler);
+		}
 	}		
 	
     private void prepareFuncionesList() {

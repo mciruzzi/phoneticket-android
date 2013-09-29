@@ -26,6 +26,7 @@ import com.cinemar.phoneticket.films.DownloadImageTask;
 import com.cinemar.phoneticket.films.FilmOnClickListener;
 import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
+import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasActivity extends AbstractApiConsumerActivity {
@@ -35,12 +36,16 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	}
 
 	Map<String,Film> filmsMap = new HashMap<String,Film>();
+	private String theatreId;
+	private String theatreName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		
 		setContentView(R.layout.activity_peliculas);
+		theatreId = getIntent().getStringExtra("theatreId");
+		theatreName = getIntent().getStringExtra("theatreName"); //TODO: Mostrar nombre del complejo en el titulo?
 		
 		//** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
@@ -62,7 +67,15 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	private void requestPeliculas() {
 		mStatusMessageView.setText(R.string.peliculas_progress_getting);
 		showProgress(true);
-		
+		if(theatreId == null){
+			requestAllFilms();
+		}
+		else{
+			requestFilmsInTheatre(theatreId);
+		}
+	}	
+	
+	private void requestAllFilms() {
 
 		FilmsClientAPI api = new FilmsClientAPI();
 		api.getFilms(new JsonHttpResponseHandler() {	
@@ -90,20 +103,56 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 					showSimpleAlert(e.getMessage());
 				}
 			}
-			
+
 			@Override public void onFailure(Throwable arg0, String arg1) {
 				showSimpleAlert(arg1);			
 			};
-			
+
 			public void onFinish() {
 				showProgress(false);
 				displayFilms();
 			}
-
 		});
-
 	}	
 	
+	private void requestFilmsInTheatre(String theatreId){
+		TheatresClientAPI api = new TheatresClientAPI();
+		api.getCarteleraComplejo(theatreId, new JsonHttpResponseHandler() {	
+
+			@Override
+			public void onSuccess(JSONArray films) {
+				Log.i("Peliculas Activity", "Peliculas Recibidas");
+				try {					
+					for (int i = 0; i < films.length(); i++) {
+						Film film = new Film(films.getJSONObject(i));
+						filmsMap.put(film.getId(), film);
+						Log.i("Peliculas Activity","Pelicula" + films.getJSONObject(i)+ "recibida");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				Log.i("Peliculas Activity", "Failure recibiendo peliculas");
+				if (errorResponse != null) {
+					showSimpleAlert(errorResponse.optString("error"));
+				} else {
+					showSimpleAlert(e.getMessage());
+				}
+			}
+
+			@Override public void onFailure(Throwable arg0, String arg1) {
+				showSimpleAlert(arg1);			
+			};
+
+			public void onFinish() {
+				showProgress(false);
+				displayFilms();
+			}
+		});
+	}
 
 	private void goToFuncionActivity(String filmId) {
 		Intent intent = new Intent(this, PeliculasFuncionActivity.class);
@@ -113,6 +162,9 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		intent.putExtra("filmSinopsis",filmSelected.getSynopsis());
 		intent.putExtra("filmCoverUrl",filmSelected.getCoverURL());
 		intent.putExtra("filmYouTubeTrailer",filmSelected.getYouTubeTrailerURL());
+		if(theatreId != null){
+			intent.putExtra("theatreId", theatreId);
+		}
 		startActivity(intent);
 		
 	}

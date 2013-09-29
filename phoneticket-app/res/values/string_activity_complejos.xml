@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="complejos_progress_getting">Obteniendo Complejos&#8230;</string>
+    <string name="title_activity_complejos">ComplejosActivity</string>
+    <string name="theatres">Complejos</string>    
+</resources>

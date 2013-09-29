@@ -13,6 +13,7 @@ public class MainMenuActivity extends Activity {
 	//Referencias a UI
 	private TextView welcomeView;
 	private Button peliculasButton;
+	private Button complejosButton;
 	private Button miCuentaButton;
 
 	public static int REQUEST_LOGIN = 0;
@@ -47,12 +48,24 @@ public class MainMenuActivity extends Activity {
 					}
 
 				});
+		complejosButton = (Button) findViewById(R.id.complejoButton);
+		complejosButton.setOnClickListener(
+				new View.OnClickListener() {
+					public void onClick(View v) {
+						goToComplejosActivity();						
+					}
+				});
 	}
 
 	protected void goToPeliculasActivity() {
 		Intent intent = new Intent(this, PeliculasActivity.class);
 		//TODO put extra content to peliculas Intent
 		//Podria ser la sala seleccionada, si es que ya fue seleccionada
+		startActivity(intent);
+	}
+	
+	protected void goToComplejosActivity() {
+		Intent intent = new Intent(this, ComplejosActivity.class);
 		startActivity(intent);
 	}
 

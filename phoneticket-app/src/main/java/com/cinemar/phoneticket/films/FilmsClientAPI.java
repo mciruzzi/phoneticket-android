@@ -22,5 +22,9 @@ public class FilmsClientAPI {
 		client.get("movies/" + film.getId() + ".json", responseHandler);
 	}
 	
+	public void getFuncionesEnComplejo(String filmId, String complejoId, JsonHttpResponseHandler responseHandler){
+		client.get("movies/" + filmId + ".json", responseHandler); //TODO: Usar ruta correcta para filtrar con el complejoId
+	}
+	
 
 }
