@@ -1,6 +1,5 @@
 package com.cinemar.phoneticket;
 
-
 import java.text.ParseException;
 
 import org.json.JSONObject;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -26,8 +24,6 @@ import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
 import com.cinemar.phonoticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-
 
 public class LoginActivity extends AbstractApiConsumerActivity {
 
