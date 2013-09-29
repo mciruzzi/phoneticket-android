@@ -1,0 +1,279 @@
+package com.cinemar.phoneticket;
+
+import java.text.ParseException;
+import java.util.Calendar;
+
+import org.json.JSONObject;
+
+import com.cinemar.phoneticket.authentication.APIAuthentication;
+import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.model.User;
+import com.cinemar.phonoticket.util.UIDateUtil;
+import com.cinemar.phonoticket.util.UserDataValidatorUtil;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.TabHost.TabSpec;
+
+public class MainMyAccountActivity extends Activity {
+
+	private String email;
+	private User user;
+	
+	private EditText mName;
+	private EditText mLastName;
+	private EditText mDNI;
+	private EditText mPassword;
+	private EditText mPhoneNumber;
+	private EditText mAddress;
+	private UIDateUtil utilDate;
+	
+//	private View mLoginFormView;
+//	private View mLoginStatusView;
+//	private TextView mLoginStatusMessageView;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main_my_account);
+		
+		Intent intent = getIntent();
+		
+		email = intent.getStringExtra("email");
+		
+		setTitle(email);
+		addTabs();
+		getUIElement();
+		getDataOfServer();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main_my_account, menu);
+		return true;
+	}
+	
+	private void getDataOfServer() {
+		
+		AuthenticationService api = new APIAuthentication();
+		
+		api.getUser(email, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject userData) {
+				try {
+					
+					user = new User(userData);
+					completeDataRequest();
+				} catch (ParseException e) {
+					showSimpleAlert("Error al obtener los datos. Intente más tarde.");
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				if (errorResponse != null) {
+				//	handleInvalidLoginResponse(errorResponse);
+				} else {
+					showSimpleAlert(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable arg0, String arg1) {
+				showSimpleAlert("Error de conexión. Intente más tarde.");
+			}
+
+			@Override
+			public void onFinish() {
+				//showProgress(false);
+			}
+		});
+		
+	}
+	
+	private void getUIElement() {
+
+		mName = (EditText) findViewById(R.id.accountName);
+		mLastName = (EditText) findViewById(R.id.accountLastName);
+		mDNI = (EditText) findViewById(R.id.accountDNI);
+		mPassword = (EditText) findViewById(R.id.accountPassword);
+		mPhoneNumber = (EditText) findViewById(R.id.accountPhoneNumber);
+		mAddress = (EditText) findViewById(R.id.accountAddress);
+
+		utilDate = new UIDateUtil( (TextView) findViewById(R.id.accountBirthDay),
+				(ImageButton) findViewById(R.id.accountBirthDayButton),
+				this);
+
+		findViewById(R.id.accountSave).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View view) {
+			
+				saveChanges();
+			}
+		});
+
+	}
+	
+	@Override 
+	protected Dialog onCreateDialog(int id){
+		return utilDate.createDialogWindow(id);
+	}
+	
+	private void addTabs() {
+		
+		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
+		tabHost.setup();
+		
+		TabSpec spec1 = tabHost.newTabSpec("tabFunctions");
+        spec1.setIndicator("Funciones", null);
+        spec1.setContent(R.id.myReservesBuys);
+        tabHost.addTab(spec1);
+
+		TabSpec spec2 = tabHost.newTabSpec("tabData");
+        spec2.setIndicator("Datos", null);
+        spec2.setContent(R.id.myAccountData);
+        tabHost.addTab(spec2);
+	}
+	
+	private void completeDataRequest() {
+		
+		mName.setText(user.getNombre());
+		mLastName.setText(user.getApellido());
+		mDNI.setText(user.getDni());
+		mPassword.setText(user.getPassword());
+		mPhoneNumber.setText(user.getTelefono());
+		mAddress.setText(user.getDireccion());
+		
+		utilDate.setDate(user.getFechaNacimiento());
+		utilDate.update();
+	}
+
+	protected void showSimpleAlert(String msg) {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(msg);
+		builder.setTitle(getString(R.string.error));
+	
+		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
+			public void onClick(DialogInterface dialog, int which) {				
+			}
+		});
+	
+		builder.show();
+	}
+	
+	private void saveChanges() {
+
+		resetErrors();
+//		storeValues();
+
+		Calendar mNacimiento = Calendar.getInstance();
+		mNacimiento.set(utilDate.getYear(), utilDate.getMonth(), utilDate.getDay());
+	
+
+//		sessionUser = new User(mEmail,mPassword,mNombreView.getText().toString(),
+//				mApellidoView.getText().toString(),mDNIView.getText().toString(),mNacimiento.getTime(),
+//				mDireccionView.getText().toString(),mTelefonoView.getText().toString());
+
+		View focusView = validateData();
+
+
+
+		if (focusView != null) {
+			
+			focusView.requestFocus();
+		} else {
+			// Show a progress spinner, and kick off a background task to
+			// perform the user login attempt.
+
+//			mLoginStatusMessageView.setText(R.string.register_progress_registering);
+//			showProgress(true);
+//			AuthenticationService authenticationClient = new APIAuthentication();
+//			authenticationClient.signup(sessionUser, new JsonHttpResponseHandler(){
+//				@Override
+//				public void onSuccess(JSONObject response) {
+//					returnToLoginActivity();
+//				}
+//
+//				@Override
+//				public void onFailure(Throwable exception, JSONObject errors) {
+//					try {
+//						if (errors != null) {
+//								assignValidationErrors(errors);
+//						} else {
+//							showSimpleAlert(exception.getMessage());
+//						}
+//					} catch (JSONException e) {
+//						showSimpleAlert("Error al ingresar. Intente más tarde");
+//					}
+//				}
+//
+//				@Override
+//				public void onFailure(Throwable arg0, String arg1) {
+//					showSimpleAlert("Error de conexión. Intente más tarde.");
+//				}
+//
+//				@Override
+//				public void onFinish() {
+//					showProgress(false);
+//				}
+//			});
+
+		}
+		
+	}
+	
+	private void resetErrors() {
+		mName.setError(null);
+		mLastName.setError(null);
+		mDNI.setError(null);
+		mPassword.setError(null);
+		mPhoneNumber.setError(null);
+	}
+	
+	private View validateData() {
+		
+		View focusView = null;
+
+		if (!UserDataValidatorUtil.isValidPhoneNumber(mPhoneNumber.getText().toString(), this)) {
+			mPhoneNumber.setError((UserDataValidatorUtil.getError()));
+			focusView = mPhoneNumber;
+		}
+
+		if (!UserDataValidatorUtil.isValidPassword(mPassword.getText().toString(), this)) {
+			
+			mPassword.setError(UserDataValidatorUtil.getError());
+			focusView = mPassword;
+		}
+		
+		if (!UserDataValidatorUtil.isValidDNI(mDNI.getText().toString(), this)) {
+			mDNI.setError(UserDataValidatorUtil.getError());
+			focusView = mDNI;
+		}
+			
+		if (!UserDataValidatorUtil.isValidLastName(mLastName.getText().toString(), this)) {
+			mLastName.setError(UserDataValidatorUtil.getError());
+			focusView = mLastName;
+		}
+
+		if (!UserDataValidatorUtil.isValidName(mName.getText().toString(), this)) {
+			
+			mName.setError(UserDataValidatorUtil.getError());
+			focusView = mName;
+		}
+		return focusView;
+	}
+}
