@@ -8,5 +8,6 @@ public interface AuthenticationService {
 	void login(String user, String password, JsonHttpResponseHandler responseHandler);
 	void signup(User user, JsonHttpResponseHandler responseHandler);
 	void getUser(String email, JsonHttpResponseHandler responseHandler);
+	void update(User user, JsonHttpResponseHandler responseHandler);
 
 }

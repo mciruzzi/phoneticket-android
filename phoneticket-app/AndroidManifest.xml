@@ -49,13 +49,20 @@
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.PeliculasFuncionActivity"
-            android:label="@string/title_activity_peliculas_funcion"
             android:parentActivityName="com.cinemar.phoneticket.PeliculasActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.PeliculasActivity" />
         </activity>
         <activity
+            android:name="com.cinemar.phoneticket.MainMyAccountActivity"
+            android:label="@string/title_activity_main_my_account"
+            android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity"> 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.MainMenuActivity" />
+        </activity>
+        <activity 
             android:name="com.cinemar.phoneticket.ComplejosActivity"
             android:label="@string/title_activity_complejos" >
         </activity>

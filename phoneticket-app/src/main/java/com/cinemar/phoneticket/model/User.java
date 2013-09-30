@@ -92,7 +92,7 @@ public class User {
 	}
 
 	public User(JSONObject user) throws ParseException {
-		this(user.optString("email"), user.optString("password"));
+		this(user.optString("email"), null);
 		this.nombre = user.optString("first_name");
 		this.apellido = user.optString("last_name");
 		this.dni = user.optString("document");
