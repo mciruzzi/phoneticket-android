@@ -10,5 +10,6 @@
     <string name="title_activity_my_account">Mis datos</string>
     <string name="title_activity_main_my_account">Mi cuenta</string>
     <string name="title_activity_show_reserve_buy">Mis compras y reservas</string>
+	<string name="error_connection">Error de conexión. Intente más tarde.</string>
 
 </resources>

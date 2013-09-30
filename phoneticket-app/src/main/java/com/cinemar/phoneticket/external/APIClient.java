@@ -6,8 +6,8 @@ import com.loopj.android.http.RequestParams;
 
 
 public class APIClient implements RestClient {
-//	private static final String BASE_URL = "http://10.0.2.2:5000/api/"; //url de nuestra API
-	private static final String BASE_URL = "http://phoneticket-stg.herokuapp.com/api/"; //url de nuestra API
+	private static final String BASE_URL = "http://10.0.2.2:5000/api/"; //url de nuestra API
+//	private static final String BASE_URL = "http://phoneticket-stg.herokuapp.com/api/"; //url de nuestra API
 	private final AsyncHttpClient client;
 
 	public APIClient() {
