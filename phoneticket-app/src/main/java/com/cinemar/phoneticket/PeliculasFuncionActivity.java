@@ -45,8 +45,10 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				.getStringExtra("filmTitle"), getIntent().getStringExtra(
 				"filmSinopsis"), getIntent().getStringExtra(
 				"filmYouTubeTrailer"), getIntent().getStringExtra(
-				"filmCoverUrl"));
-
+				"filmCoverUrl"), getIntent().getStringExtra("filmDirector"),
+				getIntent().getStringExtra("filmAudienceRating"),
+				getIntent().getStringExtra("filmCast"),
+				getIntent().getStringExtra("filmGenre"));
 
 		theatreId = getIntent().getStringExtra("theatreId");		
 
@@ -73,7 +75,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		}
 
 		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
-		idSinopsisText.setText(mFilm.getSynopsis());
+		idSinopsisText.setText("Sinopsis: " +mFilm.getSynopsis());
+		
+		TextView genreText = (TextView) findViewById(R.id.genreText);
+		genreText.setText("Genero: " +mFilm.getGenre());
+		
+		TextView castText = (TextView) findViewById(R.id.castText);
+		castText.setText("Actores: " + mFilm.getCast());
 
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());

@@ -25,28 +25,34 @@ import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasActivity extends AbstractApiConsumerActivity {
-	
+
 	public PeliculasActivity() {
 		super();
 	}
 
-	Map<String,Film> filmsMap = new HashMap<String,Film>();
+	Map<String, Film> filmsMap = new HashMap<String, Film>();
 	private String theatreId;
 	private String theatreName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-		
+		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_peliculas);
 		theatreId = getIntent().getStringExtra("theatreId");
-		theatreName = getIntent().getStringExtra("theatreName"); //TODO: Mostrar nombre del complejo en el titulo?
-		
-		//** Important to get in order to use the showProgress method**//
+		theatreName = getIntent().getStringExtra("theatreName"); // TODO:
+																	// Mostrar
+																	// nombre
+																	// del
+																	// complejo
+																	// en el
+																	// titulo?
+
+		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
 		mStatusView = findViewById(R.id.peliculas_status);
-		mStatusMessageView = (TextView) findViewById(R.id.peliculas_status_message);		
-		
+		mStatusMessageView = (TextView) findViewById(R.id.peliculas_status_message);
+
 		HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.peliculasHorizontalScrollView);
 
 		this.requestPeliculas();
@@ -62,27 +68,28 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 	private void requestPeliculas() {
 		mStatusMessageView.setText(R.string.peliculas_progress_getting);
 		showProgress(true);
-		if(theatreId == null){
+		if (theatreId == null) {
 			requestAllFilms();
-		}
-		else{
+		} else {
 			requestFilmsInTheatre(theatreId);
 		}
-	}	
-	
+	}
+
 	private void requestAllFilms() {
 
 		FilmsClientAPI api = new FilmsClientAPI();
-		api.getFilms(new JsonHttpResponseHandler() {	
+		api.getFilms(new JsonHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(JSONArray films) {
 				Log.i("Peliculas Activity", "Peliculas Recibidas");
-				try {					
+				try {
 					for (int i = 0; i < films.length(); i++) {
 						Film film = new Film(films.getJSONObject(i));
 						filmsMap.put(film.getId(), film);
-						Log.i("Peliculas Activity","Pelicula" + films.getJSONObject(i)+ "recibida");
+						Log.i("Peliculas Activity",
+								"Pelicula" + films.getJSONObject(i)
+										+ "recibida");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -99,8 +106,9 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				}
 			}
 
-			@Override public void onFailure(Throwable arg0, String arg1) {
-				showSimpleAlert(arg1);			
+			@Override
+			public void onFailure(Throwable arg0, String arg1) {
+				showSimpleAlert(arg1);
 			};
 
 			public void onFinish() {
@@ -108,21 +116,23 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				displayFilms();
 			}
 		});
-	}	
-	
-	private void requestFilmsInTheatre(String theatreId){
+	}
+
+	private void requestFilmsInTheatre(String theatreId) {
 		TheatresClientAPI api = new TheatresClientAPI();
-		api.getCarteleraComplejo(theatreId, new JsonHttpResponseHandler() {	
+		api.getCarteleraComplejo(theatreId, new JsonHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(JSONObject theatre) {
 				Log.i("Peliculas Activity", "Peliculas x Complejo Recibidas");
 				JSONArray films = theatre.optJSONArray("movies");
-				try {					
+				try {
 					for (int i = 0; i < films.length(); i++) {
 						Film film = new Film(films.getJSONObject(i));
 						filmsMap.put(film.getId(), film);
-						Log.i("Peliculas Activity","Pelicula" + films.getJSONObject(i)+ "recibida");
+						Log.i("Peliculas Activity",
+								"Pelicula" + films.getJSONObject(i)
+										+ "recibida");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -139,10 +149,11 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				}
 			}
 
-			@Override public void onFailure(Throwable arg0, String arg1) {
-				showSimpleAlert(arg1);			
+			@Override
+			public void onFailure(Throwable arg0, String arg1) {
+				showSimpleAlert(arg1);
 			};
-			
+
 			public void onFinish() {
 				showProgress(false);
 				displayFilms();
@@ -154,42 +165,48 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		Intent intent = new Intent(this, PeliculasFuncionActivity.class);
 		Film filmSelected = filmsMap.get(filmId);
 		intent.putExtra("filmId", filmId);
-		intent.putExtra("filmTitle",filmSelected.getTitle());		
-		intent.putExtra("filmSinopsis",filmSelected.getSynopsis());
-		intent.putExtra("filmCoverUrl",filmSelected.getCoverURL());
-		intent.putExtra("filmYouTubeTrailer",filmSelected.getYouTubeTrailerURL());
-		if(theatreId != null){
+		intent.putExtra("filmTitle", filmSelected.getTitle());
+		intent.putExtra("filmSinopsis", filmSelected.getSynopsis());
+		intent.putExtra("filmCoverUrl", filmSelected.getCoverURL());
+		intent.putExtra("filmYouTubeTrailer",
+				filmSelected.getYouTubeTrailerURL());
+		intent.putExtra("filmDirector", filmSelected.getDirector());
+		intent.putExtra("filmAudienceRating", filmSelected.getAudienceRating());
+		intent.putExtra("filmCast", filmSelected.getCast());
+		intent.putExtra("filmGenre", filmSelected.getGenre());
+		if (theatreId != null) {
 			intent.putExtra("theatreId", theatreId);
 		}
 		startActivity(intent);
-		
+
 	}
 
 	private void displayFilms() {
-		LinearLayout imageContainer = (LinearLayout) findViewById (R.id.peliculasImageContainer);
-		
+		LinearLayout imageContainer = (LinearLayout) findViewById(R.id.peliculasImageContainer);
+
 		for (Film film : filmsMap.values()) {
 
 			ImageView imageView = new ImageView(this);
-			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {			
-				public void onClick(View arg0) {					
-					goToFuncionActivity(filmId); 
+			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {
+				public void onClick(View arg0) {
+					goToFuncionActivity(filmId);
 				}
 
 			});
-			
-			imageView.setImageResource(R.drawable.film_cover_missing);			
-			new DownloadImageTask(imageView).execute(film.getCoverURL());	
-			//asincronicamente carga la imagen en la imageView pasado como argumento
-	
-			//position parameters	
-			imageView.setPadding(10, 10, 10, 10);		
-			//TODO investigate a bit more how to resize images
-						
+
+			imageView.setImageResource(R.drawable.film_cover_missing);
+			new DownloadImageTask(imageView).execute(film.getCoverURL());
+			// asincronicamente carga la imagen en la imageView pasado como
+			// argumento
+
+			// position parameters
+			imageView.setPadding(10, 10, 10, 10);
+			// TODO investigate a bit more how to resize images
+
 			imageContainer.addView(imageView);
-			
+
 		}
-		
+
 	}
 
 }
