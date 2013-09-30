@@ -30,7 +30,6 @@
     </LinearLayout>
 
     <HorizontalScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/peliculasHorizontalScrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -39,7 +38,8 @@
             android:id="@+id/peliculasImageContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" >
+            android:gravity="center"
+            android:orientation="horizontal" >
             
         </LinearLayout>
     </HorizontalScrollView>

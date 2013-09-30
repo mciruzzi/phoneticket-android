@@ -107,8 +107,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			}
 
 			@Override public void onFailure(Throwable arg0, String arg1) {
-				showSimpleAlert(getString(R.string.error_connection));    			
-
+				showSimpleAlert(getString(R.string.error_connection));			
 			};
 
 			public void onFinish() {
