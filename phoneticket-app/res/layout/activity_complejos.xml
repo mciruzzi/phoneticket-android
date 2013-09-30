@@ -35,19 +35,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp" >
+         >
 
         <LinearLayout
             android:id="@+id/complejosContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/complejoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="5dp"              
                 android:background="@drawable/border"
                 android:visibility="gone" >
 

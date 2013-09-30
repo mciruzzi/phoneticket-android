@@ -122,14 +122,15 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 
 		for (Theatre theatre : theatresMap.values()) {
 			RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			layout.setMargins(5, 5, 5, 5); // no se porqua no me da bola con
-											// esto
+			
 
-			RelativeLayout theatreLayout = new RelativeLayout(this);
-			theatreLayout.setBackgroundResource(R.drawable.border);
+			RelativeLayout theatreLayout = new RelativeLayout(this);			
+			theatreLayout.setBackgroundResource(R.drawable.border);			
 			theatreLayout.setLayoutParams(layout);
+			layout.setMargins(5, 5, 5, 5); // no se porque no me da bola con esto
+			
 
 			// Title
 			TextView titleText = new TextView(this);
@@ -153,6 +154,8 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			photoLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			photoLayout.setMargins(5, 5, 5, 5);
+			
 
 			ImageView theatrePhotoView = new ImageView(this);
 			theatrePhotoView.setLayoutParams(photoLayout);
