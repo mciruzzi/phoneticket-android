@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,7 +49,7 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 		setContentView(R.layout.activity_complejos);
 
 		// ** Important to get in order to use the showProgress method**//
-		mMainView = findViewById(R.id.complejosScrollView);
+		mMainView = findViewById(R.id.complejosContainer);
 		mStatusView = findViewById(R.id.complejos_status);
 		mStatusMessageView = (TextView) findViewById(R.id.complejos_status_message);
 
@@ -121,66 +123,30 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 		LinearLayout theatresContainer = (LinearLayout) findViewById(R.id.complejosContainer);
 
 		for (Theatre theatre : theatresMap.values()) {
-			RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			
-
-			RelativeLayout theatreLayout = new RelativeLayout(this);			
-			theatreLayout.setBackgroundResource(R.drawable.border);			
-			theatreLayout.setLayoutParams(layout);
-			layout.setMargins(5, 5, 5, 5); // no se porque no me da bola con esto
-			
-
-			// Title
-			TextView titleText = new TextView(this);
-			titleText.setId(View.generateViewId());
-			titleText.setTypeface(null, Typeface.BOLD);
+		
+			//complejoLayout --> Esto esta piola definir el xml en un archivito separado y
+			//conseguir la vista aca en el programa, evita definir todo desde 0 ;
+			LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
+			ViewGroup theatreView = (ViewGroup)inflater.inflate(R.layout.complejo_layout, null);
+						
+			//THEATRE TEXT
+			TextView titleText = (TextView) theatreView.findViewById(R.id.complejoName);
 			titleText.setText(theatre.getName());
-
-			// Direccion
-			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			p.addRule(RelativeLayout.BELOW, titleText.getId());
-
-			TextView dirText = new TextView(this);
-			dirText.setId(View.generateViewId());
-			dirText.setLayoutParams(p);
-			dirText.setText(theatre.getAddress());
-
-			// Photo
-			RelativeLayout.LayoutParams photoLayout = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			photoLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			photoLayout.setMargins(5, 5, 5, 5);
 			
-
-			ImageView theatrePhotoView = new ImageView(this);
-			theatrePhotoView.setLayoutParams(photoLayout);
+			//DIRECCION
+			TextView dirText = (TextView) theatreView.findViewById(R.id.complejosDireccion);			
+			dirText.setText(theatre.getAddress());
+			
+			//PHOTO
+			ImageView theatrePhotoView = (ImageView) theatreView.findViewById(R.id.complejosPhoto);			
 			theatrePhotoView.setMaxHeight(50);
 			theatrePhotoView.setMaxWidth(50);
-
 			theatrePhotoView.setImageResource(R.drawable.film_cover_missing);
+				
 			new DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());
-
-			// Map Button
-			RelativeLayout.LayoutParams mapButtonLayout = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			mapButtonLayout.addRule(RelativeLayout.BELOW, dirText.getId());
-			mapButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			mapButtonLayout.height = 70;
-			mapButtonLayout.width = 70;
-
-			ImageView MapButtonView = new ImageButton(this);
-			MapButtonView.setId(View.generateViewId());
-			MapButtonView.setLayoutParams(mapButtonLayout);
-			MapButtonView.setScaleType(ScaleType.CENTER);
-
-			MapButtonView.setImageResource(R.drawable.ic_position_map);
-
+			
+			//MAP BUTTON
+			ImageButton MapButtonView = (ImageButton) theatreView.findViewById(R.id.LocationButton);
 			MapButtonView
 					.setOnClickListener(new TheatreOnClickListener(theatre) {
 						public void onClick(View arg0) {
@@ -188,37 +154,18 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 						}
 
 					});
-
-			// Films Button
-			RelativeLayout.LayoutParams filmsButtonLayout = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			filmsButtonLayout.addRule(RelativeLayout.RIGHT_OF,
-					MapButtonView.getId());
-			filmsButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			filmsButtonLayout.height = 70;
-			filmsButtonLayout.width = 70;
-
-			ImageView FilmButtonView = new ImageButton(this);
-			FilmButtonView.setLayoutParams(filmsButtonLayout);
-			FilmButtonView.setScaleType(ScaleType.CENTER);
-
-			FilmButtonView.setImageResource(R.drawable.peliculas);
 			
+			//THEATRE FILMS BUTTON		
+			ImageButton FilmButtonView = (ImageButton) theatreView.findViewById(R.id.TheatreFilmsButton);			
 			FilmButtonView
 			.setOnClickListener(new TheatreOnClickListener(theatre) {
 				public void onClick(View arg0) {
 					goToCarteleraActivity(theatre);
 				}
-			});
-
-			theatreLayout.addView(titleText);
-			theatreLayout.addView(dirText);
-			theatreLayout.addView(theatrePhotoView);
-			theatreLayout.addView(MapButtonView);
-			theatreLayout.addView(FilmButtonView);
-
-			theatresContainer.addView(theatreLayout);
+			});			
+			
+			//ADD THE VIEW
+			theatresContainer.addView(theatreView);								
 		}
 
 	}
