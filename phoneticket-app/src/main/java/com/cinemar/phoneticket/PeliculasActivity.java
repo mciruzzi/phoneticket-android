@@ -40,13 +40,8 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 		setContentView(R.layout.activity_peliculas);
 		theatreId = getIntent().getStringExtra("theatreId");
-		theatreName = getIntent().getStringExtra("theatreName"); // TODO:
-																	// Mostrar
-																	// nombre
-																	// del
-																	// complejo
-																	// en el
-																	// titulo?
+		theatreName = getIntent().getStringExtra("theatreName"); 
+		setTitle(getString(R.string.title_activity_peliculas)+" "+theatreName);// TODO:															
 
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
