@@ -29,6 +29,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 	Film mFilm;
+	String theatreId;
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader = new ArrayList<String>();
@@ -44,9 +45,15 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				.getStringExtra("filmTitle"), getIntent().getStringExtra(
 				"filmSinopsis"), getIntent().getStringExtra(
 				"filmYouTubeTrailer"), getIntent().getStringExtra(
-				"filmCoverUrl"));
+				"filmCoverUrl"), getIntent().getStringExtra("filmDirector"),
+				getIntent().getStringExtra("filmAudienceRating"),
+				getIntent().getStringExtra("filmCast"),
+				getIntent().getStringExtra("filmGenre"));
+
+		theatreId = getIntent().getStringExtra("theatreId");		
 
 		setTitle(mFilm.getTitle());
+
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.funciones_main_view);
 		mStatusView = findViewById(R.id.funciones_status);
@@ -68,7 +75,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		}
 
 		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
-		idSinopsisText.setText(mFilm.getSynopsis());
+		idSinopsisText.setText("Sinopsis: " +mFilm.getSynopsis());
+		
+		TextView genreText = (TextView) findViewById(R.id.genreText);
+		genreText.setText("Genero: " +mFilm.getGenre());
+		
+		TextView castText = (TextView) findViewById(R.id.castText);
+		castText.setText("Actores: " + mFilm.getCast());
 
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
@@ -87,34 +100,39 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		showProgress(true);
 
 		FilmsClientAPI api = new FilmsClientAPI();
-		api.getFunciones(mFilm, responseHandler);
-	}
-
-	private void prepareFuncionesList() {
-		expListView = (ExpandableListView) findViewById(R.id.funcionesList);
-
-		listDataHeader = new ArrayList<String>();
-		listDataChild = new HashMap<String, List<String>>();
-
-		for (Theatre cinema : mFilm.getCinemas()){
-			//TODO Formate funcion date properly
-			String key = cinema.getName()+ "\n" +cinema.getAddress();
-			listDataHeader.add(key);
-
-			List<String> showsDate = new ArrayList<String>();
-			for (Show show : cinema.getShows()){
-				showsDate.add(show.getStartTimeString());
-			}
-
-			listDataChild.put(key,showsDate);
+		if(theatreId == null){ //Funciones sin filtrado
+			api.getFunciones(mFilm, responseHandler);
 		}
-
-		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-		// setting list adapter
-		expListView.setAdapter(listAdapter);
-	}
-
-
+		else{
+			api.getFuncionesEnComplejo(mFilm.getId(), theatreId, responseHandler);
+		}
+	}		
+	
+    private void prepareFuncionesList() {
+        expListView = (ExpandableListView) findViewById(R.id.funcionesList);
+    	
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+ 
+        for (Theatre cinema : mFilm.getCinemas()){
+        	//TODO Formate funcion date properly
+        	String key = cinema.getName()+ "\n" +cinema.getAddress(); 
+        	listDataHeader.add(key);
+        	
+        	List<String> showsDate = new ArrayList<String>();
+        	for (Show show : cinema.getShows()){
+        		showsDate.add(show.getStartTimeString());        		
+        	}	
+        	
+        	listDataChild.put(key,showsDate);        		
+        }
+        
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+    }
+    
+   
 	JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
 		@Override
 		public void onSuccess(JSONObject film) {

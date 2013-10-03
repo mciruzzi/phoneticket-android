@@ -30,7 +30,7 @@
             android:visibility="visible" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/complejosPhoto01"
             android:layout_width="184dp"
             android:layout_height="184dp"
             android:layout_gravity="center"
