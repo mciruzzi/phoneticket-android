@@ -12,9 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -22,7 +24,11 @@ import android.widget.TextView;
 
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.reserveandbuy.GroupOperation;
+import com.cinemar.phoneticket.reserveandbuy.OperationExpandableListAdapter;
+import com.cinemar.phoneticket.reserveandbuy.OperationView;
 import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.cinemar.phoneticket.util.UIDateUtil;
@@ -30,7 +36,15 @@ import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainMyAccountActivity extends Activity {
-	public static int REQUEST_LOGIN = 0;
+	
+	public final static int REQUEST_LOGIN = 0;
+	public final static int REQUEST_SHOW_RESERVE = 1;
+	public final static int REQUEST_SHOW_BUY = 2;
+
+	private final static int ID_BUY = 0;
+	private final static int ID_RESERVE = 1;
+	
+	private SparseArray<GroupOperation> groups = new SparseArray<GroupOperation>();
 
 	private String email;
 	private User user;
@@ -66,6 +80,9 @@ public class MainMyAccountActivity extends Activity {
 		addTabs();
 		getUIElement();
 		getDataOfServer();
+		
+	    loadData();
+	    viewConfiguration();
 	}
 
 	private void requestLogin() {
@@ -85,6 +102,13 @@ public class MainMyAccountActivity extends Activity {
 				// activity
 				finish();
 			}
+		} else if (requestCode == REQUEST_SHOW_RESERVE) {
+			
+			if (resultCode == RESULT_OK) {
+				NotificationUtil.showSimpleAlert("", "La reserva ha sido cancelada", this);
+			} else {
+				NotificationUtil.showSimpleAlert("Error", "La reserva no ha podido ser cancelada. Inténtelo más tarde", this);
+			}			
 		}
 	}
 
@@ -353,4 +377,43 @@ public class MainMyAccountActivity extends Activity {
 
 		return !TextUtils.isEmpty(mPassword.getText().toString());
 	}
+	
+	private void viewConfiguration() {
+		
+		ExpandableListView listView = (ExpandableListView) findViewById(R.id.accountListViewReserveAndBuy);
+	    OperationExpandableListAdapter adapter = new OperationExpandableListAdapter(this, groups);
+	    listView.setAdapter(adapter);
+	    listView.expandGroup(ID_BUY);
+	    listView.expandGroup(ID_RESERVE);
+	}
+
+	public void loadData() {
+		
+		GroupOperation groupBuy = new GroupOperation("Compras");
+		GroupOperation groupReserve = new GroupOperation("Reservas");
+		
+		for (int i = 0; i < 5; i++) 
+			groupBuy.addItem(new OperationView(new ItemOperation("Título 1", "cine " + i), MainMenuActivity.class, REQUEST_SHOW_BUY));
+		
+		groups.append(ID_BUY , groupBuy);
+		
+		String[] seating1 = {"A-2", "A-3", "A-4"};
+		ItemOperation item1 = new ItemOperation("Título 1", "Lavalle");
+		item1.setCode("cod-LSKJDAQWEQ2423423");
+		item1.setTicketsType("Jubilado");
+		item1.setSeating(seating1);
+		
+		groupReserve.addItem(new OperationView( item1, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+
+		String[] seating2 = {"M-12", "M-13", "M-14"};
+		ItemOperation item2 = new ItemOperation("Título 5", "Puerto Madero");
+		item2.setCode("cod-KWJ4HK45HKWEH");
+		item2.setTicketsType("Miércoles");
+		item2.setSeating(seating2);
+		
+		groupReserve.addItem(new OperationView( item2, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+
+		groups.append(ID_RESERVE, groupReserve);
+	}
+
 }

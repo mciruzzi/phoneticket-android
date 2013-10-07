@@ -17,6 +17,8 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
+    <!-- Para los botones del menú ppal -->
+    
     <style name="ButtonMenu">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
@@ -44,7 +46,22 @@
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:textAlignment">center</item>
+       <!--   <item name="android:textAlignment">center</item> -->
+    </style>
+    
+    <!-- para "ver" de las reservas y compras -->
+    
+    <style name="DetailsReserveAndBuy">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+    
+    <style name="ButtonsShowReserve">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">5dp</item>
     </style>
 
 </resources>
