@@ -1,7 +1,6 @@
 package com.cinemar.phoneticket;
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
-import com.cinemar.phoneticket.util.NotificationUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -27,7 +26,7 @@ public class ReserveShowActivity extends Activity {
 		setContentView(R.layout.activity_reserve_show);
 		
 		getUIElement();
-		loadData(getIntent());
+		loadData();
 		
 	}
 
@@ -38,16 +37,6 @@ public class ReserveShowActivity extends Activity {
 		return true;
 	}
 
-//
-//		//hacer algo
-//		// if (todo bien)
-//		Intent data = new Intent();
-////		data.putExtra("email", sessionUser.getEmail());
-//	
-//		setResult(RESULT_OK, data);
-//		finish();
-//	}
-	
 	public void cancelReserve(View view) {
 		
 	    AlertDialog alert = createWindowConfirmation();
@@ -55,6 +44,9 @@ public class ReserveShowActivity extends Activity {
 	}
 	
 	private void doTheCancellation() {
+		
+//		//hacer algo
+//		// if (todo bien)
 		
     	Intent data = new Intent();
 //		data.putExtra("email", sessionUser.getEmail());
@@ -89,7 +81,9 @@ public class ReserveShowActivity extends Activity {
 	    return builder.create();
 	}
 	
-	private void loadData(Intent intent) {
+	private void loadData() {
+		
+		Intent intent = getIntent();
 		
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));

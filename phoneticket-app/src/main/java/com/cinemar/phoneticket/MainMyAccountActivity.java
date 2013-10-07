@@ -107,7 +107,7 @@ public class MainMyAccountActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				NotificationUtil.showSimpleAlert("", "La reserva ha sido cancelada", this);
 			} else {
-				NotificationUtil.showSimpleAlert("Error", "La reserva no ha podido ser cancelada. Inténtelo más tarde", this);
+//				NotificationUtil.showSimpleAlert("Error", "La reserva no ha podido ser cancelada. Inténtelo más tarde", this);
 			}			
 		}
 	}
@@ -392,8 +392,20 @@ public class MainMyAccountActivity extends Activity {
 		GroupOperation groupBuy = new GroupOperation("Compras");
 		GroupOperation groupReserve = new GroupOperation("Reservas");
 		
-		for (int i = 0; i < 5; i++) 
-			groupBuy.addItem(new OperationView(new ItemOperation("Título 1", "cine " + i), MainMenuActivity.class, REQUEST_SHOW_BUY));
+		String[] seatingA = {"Q-22", "Q-5", "Q-34"};
+		ItemOperation itemA = new ItemOperation("Título alguno", "PC");
+		itemA.setTicketsType("Jubilado");
+		itemA.setSeating(seatingA);
+		
+		groupBuy.addItem(new OperationView(itemA, BuyShowActivity.class, REQUEST_SHOW_BUY));
+
+		String[] seatingB = {"R-10", "R-11", "R-23", "R-24", "R-25","R-26" };
+		ItemOperation itemB = new ItemOperation("Título dos", "LH");
+		itemB.setTicketsType("Miércoles");
+		itemB.setSeating(seatingB);
+		
+		groupBuy.addItem(new OperationView(itemB, BuyShowActivity.class, REQUEST_SHOW_BUY));
+
 		
 		groups.append(ID_BUY , groupBuy);
 		

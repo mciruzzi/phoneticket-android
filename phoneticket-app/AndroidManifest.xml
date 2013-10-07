@@ -70,6 +70,10 @@
             android:name="com.cinemar.phoneticket.ReserveShowActivity"
             android:label="@string/title_activity_reserve_show" >
         </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.BuyShowActivity"
+            android:label="@string/title_activity_buy_show" >
+        </activity>
     </application>
 
 </manifest>

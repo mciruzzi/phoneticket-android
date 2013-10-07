@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".BuyShowActivity"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.09"
+        android:orientation="vertical"
+        android:paddingTop="15dp">
+		        
+        <TextView
+            style="@style/DetailsReserveAndBuy"
+            android:id="@+id/accountBuyTitle"
+	        android:text="@string/hello_world" />
+    
+	    <TextView
+	        style="@style/DetailsReserveAndBuy"
+	        android:id="@+id/accountBuyCinema"
+	        android:text="@string/hello_world" />
+	    
+	    <TextView
+	        style="@style/DetailsReserveAndBuy"
+	       	android:id="@+id/accountBuyDate"
+	        android:text="@string/hello_world" />
+	
+	    <TextView
+			style="@style/DetailsReserveAndBuy"
+	       	android:id="@+id/accountBuySeating"
+	        android:text="@string/hello_world" />
+	    
+	    <TextView
+	        style="@style/DetailsReserveAndBuy"
+	        android:id="@+id/accountBuyTicketsType"
+	        android:text="@string/hello_world" />
+	    
+	    <ImageView
+	        style="@style/DetailsReserveAndBuy"
+	        android:id="@+id/accountBuyCode"	        
+	     	android:contentDescription="@string/codeQR" />
+	        
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="0.03"
+        android:layout_width="0dp"
+    	android:layout_height="wrap_content"
+    	android:gravity="center"
+    	android:paddingTop="15dp">
+        
+         <ImageView
+            style="@style/ButtonsShowReserve"
+			android:id="@+id/twitter"
+			android:src="@drawable/twitter"
+			android:contentDescription="@string/twitter" />
+
+        <ImageView
+            style="@style/ButtonsShowReserve"            
+			android:id="@+id/facebook"
+			android:src="@drawable/facebook"
+			android:contentDescription="@string/facebook" />
+        
+        <ImageView
+            style="@style/ButtonsShowReserve"            
+			android:id="@+id/calendar"
+			android:src="@drawable/calendario"
+			android:contentDescription="@string/calendar" />
+        
+    </LinearLayout>
+    
+</LinearLayout>
