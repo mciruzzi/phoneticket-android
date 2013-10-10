@@ -1,5 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".SelectSeatsActivity" >
 
     <LinearLayout
@@ -28,9 +30,9 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/salaView"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/salaView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -39,11 +41,20 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".SelectSeatsActivity" >
 
+        <ImageView
+            android:id="@+id/roomscreen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:scaleType="fitXY"
+            android:src="@drawable/screen" />
+
         <ScrollView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
+            android:layout_height="wrap_content"
+            android:layout_below="@id/roomscreen">
+                        
             <HorizontalScrollView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
