@@ -11,50 +11,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainMenuActivity" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-		android:layout_gravity="center" >
+        android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/welcome_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Bienvenido"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="visible" />
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/complejosPhoto01"
-            android:layout_width="184dp"
-            android:layout_height="184dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/pochoclo" />
+            <TextView
+                android:id="@+id/welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Bienvenido"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="visible" />
 
-        <Button
-            android:id="@+id/peliculasButton"
-			style="@style/ButtonMenu"
-			android:drawableStart="@drawable/peliculas"
-            android:text="@string/cartelera" />
-        
-       <Button
-           android:id="@+id/complejoButton"
-           style="@style/ButtonMenu"
-           android:text="@string/complejo"
-           android:drawableStart="@drawable/complejosicon" />
+            <ImageView
+                android:id="@+id/complejosPhoto01"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/pochoclo" />
 
-        <Button
-            android:id="@+id/miCuentaButton"
-			style="@style/ButtonMenu"
-            android:text="@string/mi_cuenta"
-			android:drawableStart="@drawable/micuentaicon"/>
+            <Button
+                android:id="@+id/peliculasButton"
+                style="@style/ButtonMenu"
+                android:drawableStart="@drawable/peliculas"
+                android:text="@string/cartelera" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/complejoButton"
+                style="@style/ButtonMenu"
+                android:drawableStart="@drawable/complejosicon"
+                android:text="@string/complejo" />
+
+            <Button
+                android:id="@+id/miCuentaButton"
+                style="@style/ButtonMenu"
+                android:drawableStart="@drawable/micuentaicon"
+                android:text="@string/mi_cuenta" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

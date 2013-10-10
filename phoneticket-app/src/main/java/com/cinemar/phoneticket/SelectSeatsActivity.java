@@ -22,7 +22,7 @@ import android.widget.TableRow;
 
 public class SelectSeatsActivity extends Activity {
 
-	String[][] seats = new String[10][10];
+	String[][] seats = new String[20][20];
 	TableLayout cinemaLayout;
 	Map<String, ImageView> seatsImages;
 
@@ -50,12 +50,12 @@ public class SelectSeatsActivity extends Activity {
 		LayoutParams params = new LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, 15, 0, 15);
+		params.setMargins(1, 15, 1, 15);
 
 		for (Integer i = 0; i < seats.length; i++) {
 
 			TableRow fila = new TableRow(this);
-			fila.setPadding(0, 10, 3, 10);
+			fila.setPadding(5, 10, 5, 10);
 			fila.setLayoutParams(params);
 			cinemaLayout.addView(fila);
 
