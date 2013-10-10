@@ -50,12 +50,12 @@ public class SelectSeatsActivity extends Activity {
 		LayoutParams params = new LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		params.setMargins(1, 15, 1, 15);
+		params.setMargins(10, 15, 10, 15);
 
 		for (Integer i = 0; i < seats.length; i++) {
 
 			TableRow fila = new TableRow(this);
-			fila.setPadding(5, 10, 5, 10);
+			fila.setPadding(15, 10, 15, 10);
 			fila.setLayoutParams(params);
 			cinemaLayout.addView(fila);
 
@@ -64,6 +64,7 @@ public class SelectSeatsActivity extends Activity {
 				// supose seats[i][j] is a seat id
 				String id = seats[i][j];
 				seat = new ImageView(this);
+				seat.setPadding(2, 0, 2, 0);
 				seatsImages.put(seats[i][j], seat);
 
 				Random rnd = new Random();
