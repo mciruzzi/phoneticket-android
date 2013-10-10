@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -17,6 +19,7 @@ import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
+import android.R.integer;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.util.Log;
@@ -39,6 +42,8 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 	Room showRoom;
 	TableLayout cinemaLayout;
 	Map<String, ImageView> seatsImages;
+	LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
+	int maxSeatsToTake = Integer.MAX_VALUE;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,10 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 
 		
 		showId = getIntent().getStringExtra("showId");
+		if (getIntent().getStringExtra("maxSelections") != null)
+			//supongamos que viene dicho de afuera si hay una pantalla extra donde se dice que cantidad de butacas se va a comprar
+			maxSeatsToTake = Integer.parseInt(getIntent().getStringExtra("maxSelections"));
+		
 
 		cinemaLayout = (TableLayout) findViewById(R.id.cinemalayout);
 		seatsImages = new HashMap<String, ImageView>();
@@ -125,15 +134,11 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 			cinemaLayout.addView(fila);
 
 			for (Integer j = 0; j < showRoom.getColumnsLength() ; j++) {
-				Seat seatModel = showRoom.getSeat(i, j);
-				String seatId = showRoom.translateId(i, j);
-				//seats[i][j] = i.toString() + j.toString();
-				// supose seats[i][j] is a seat id
-				//String id = seats[i][j];
+				Seat seatModel = showRoom.getSeat(i, j);				
 				
 				seatView = new ImageView(this);
 				seatView.setPadding(2, 0, 2, 0);
-				seatsImages.put(seatId, seatView);		
+				seatsImages.put(seatModel.getId(), seatView);		
 				
 				if (seatModel.getStatus().equals(SeatStatus.NON_EXISTENT)){
 					seatView.setImageResource(R.drawable.seat_available);// podria ser cualquier otro
@@ -142,13 +147,13 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 				
 				else if (seatModel.getStatus().equals(SeatStatus.AVAILABLE)) {
 					seatView.setImageResource(R.drawable.seat_available);
-					seatView.setOnClickListener(new SeatOnClickListener(seatId,
-							seatsImages, true));
+					seatView.setOnClickListener(new SeatOnClickListener(seatModel,
+							seatsImages, true,SelectedSeats,maxSeatsToTake));
 				} 
 				else if (seatModel.getStatus().equals(SeatStatus.OCCUPIED)) {
 					seatView.setImageResource(R.drawable.seat_occupied);
-					seatView.setOnClickListener(new SeatOnClickListener(seatId,
-							seatsImages, false));
+					seatView.setOnClickListener(new SeatOnClickListener(seatModel,
+							seatsImages, false,SelectedSeats,maxSeatsToTake));
 				}
 
 				fila.addView(seatView);

@@ -123,6 +123,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		}
 		Intent intent = new Intent(this, SelectSeatsActivity.class);
 		intent.putExtra("showId", selectedShow.getShowId()); //hardcodeado para traer la funcion 1
+		intent.putExtra("maxSelections","2"); //hardcodeado deberia seleccionarse en otra pag
 		startActivity(intent);
 	}
 
