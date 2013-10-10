@@ -77,6 +77,7 @@ public class MainMenuActivity extends Activity {
 	protected void goToMyAccountActivity() {
 		//Intent intent = new Intent(this, MainMyAccountActivity.class); uncomment later
 		Intent intent = new Intent(this, SelectSeatsActivity.class);
+		intent.putExtra("showId", "1"); //hardcodeado para traer la funcion 1
 		startActivity(intent);
 	}
 

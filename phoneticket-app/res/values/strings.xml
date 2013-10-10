@@ -12,5 +12,7 @@
     <string name="title_activity_show_reserve_buy">Mis compras y reservas</string>
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
     <string name="title_activity_select_seats">SelectSeatsActivity</string>
+    <string name="getting_sala">Obteniendo Sala</string>
+    
 
 </resources>
