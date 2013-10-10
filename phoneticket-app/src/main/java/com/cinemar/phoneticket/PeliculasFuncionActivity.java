@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,11 +16,14 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.films.ExpandableListAdapter;
+import com.cinemar.phoneticket.films.ExpandableShowListAdapter;
 import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.cinemar.phoneticket.model.Show;
@@ -30,10 +34,11 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 	Film mFilm;
 	String theatreId;
-	ExpandableListAdapter listAdapter;
+	Show selectedShow = null;
+	ExpandableShowListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader = new ArrayList<String>();
-	HashMap<String, List<String>> listDataChild = new HashMap<String,List<String>>();
+	HashMap<String, List<Show>> listDataChild = new HashMap<String,List<Show>>();
 	private ImageView mYoutubeImage;
 
 	@Override
@@ -85,6 +90,22 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
+		
+		ImageButton comprarButton = (ImageButton) findViewById(R.id.comprarButton);
+		comprarButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				goToSeatSelectionActivity();
+			}			
+		});		
+				
+		ImageButton reservarButton = (ImageButton) findViewById(R.id.reservarButton);
+		reservarButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				goToSeatSelectionActivity();				
+			}
+		});
+		
+
 
 		this.getFunciones();
 	}
@@ -93,6 +114,16 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.peliculas, menu);
 		return true;
+	}
+	
+	private void goToSeatSelectionActivity() {
+		if (selectedShow == null){
+			showSimpleAlert(getResources().getString(R.string.no_selected_show));
+			return;
+		}
+		Intent intent = new Intent(this, SelectSeatsActivity.class);
+		intent.putExtra("showId", selectedShow.getShowId()); //hardcodeado para traer la funcion 1
+		startActivity(intent);
 	}
 
 	private void getFunciones() {
@@ -112,24 +143,34 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
         expListView = (ExpandableListView) findViewById(R.id.funcionesList);
     	
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<Show>>();
  
         for (Theatre cinema : mFilm.getCinemas()){
         	//TODO Formate funcion date properly
-        	String key = cinema.getName()+ "\n" +cinema.getAddress(); 
-        	listDataHeader.add(key);
-        	
-        	List<String> showsDate = new ArrayList<String>();
-        	for (Show show : cinema.getShows()){
-        		showsDate.add(show.getStartTimeString());        		
-        	}	
-        	
-        	listDataChild.put(key,showsDate);        		
+        	String key = cinema.getName()+ "\n" +cinema.getAddress();        	
+        	listDataHeader.add(key);        	
+        	listDataChild.put(key,cinema.getShows());        		
         }
         
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableShowListAdapter(this, listDataHeader, listDataChild);
         // setting list adapter
         expListView.setAdapter(listAdapter);
+        
+        expListView.setOnChildClickListener(new OnChildClickListener() {        	 
+            
+            public boolean onChildClick(ExpandableListView parent, View v,
+                    int groupPosition, int childPosition, long id) {
+            	
+            	selectedShow = listDataChild.get(
+                        listDataHeader.get(groupPosition)).get(
+                        childPosition);
+            	
+                Toast.makeText( getApplicationContext(),listDataHeader.get(groupPosition)
+                                + " : " + selectedShow.getShowId(), Toast.LENGTH_SHORT).show();            
+                                 
+                return false;
+            }
+        });
     }
     
    
