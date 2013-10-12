@@ -86,6 +86,30 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
 
+		ImageView fbButtonView = (ImageView) findViewById(R.id.facebookImage);
+		fbButtonView.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent shareIntent=new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("text/plain");
+				shareIntent.putExtra(Intent.EXTRA_TEXT,"Me gusta esta pelicula");
+				shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Que buena peli");
+				startActivity(Intent.createChooser(shareIntent, "Share..."));				
+			}
+		});
+				
+		ImageView twButtonView =(ImageView) findViewById(R.id.twitterImage);
+		twButtonView.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent shareIntent=new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("text/plain");
+				shareIntent.putExtra(Intent.EXTRA_TEXT,"Me gusta esta pelicula");
+				shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Que buena peli");				
+				startActivity(Intent.createChooser(shareIntent, "Share..."));				
+			}
+		});
+		
 		this.getFunciones();
 	}
 
