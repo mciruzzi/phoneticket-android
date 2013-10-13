@@ -14,28 +14,46 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:background">#ffffffff</item>
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:actionBarStyle">@style/CustomActionBarTheme</item>
     </style>
+
+    <!--  Cambiar el color del actionbar -->
+    <style name="CustomActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
+          <item name="android:titleTextStyle">@style/MyActionBar</item>
+  	</style>
+
+	<style name="MyActionBar">
+		<item name="android:textColor">#ff400080</item>
+		<item name="android:textSize">20dp</item>
+		<item name="android:textStyle">bold|italic</item>
+	</style>
+  
     
     <!-- Para los botones del menú ppal -->
     
     <style name="ButtonMenu">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textColor">#ffffff</item>
+		<item name="android:textColor">#ff530c0e</item>
 		<item name="android:gravity">center</item>
 		<item name="android:layout_margin">2dp</item>
 		<item name="android:textSize">25dp</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowColor">#ffffff</item>
 		<item name="android:shadowDx">1</item>
 		<item name="android:shadowDy">1</item>
 		<item name="android:shadowRadius">2</item>
-<!-- 		<item name="android:background">@drawable/button_menu</item> -->
-		
-		
+ 		<item name="android:background">@drawable/button_menu</item>
 	</style>
 
+    <style name="Title">
+        <item name="android:textColor">#ff400080</item>
+        <item name="android:background">#ff4356</item>
+        
+    </style>
+    
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -55,7 +73,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+    
+    <style name="TitleReserveAndBuy" parent="DetailsReserveAndBuy">
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
     </style>
     
     <style name="ButtonsShowReserve">

@@ -15,7 +15,6 @@ public class BuyShowActivity extends Activity {
 	private TextView mCinema;
 	private TextView mDate;
 	private TextView mSeating;
-	private TextView mTicketsType;
 	private ImageView mCode;
 	
 	@Override
@@ -42,7 +41,6 @@ public class BuyShowActivity extends Activity {
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
-		mTicketsType.setText(intent.getStringExtra(OperationConstants.TICKETS_TYPE));
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
 	}
 	
@@ -52,7 +50,6 @@ public class BuyShowActivity extends Activity {
 		mCinema = (TextView) findViewById(R.id.accountBuyCinema);
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
-		mTicketsType = (TextView) findViewById(R.id.accountBuyTicketsType);
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);	
 	}
 }

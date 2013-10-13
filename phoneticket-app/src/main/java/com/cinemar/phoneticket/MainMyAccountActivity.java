@@ -82,8 +82,6 @@ public class MainMyAccountActivity extends Activity {
 		addTabs();
 		getUIElement();
 		getDataOfServer();
-		
-	    loadData();
 	}
 
 	private void requestLogin() {
@@ -135,40 +133,62 @@ public class MainMyAccountActivity extends Activity {
 				try {
 
 					user = new User(userData);
-					GroupOperation groupReserve = new GroupOperation("Reservas");
-					
-					Log.i("RESERVA", "Por tomar los datos de las reservas");
-
-					if (userData.has("reservations")) {
-						
-						JSONArray reservations = userData.optJSONArray("reservations");
-						
-						for (int i = 0; i < reservations.length(); i++) {
-							
-							groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
-									ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
-							Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
-						}
-						
-					}
-
-					groups.append(ID_RESERVE, groupReserve);
-							
-				    viewConfiguration();
+					loadReserveInformation(userData);
+					loadBuyInformation(userData);
 
 					completeDataRequest();
 					
 				} catch (ParseException e) {
+				
 					NotificationUtil.showSimpleAlert(getString(R.string.error),
 							"Error al obtener los datos. Intente más tarde.",
 							activity);
-				}
-				 catch (JSONException e) {
-					Log.i("RESERVA", "Falla al parsear el JSON");
+					
+				} catch (JSONException e) {
+					
+					Log.i("RESERVA-COMPRA", "Falla al parsear el JSON");
 					e.printStackTrace();
 				}
 			}
 
+			private void loadReserveInformation(JSONObject userData) throws JSONException {
+				
+				GroupOperation groupReserve = new GroupOperation("Reservas");
+				
+				if (userData.has("reservations")) {
+					
+					JSONArray reservations = userData.optJSONArray("reservations");
+					
+					for (int i = 0; i < reservations.length(); i++) {
+						
+						groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
+								ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
+					}
+				}
+
+				groups.append(ID_RESERVE, groupReserve);
+			}
+
+			private void loadBuyInformation(JSONObject userData) throws JSONException {
+				
+				GroupOperation groupBuy = new GroupOperation("Compras");
+				
+				if (userData.has("purchases")) {
+					
+					JSONArray purchases = userData.optJSONArray("purchases");
+					
+					for (int i = 0; i < purchases.length(); i++) {
+						
+						groupBuy.addItem(new OperationView( new ItemOperation(purchases.getJSONObject(i)),
+								BuyShowActivity.class, REQUEST_SHOW_BUY));
+						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
+					}
+				}
+
+				groups.append(ID_BUY, groupBuy);
+			}
+			
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
 				if (errorResponse != null) {
@@ -248,6 +268,12 @@ public class MainMyAccountActivity extends Activity {
 
 	private void completeDataRequest() {
 
+		setUserData();
+		setOperationData();
+	}
+	
+	private void setUserData() {
+		
 		mName.setText(user.getNombre());
 		mLastName.setText(user.getApellido());
 		mDNI.setText(user.getDni());
@@ -258,7 +284,15 @@ public class MainMyAccountActivity extends Activity {
 		utilDate.setDate(user.getFechaNacimiento());
 		utilDate.update();
 	}
-
+	
+	private void setOperationData() {
+		
+		ExpandableListView listView = (ExpandableListView) findViewById(R.id.accountListViewReserveAndBuy);
+	    OperationExpandableListAdapter adapter = new OperationExpandableListAdapter(this, groups);
+	    listView.setAdapter(adapter);
+	    listView.expandGroup(ID_BUY);
+	    listView.expandGroup(ID_RESERVE);
+	}
 
 	private void saveChanges() {
 
@@ -403,55 +437,4 @@ public class MainMyAccountActivity extends Activity {
 
 		return !TextUtils.isEmpty(mPassword.getText().toString());
 	}
-	
-	private void viewConfiguration() {
-		
-		ExpandableListView listView = (ExpandableListView) findViewById(R.id.accountListViewReserveAndBuy);
-	    OperationExpandableListAdapter adapter = new OperationExpandableListAdapter(this, groups);
-	    listView.setAdapter(adapter);
-	    listView.expandGroup(ID_BUY);
-	    listView.expandGroup(ID_RESERVE);
-	}
-
-	public void loadData() {
-		
-		GroupOperation groupBuy = new GroupOperation("Compras");
-//		GroupOperation groupReserve = new GroupOperation("Reservas");
-		
-		String[] seatingA = {"Q-22", "Q-5", "Q-34"};
-		ItemOperation itemA = new ItemOperation("Título alguno", "PC");
-		itemA.setTicketsType("Jubilado");
-		itemA.setSeating(seatingA);
-		
-		groupBuy.addItem(new OperationView(itemA, BuyShowActivity.class, REQUEST_SHOW_BUY));
-
-		String[] seatingB = {"R-10", "R-11", "R-23", "R-24", "R-25","R-26" };
-		ItemOperation itemB = new ItemOperation("Título dos", "LH");
-		itemB.setTicketsType("Miércoles");
-		itemB.setSeating(seatingB);
-		
-		groupBuy.addItem(new OperationView(itemB, BuyShowActivity.class, REQUEST_SHOW_BUY));
-
-		
-		groups.append(ID_BUY , groupBuy);
-		
-//		String[] seating1 = {"A-2", "A-3", "A-4"};
-//		ItemOperation item1 = new ItemOperation("Título 1", "Lavalle");
-//		item1.setCode("cod-LSKJDAQWEQ2423423");
-//		item1.setTicketsType("Jubilado");
-//		item1.setSeating(seating1);
-//		
-//		groupReserve.addItem(new OperationView( item1, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
-//
-//		String[] seating2 = {"M-12", "M-13", "M-14"};
-//		ItemOperation item2 = new ItemOperation("Título 5", "Puerto Madero");
-//		item2.setCode("cod-KWJ4HK45HKWEH");
-//		item2.setTicketsType("Miércoles");
-//		item2.setSeating(seating2);
-//		
-//		groupReserve.addItem(new OperationView( item2, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
-//
-//		groups.append(ID_RESERVE, groupReserve);
-	}
-
 }

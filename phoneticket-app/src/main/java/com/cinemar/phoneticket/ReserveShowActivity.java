@@ -17,7 +17,6 @@ public class ReserveShowActivity extends Activity {
 	private TextView mCinema;
 	private TextView mDate;
 	private TextView mSeating;
-	private TextView mTicketsType;
 	private TextView mCode;
 	
 	@Override
@@ -89,8 +88,7 @@ public class ReserveShowActivity extends Activity {
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
-		mTicketsType.setText(intent.getStringExtra(OperationConstants.TICKETS_TYPE));
-		mCode.setText(intent.getStringExtra(OperationConstants.CODE));
+		mCode.setText("Cód.: " + intent.getStringExtra(OperationConstants.CODE));
 	}
 	
 	private void getUIElement() {
@@ -99,7 +97,6 @@ public class ReserveShowActivity extends Activity {
 		mCinema = (TextView) findViewById(R.id.accountReserveCinema);
 		mDate = (TextView) findViewById(R.id.accountReserveDate);
 		mSeating = (TextView) findViewById(R.id.accountReserveSeating);
-		mTicketsType = (TextView) findViewById(R.id.accountReserveTicketsType);
 		mCode = (TextView) findViewById(R.id.accountReserveCode);	
 	}
 }

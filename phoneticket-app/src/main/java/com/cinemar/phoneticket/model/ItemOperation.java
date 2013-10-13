@@ -9,8 +9,6 @@ import org.json.JSONObject;
 
 import com.cinemar.phoneticket.util.UIDateUtil;
 
-import android.util.Log;
-
 public class ItemOperation {
 
 	private String title;
@@ -20,15 +18,14 @@ public class ItemOperation {
 	private String ticketsType;
 	private String code;
 	
-	public ItemOperation(String title, String cinema) {
-		
-		setTitle(title);
-		setCinema(cinema);
-		setDate(new Date());
-	}
+//	public ItemOperation(String title, String cinema) {
+//		
+//		setTitle(title);
+//		setCinema(cinema);
+//		setDate(new Date());
+//	}
 	
 	public ItemOperation(JSONObject operation) throws JSONException {
-		
 		
 		JSONObject show = operation.getJSONObject("show");
 		JSONArray seats = operation.getJSONArray("seats");
@@ -37,63 +34,22 @@ public class ItemOperation {
 		JSONObject film = show.getJSONObject("movie");
 
 		setCode(operation.getString("id"));
-
 		setTitle(film.getString("title"));
 		setCinema(cinema.getString("name") + " " + room.getString("name"));
 		setDate(show.getString("starts_at"));
-		
-		Log.i("la", "***************************************************Reserva " + getDate());
-		
-//		String seating = "(" + Integer.toString(seats.length()) + ") ";
-		
-		String[] seating = new String[seats.length()];
-		
-		for (int i = 0; i < seats.length(); i++)
-		{
-//			seating += seats.getString(i) + " ";
-			seating[i] = seats.getString(i);
-		}
-		setSeating(seating);
-		
-//		private Date date;
-//		private String[] seating;
-		
-//		this.title = .getString("title");
-//		this.name = cinema.getString("name");
-//		this.latitude = cinema.getInt("latitude");
-//		this.longitude = cinema.getInt("longitude");
-//		this.address = cinema.getString("address");
-//		this.PhotoUrl = cinema.getString("photo_url");
-//		shows = new ArrayList<Show>();
-//
-//		if (cinema.has("shows")) {
-//			JSONArray showsArray = cinema.getJSONArray("shows");
-//
-//			for (int j = 0; j < showsArray.length(); j++) {
-//				JSONObject showObject = showsArray.optJSONObject(j);
-//				shows.add(new Show(showObject));
-//			}
-//		}
-		
-	
-
-
-	}
-
-	public String toString() {
-		return getTitle() + " " + getCinema() + " Lunes";
+		setSeating(seats);
 	}
 	
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	private void setTitle(String title) {
 		this.title = title;
 	}
 	public String getCinema() {
 		return cinema;
 	}
-	public void setCinema(String cinema) {
+	private void setCinema(String cinema) {
 		this.cinema = cinema;
 	}
 	public Date getDate() {
@@ -108,7 +64,7 @@ public class ItemOperation {
 		return UIDateUtil.getStringFromDate(date);	
 	}
 	
-	public void setDate(String date) {
+	private void setDate(String date) {
 		try {
 			this.date = UIDateUtil.getDateFromString(date);
 		
@@ -118,7 +74,7 @@ public class ItemOperation {
 		}
 	}
 	
-	public void setDate(Date date) {
+	private void setDate(Date date) {
 		this.date = date;
 	}
 	
@@ -135,19 +91,33 @@ public class ItemOperation {
 		
 		return seatings;
 	}
+
+	private void setSeating(JSONArray seats) throws JSONException {
+		
+		String[] seating = new String[seats.length()];
+		
+		for (int i = 0; i < seats.length(); i++)
+			seating[i] = seats.getString(i);
+		
+		setSeating(seating);
+	}
 	
-	public void setSeating(String[] seating) {
+	private void setSeating(String[] seating) {
 		this.seating = seating;
 	}
+	
 	public String getTicketsType() {
 		return ticketsType;
 	}
+	
 	public void setTicketsType(String ticketsType) {
 		this.ticketsType = ticketsType;
 	}
+	
 	public String getCode() {
 		return code;
 	}
+	
 	public void setCode(String code) {
 		this.code = code;
 	}

@@ -40,20 +40,20 @@
         <Button
             android:id="@+id/peliculasButton"
 			style="@style/ButtonMenu"
-			android:drawableStart="@drawable/peliculas"
+			android:drawableStart="@drawable/ic_peliculas"
             android:text="@string/cartelera" />
         
        <Button
            android:id="@+id/complejoButton"
            style="@style/ButtonMenu"
            android:text="@string/complejo"
-           android:drawableStart="@drawable/complejosicon" />
+           android:drawableStart="@drawable/ic_complejos" />
 
         <Button
             android:id="@+id/miCuentaButton"
 			style="@style/ButtonMenu"
             android:text="@string/mi_cuenta"
-			android:drawableStart="@drawable/micuentaicon"/>
+			android:drawableStart="@drawable/ic_micuenta"/>
 
     </LinearLayout>
 

@@ -18,7 +18,7 @@
         android:paddingTop="15dp">
 		        
         <TextView
-            style="@style/DetailsReserveAndBuy"
+            style="@style/TitleReserveAndBuy"
             android:id="@+id/accountReserveTitle"
 	        android:text="@string/hello_world" />
     
@@ -30,17 +30,13 @@
 	    <TextView
 	        style="@style/DetailsReserveAndBuy"
 	       	android:id="@+id/accountReserveDate"
-	        android:text="@string/hello_world" />
+	        android:text="@string/hello_world"
+	        android:layout_marginBottom="30dp"  />
 	
 	    <TextView
 			style="@style/DetailsReserveAndBuy"
 	       	android:id="@+id/accountReserveSeating"
-	        android:text="@string/hello_world" />
-	    
-	    <TextView
-	        style="@style/DetailsReserveAndBuy"
-	        android:id="@+id/accountReserveTicketsType"
-	        android:text="@string/hello_world" />
+	        android:text="@string/hello_world"/>
 	    
 	    <TextView
 	        style="@style/DetailsReserveAndBuy"
