@@ -1,6 +1,7 @@
 package com.cinemar.phoneticket;
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
+import com.cinemar.phoneticket.util.NotificationUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -50,6 +51,25 @@ public class ReserveShowActivity extends Activity {
     	Intent data = new Intent();
 //		data.putExtra("email", sessionUser.getEmail());
     	setResult(RESULT_OK, data);
+	}
+
+	public void buyReserve(View view) {
+		NotificationUtil.showSimpleAlert("Comprar", "Tenés q pagar!", this);
+
+		
+	}
+	
+	public void shareWithTwitter(View view) {
+		
+		NotificationUtil.showSimpleAlert("Twitter", "Comprartir", this);
+	}
+	
+	public void shareWithFacebook(View view) {
+		NotificationUtil.showSimpleAlert("Facebook", "Comprartir", this);
+	}
+	
+	public void schedule(View view){
+		NotificationUtil.showSimpleAlert("Agenda", "Agendar", this);
 	}
 
 	private AlertDialog createWindowConfirmation() {

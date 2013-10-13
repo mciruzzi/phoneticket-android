@@ -68,25 +68,29 @@
             style="@style/ButtonsShowReserve"
 			android:id="@+id/buy"
 			android:src="@drawable/peso"
-			android:contentDescription="@string/buy" />
+			android:contentDescription="@string/buy"
+			android:onClick="buyReserve" />
 
         <ImageView
             style="@style/ButtonsShowReserve"
 			android:id="@+id/twitter"
 			android:src="@drawable/twitter"
-			android:contentDescription="@string/twitter" />
+			android:contentDescription="@string/twitter"
+			android:onClick="shareWithTwitter"/>
 
         <ImageView
             style="@style/ButtonsShowReserve"            
 			android:id="@+id/facebook"
 			android:src="@drawable/facebook"
-			android:contentDescription="@string/facebook" />
+			android:contentDescription="@string/facebook"
+			android:onClick="shareWithFacebook" />
         
         <ImageView
             style="@style/ButtonsShowReserve"            
 			android:id="@+id/calendar"
 			android:src="@drawable/calendario"
-			android:contentDescription="@string/calendar" />
+			android:contentDescription="@string/calendar"
+			android:onClick="schedule"  />
         
     </LinearLayout>
     

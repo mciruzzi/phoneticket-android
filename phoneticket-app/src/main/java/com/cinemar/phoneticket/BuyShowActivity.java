@@ -1,11 +1,13 @@
 package com.cinemar.phoneticket;
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
+import com.cinemar.phoneticket.util.NotificationUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,5 +53,22 @@ public class BuyShowActivity extends Activity {
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);	
+	}
+	
+	
+	public void shareWithTwitter(View view) {
+
+		NotificationUtil.showSimpleAlert("Twitter", "Comprartir", this);
+
+	}
+	
+	public void shareWithFacebook(View view) {
+		NotificationUtil.showSimpleAlert("Facebook", "Comprartir", this);
+
+	}
+	
+	public void schedule(View view){
+		NotificationUtil.showSimpleAlert("Agenda", "Agendar", this);
+
 	}
 }
