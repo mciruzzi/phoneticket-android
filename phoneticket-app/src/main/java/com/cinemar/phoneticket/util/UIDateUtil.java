@@ -1,5 +1,7 @@
 package com.cinemar.phoneticket.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -119,4 +121,16 @@ public class UIDateUtil {
 
 	}
 
+	public static Date getDateFromString(String date) throws ParseException {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		date = date.replaceAll("Z", "-0700");  //esto es porque viene la Z en lugar del número
+		return dateFormat.parse(date);
+	}
+	
+	public static String getStringFromDate(Date date) {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+		return dateFormat.format(date);
+	}
 }

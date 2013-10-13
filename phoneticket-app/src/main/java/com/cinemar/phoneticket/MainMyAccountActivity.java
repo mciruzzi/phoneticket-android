@@ -3,6 +3,7 @@ package com.cinemar.phoneticket;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.View;
@@ -82,7 +84,6 @@ public class MainMyAccountActivity extends Activity {
 		getDataOfServer();
 		
 	    loadData();
-	    viewConfiguration();
 	}
 
 	private void requestLogin() {
@@ -134,12 +135,37 @@ public class MainMyAccountActivity extends Activity {
 				try {
 
 					user = new User(userData);
+					GroupOperation groupReserve = new GroupOperation("Reservas");
+					
+					Log.i("RESERVA", "Por tomar los datos de las reservas");
+
+					if (userData.has("reservations")) {
+						
+						JSONArray reservations = userData.optJSONArray("reservations");
+						
+						for (int i = 0; i < reservations.length(); i++) {
+							
+							groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
+									ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+							Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
+						}
+						
+					}
+
+					groups.append(ID_RESERVE, groupReserve);
+							
+				    viewConfiguration();
+
 					completeDataRequest();
 					
 				} catch (ParseException e) {
 					NotificationUtil.showSimpleAlert(getString(R.string.error),
 							"Error al obtener los datos. Intente más tarde.",
 							activity);
+				}
+				 catch (JSONException e) {
+					Log.i("RESERVA", "Falla al parsear el JSON");
+					e.printStackTrace();
 				}
 			}
 
@@ -390,7 +416,7 @@ public class MainMyAccountActivity extends Activity {
 	public void loadData() {
 		
 		GroupOperation groupBuy = new GroupOperation("Compras");
-		GroupOperation groupReserve = new GroupOperation("Reservas");
+//		GroupOperation groupReserve = new GroupOperation("Reservas");
 		
 		String[] seatingA = {"Q-22", "Q-5", "Q-34"};
 		ItemOperation itemA = new ItemOperation("Título alguno", "PC");
@@ -409,23 +435,23 @@ public class MainMyAccountActivity extends Activity {
 		
 		groups.append(ID_BUY , groupBuy);
 		
-		String[] seating1 = {"A-2", "A-3", "A-4"};
-		ItemOperation item1 = new ItemOperation("Título 1", "Lavalle");
-		item1.setCode("cod-LSKJDAQWEQ2423423");
-		item1.setTicketsType("Jubilado");
-		item1.setSeating(seating1);
-		
-		groupReserve.addItem(new OperationView( item1, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
-
-		String[] seating2 = {"M-12", "M-13", "M-14"};
-		ItemOperation item2 = new ItemOperation("Título 5", "Puerto Madero");
-		item2.setCode("cod-KWJ4HK45HKWEH");
-		item2.setTicketsType("Miércoles");
-		item2.setSeating(seating2);
-		
-		groupReserve.addItem(new OperationView( item2, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
-
-		groups.append(ID_RESERVE, groupReserve);
+//		String[] seating1 = {"A-2", "A-3", "A-4"};
+//		ItemOperation item1 = new ItemOperation("Título 1", "Lavalle");
+//		item1.setCode("cod-LSKJDAQWEQ2423423");
+//		item1.setTicketsType("Jubilado");
+//		item1.setSeating(seating1);
+//		
+//		groupReserve.addItem(new OperationView( item1, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+//
+//		String[] seating2 = {"M-12", "M-13", "M-14"};
+//		ItemOperation item2 = new ItemOperation("Título 5", "Puerto Madero");
+//		item2.setCode("cod-KWJ4HK45HKWEH");
+//		item2.setTicketsType("Miércoles");
+//		item2.setSeating(seating2);
+//		
+//		groupReserve.addItem(new OperationView( item2, ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+//
+//		groups.append(ID_RESERVE, groupReserve);
 	}
 
 }

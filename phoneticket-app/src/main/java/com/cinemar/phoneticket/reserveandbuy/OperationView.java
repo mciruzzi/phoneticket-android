@@ -21,7 +21,7 @@ public class OperationView {
 
 		intent.putExtra(OperationConstants.TITLE, item.getTitle());
 		intent.putExtra(OperationConstants.CINEMA, item.getCinema());
-		intent.putExtra(OperationConstants.DATE, item.getDate().toString());
+		intent.putExtra(OperationConstants.DATE, item.getDateToString());
 		intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
 		intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
 		intent.putExtra(OperationConstants.CODE, item.getCode());

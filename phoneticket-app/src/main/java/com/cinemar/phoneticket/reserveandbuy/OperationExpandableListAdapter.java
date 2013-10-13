@@ -50,7 +50,7 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 	    textTitle.setText(children.getItem().getTitle());
 	    
 	    textCinemaAndDate = (TextView) convertView.findViewById(R.id.accountItemCinemaAndDate);
-	    textCinemaAndDate.setText(children.getItem().getCinema() + " Lunes" );
+	    textCinemaAndDate.setText(children.getItem().getCinema() + " - " + children.getItem().getDateToString() );
 	    
 	    convertView.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -67,9 +67,7 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		Intent intent = new Intent(activity, operation.getActivityClass());
 		operation.setInformationToIntent(intent);
-//		intent.setAction(LoginActivity.SIGNIN_ACTION);
 		activity.startActivityForResult(intent, MainMyAccountActivity.REQUEST_SHOW_RESERVE);
-		
 	}
 	
 	public int getChildrenCount(int groupPosition) {

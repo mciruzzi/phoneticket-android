@@ -6,10 +6,11 @@ import java.util.List;
 public class GroupOperation {
 
 	  private String name;
-	  private List<OperationView> items = new ArrayList<OperationView>();
+	  private List<OperationView> items;
 
 	  public GroupOperation(String title) {
 	    this.name = title;
+	    this.items = new ArrayList<OperationView>();
 	  }
 	  
 	  public String getName() {
