@@ -14,5 +14,6 @@
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
     <string name="title_activity_reserve_show">Reserva</string>
     <string name="title_activity_buy_show">Compra</string>
-
+    <string name="reserve">Reservar</string>
+    <string name="buy">Comprar</string>
 </resources>

@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:text="genre"
+                        android:text="genero"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textSize="11sp" />
 
@@ -163,19 +163,19 @@
             android:layout_gravity="bottom|center"
             android:layout_marginLeft="16dp" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/reservarButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_reservar" />
+                style="@style/Buttons"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/reserve" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/comprarButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_comprar" />
+                style="@style/Buttons"
+				android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+				android:text="@string/buy" />
         </LinearLayout>
     </RelativeLayout>
 
