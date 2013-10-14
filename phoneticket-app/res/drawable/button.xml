@@ -9,7 +9,7 @@
                 android:width="1dp"
                 android:color="@color/dark_golden" />
             <corners
-                android:radius="30dp" />
+                android:radius="20dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
@@ -27,7 +27,7 @@
                 android:width="1dp"
                 android:color="@color/dark_golden" />
             <corners
-                android:radius="30dp" />
+                android:radius="20dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
@@ -45,7 +45,7 @@
                 android:width="1dp"
                 android:color="@color/dark_golden" />
             <corners
-                android:radius="30dp" />
+                android:radius="20dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
@@ -63,7 +63,7 @@
                 android:width="1dp"
                 android:color="@color/dark_golden" />
             <corners
-                android:radius="30dp" />
+                android:radius="20dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"

@@ -26,7 +26,7 @@
 
 	<style name="MyActionBar">
 		<item name="android:textColor">#ff400080</item>
-		<item name="android:textSize">20dp</item>
+		<item name="android:textSize">20sp</item>
 		<item name="android:textStyle">bold|italic</item>
 	</style>
   
@@ -36,10 +36,10 @@
     <style name="ButtonMenu">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textColor">#ff530c0e</item>
+	    <item name="android:textColor">@color/brown</item>
 		<item name="android:gravity">center</item>
 		<item name="android:layout_margin">2dp</item>
-		<item name="android:textSize">25dp</item>
+		<item name="android:textSize">25sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:shadowColor">#ffffff</item>
 		<item name="android:shadowDx">1</item>
@@ -82,10 +82,19 @@
         <item name="android:textSize">22sp</item>
     </style>
     
-    <style name="ButtonsShowReserve">
+    <style name="Buttons" parent="@android:style/Widget.Button.Small">
         <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">@drawable/button</item>
+	    <item name="android:layout_marginTop">10dp</item>
+	    <item name="android:textSize">16sp</item>
+	    <item name="android:textColor">@color/brown</item>
+	    <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonsShowReserve">
+         <item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_margin">5dp</item>
     </style>
-
 </resources>
