@@ -8,30 +8,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.films.FilmOnClickListener;
 import com.cinemar.phoneticket.model.Theatre;
 import com.cinemar.phoneticket.theaters.TheatreOnClickListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
-import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ComplejosActivity extends AbstractApiConsumerActivity {
