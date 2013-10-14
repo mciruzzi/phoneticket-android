@@ -9,12 +9,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -251,21 +253,26 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private void addTabs() {
+        
+    	TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
+    	tabHost.setup();
+    	
+		View tabView1 = createTabView(tabHost.getContext(), "Funciones");
+        TabSpec setContent1 = tabHost.newTabSpec("Funciones").setIndicator(tabView1).setContent(R.id.myReservesBuys);
+        tabHost.addTab(setContent1);
+        
+		View tabView2 = createTabView(tabHost.getContext(), "Datos");
+        TabSpec setContent2 = tabHost.newTabSpec("Datos").setIndicator(tabView2).setContent(R.id.myAccountData);
+        tabHost.addTab(setContent2);
+    }
 
-		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
-		tabHost.setup();
-
-		TabSpec spec1 = tabHost.newTabSpec("tabFunctions");
-        spec1.setIndicator("Funciones", null);
-        spec1.setContent(R.id.myReservesBuys);
-        tabHost.addTab(spec1);
-
-		TabSpec spec2 = tabHost.newTabSpec("tabData");
-        spec2.setIndicator("Datos", null);
-        spec2.setContent(R.id.myAccountData);
-        tabHost.addTab(spec2);
-	}
-
+    private static View createTabView(final Context context, final String text) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        tv.setText(text);
+        return view;
+    }
+        
 	private void completeDataRequest() {
 
 		setUserData();

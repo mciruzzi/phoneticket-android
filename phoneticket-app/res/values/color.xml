@@ -8,4 +8,6 @@
 	<color name="golden">#d18c32</color>	
 	<color name="dark_golden">#b07129</color>
 	<color name="white">#ffffff</color>
+	<color name="pressed_phone_ticket_theme">#CC400080</color>
+	
 </resources>

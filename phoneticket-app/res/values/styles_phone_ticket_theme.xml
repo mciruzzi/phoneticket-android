@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Phone_ticket_theme" parent="@android:style/Theme.Holo.Light">
+
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Phone_ticket_theme</item>
+	    <item name="android:editTextStyle">@style/EditTextcolor_theme</item>
+	    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewcolor_theme</item>
+	    <item name="android:checkboxStyle">@style/CheckBoxcolor_theme</item>
+	    <item name="android:radioButtonStyle">@style/RadioButtoncolor_theme</item>
+	    <item name="android:buttonStyle">@style/Buttoncolor_theme</item>
+	    <item name="android:imageButtonStyle">@style/ImageButtoncolor_theme</item>
+	    <item name="android:spinnerStyle">@style/Spinnercolor_theme</item>
+	    <item name="android:dropDownSpinnerStyle">@style/Spinnercolor_theme.DropDown</item>
+	    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemcolor_theme</item>
+	    <item name="android:progressBarStyleHorizontal">@style/ProgressBarcolor_theme</item>
+	    <item name="android:seekBarStyle">@style/SeekBarcolor_theme</item>
+	    <item name="android:ratingBarStyle">@style/RatingBarcolor_theme</item>
+	    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigcolor_theme</item>
+	    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallcolor_theme</item>
+	    <item name="android:buttonStyleToggle">@style/Togglecolor_theme</item>
+	    <item name="android:listViewStyle">@style/ListViewcolor_theme</item>
+	    <item name="android:listViewWhiteStyle">@style/ListViewcolor_theme.White</item>
+	    <item name="android:spinnerItemStyle">@style/SpinnerItemcolor_theme</item>
+
+
+        <item name="android:popupMenuStyle">@style/PopupMenu.Phone_ticket_theme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Phone_ticket_theme</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Phone_ticket_theme</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_phone_ticket_theme</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phone_ticket_theme</item> 
+        
+    </style>
+
+    <!-- Action bar  -->
+    <style name="ActionBar.Solid.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.ActionBar">
+		<item name="android:background">@drawable/actionbar_background</item>    
+	    <item name="android:titleTextStyle">@style/ActionBar.Title.Phone_ticket_theme</item>
+    </style>
+
+    <!--  Título de la action bar -->
+	<style name="ActionBar.Title.Phone_ticket_theme" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+	    <item name="android:textColor">@color/violet</item>
+	    <item name="android:textSize">20sp</item>
+		<item name="android:textStyle">bold|italic</item>
+	</style>
+    
+	
+    <style name="PopupMenu.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_phone_ticket_theme</item>	
+    </style>
+
+    <style name="DropDownListView.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_phone_ticket_theme</item>
+    </style>
+
+    <style name="DropDownNav.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.Spinner">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_phone_ticket_theme</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_phone_ticket_theme</item>
+    </style>
+    
+    <style name="ProgressBar.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
+    </style>
+    
+    <style name="ActionButton.CloseMode.Phone_ticket_theme" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_phone_ticket_theme</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Phone_ticket_theme.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Phone_ticket_theme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Phone_ticket_theme</item>
+    </style>
+
+</resources>

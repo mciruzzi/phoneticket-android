@@ -124,7 +124,7 @@ public class UIDateUtil {
 	public static Date getDateFromString(String date) throws ParseException {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		date = date.replaceAll("Z", "-0700");  //esto es porque viene la Z en lugar del número
+		date = date.replaceAll("Z", "-0000");  //esto es porque viene la Z en lugar del número
 		return dateFormat.parse(date);
 	}
 	
