@@ -14,9 +14,9 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:background">#ffffffff</item>
-        <item name="android:textColor">#ff000000</item>
-        <item name="android:actionBarStyle">@style/CustomActionBarTheme</item>
+       <!--  <item name="android:background">#ffffffff</item> -->
+       <!--  <item name="android:textColor">#ff000000</item> -->
+        <!--  item name="android:actionBarStyle">@style/CustomActionBarTheme</item> -->
     </style>
 
     <!--  Cambiar el color del actionbar -->

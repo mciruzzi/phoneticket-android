@@ -12,4 +12,4 @@
     android:textSize="18sp"
     android:textAlignment="textEnd"
     android:textStyle="bold" 
-    android:background="#3C94FF" /> 
+    android:background="@color/light_golden" /> 
