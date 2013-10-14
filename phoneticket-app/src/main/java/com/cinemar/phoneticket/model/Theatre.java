@@ -10,8 +10,8 @@ import org.json.JSONObject;
 public class Theatre {
 	String id;
 	String name;
-	int latitude;
-	int longitude;
+	Double latitude;
+	Double longitude;
 	String address;
 	String PhotoUrl;
 	List<Show> shows;
@@ -19,8 +19,8 @@ public class Theatre {
 	public Theatre(JSONObject cinema) throws JSONException {
 		this.id = cinema.getString("id");
 		this.name = cinema.getString("name");
-		this.latitude = cinema.getInt("latitude");
-		this.longitude = cinema.getInt("longitude");
+		this.latitude = cinema.getDouble("latitude");
+		this.longitude = cinema.getDouble("longitude");
 		this.address = cinema.getString("address");
 		this.PhotoUrl = cinema.getString("photo_url");
 		shows = new ArrayList<Show>();
@@ -52,19 +52,19 @@ public class Theatre {
 		this.name = name;
 	}
 
-	public int getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(int latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public int getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(int longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
