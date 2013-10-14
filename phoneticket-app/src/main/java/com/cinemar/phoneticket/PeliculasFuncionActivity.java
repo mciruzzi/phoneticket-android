@@ -100,7 +100,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 					return;				
 				}
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL());
+				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL()); //TODO Descomentar cuando Juan ponga el share url en la request de movies
 				"http://phoneticket-stg.herokuapp.com/movies/1");
 				//aparentemente facebook tiene un bug con esto y solo soporta el pasaje de urls
 				
@@ -118,7 +118,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 					return;
 				}
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL());
+				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL()); //TODO Descomentar cuando Juan ponga el share url en la request de movies
 				"Me gusta esta peli: " + "http://phoneticket-stg.herokuapp.com/movies/1");
 				startActivity(Intent.createChooser(shareIntent, "Share..."));				
 			}
