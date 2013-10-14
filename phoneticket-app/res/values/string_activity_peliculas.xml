@@ -4,5 +4,7 @@
     <string name="funciones_progress_getting">Obteniendo Funciones&#8230;</string>
     <string name="title_activity_peliculas">Carterlera</string>
     <string name="films">Películas</string>
+    <string name="no_selected_show">No ha escojido ninguna funcion todavia</string>
+    
  
 </resources>
