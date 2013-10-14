@@ -42,8 +42,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class MainMyAccountActivity extends Activity {
 	
 	public final static int REQUEST_LOGIN = 0;
-	public final static int REQUEST_SHOW_RESERVE = 1;
-	public final static int REQUEST_SHOW_BUY = 2;
 
 	private final static int ID_BUY = 0;
 	private final static int ID_RESERVE = 1;
@@ -103,13 +101,6 @@ public class MainMyAccountActivity extends Activity {
 				// activity
 				finish();
 			}
-		} else if (requestCode == REQUEST_SHOW_RESERVE) {
-			
-			if (resultCode == RESULT_OK) {
-				NotificationUtil.showSimpleAlert("", "La reserva ha sido cancelada", this);
-			} else {
-//				NotificationUtil.showSimpleAlert("Error", "La reserva no ha podido ser cancelada. Inténtelo más tarde", this);
-			}			
 		}
 	}
 
@@ -164,7 +155,7 @@ public class MainMyAccountActivity extends Activity {
 					for (int i = 0; i < reservations.length(); i++) {
 						
 						groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
-								ReserveShowActivity.class, REQUEST_SHOW_RESERVE));
+								ReserveShowActivity.class));
 						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
 					}
 				}
@@ -183,7 +174,7 @@ public class MainMyAccountActivity extends Activity {
 					for (int i = 0; i < purchases.length(); i++) {
 						
 						groupBuy.addItem(new OperationView( new ItemOperation(purchases.getJSONObject(i)),
-								BuyShowActivity.class, REQUEST_SHOW_BUY));
+								BuyShowActivity.class ));
 						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
 					}
 				}
@@ -254,16 +245,16 @@ public class MainMyAccountActivity extends Activity {
 
 	private void addTabs() {
         
-    	TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
-    	tabHost.setup();
-    	
+		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
+		tabHost.setup();
+		
 		View tabView1 = createTabView(tabHost.getContext(), "Funciones");
-        TabSpec setContent1 = tabHost.newTabSpec("Funciones").setIndicator(tabView1).setContent(R.id.myReservesBuys);
-        tabHost.addTab(setContent1);
-        
+		TabSpec setContent1 = tabHost.newTabSpec("Funciones").setIndicator(tabView1).setContent(R.id.myReservesBuys);
+		tabHost.addTab(setContent1);
+		
 		View tabView2 = createTabView(tabHost.getContext(), "Datos");
-        TabSpec setContent2 = tabHost.newTabSpec("Datos").setIndicator(tabView2).setContent(R.id.myAccountData);
-        tabHost.addTab(setContent2);
+		TabSpec setContent2 = tabHost.newTabSpec("Datos").setIndicator(tabView2).setContent(R.id.myAccountData);
+		tabHost.addTab(setContent2);
     }
 
     private static View createTabView(final Context context, final String text) {

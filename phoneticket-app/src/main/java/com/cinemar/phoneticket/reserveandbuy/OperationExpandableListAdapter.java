@@ -1,6 +1,5 @@
 package com.cinemar.phoneticket.reserveandbuy;
 
-import com.cinemar.phoneticket.MainMyAccountActivity;
 import com.cinemar.phoneticket.R;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
@@ -54,8 +52,6 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 	    
 	    convertView.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(activity, children.getActivityClass().getName(), Toast.LENGTH_SHORT).show();
-				
 				showActivity(children);
 			}
 		});
@@ -67,7 +63,7 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		Intent intent = new Intent(activity, operation.getActivityClass());
 		operation.setInformationToIntent(intent);
-		activity.startActivityForResult(intent, MainMyAccountActivity.REQUEST_SHOW_RESERVE);
+		activity.startActivity(intent);
 	}
 	
 	public int getChildrenCount(int groupPosition) {

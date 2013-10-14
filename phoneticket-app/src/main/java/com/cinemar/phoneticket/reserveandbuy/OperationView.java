@@ -8,13 +8,11 @@ public class OperationView {
 
 	private ItemOperation item;
 	private Class<?> activityClass;
-	private int idOperation;
 	
-	public OperationView(ItemOperation item, Class<?> activity, int idOperation) {
+	public OperationView(ItemOperation item, Class<?> activity) {
 		
 		setItem(item);
 		setActivityClass(activity);
-		setIdOperation(idOperation);
 	}
 
 	public void setInformationToIntent(Intent intent) {
@@ -41,13 +39,5 @@ public class OperationView {
 
 	private void setActivityClass(Class<?> activityClass) {
 		this.activityClass = activityClass;
-	}
-
-	public int getIdOperation() {
-		return idOperation;
-	}
-
-	private void setIdOperation(int idOperation) {
-		this.idOperation = idOperation;
 	}
 } 
