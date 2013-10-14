@@ -94,15 +94,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		fbButtonView.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent shareIntent= sharer.getFacebookIntent();
+				//TODO Descomentar cuando Juan ponga el share url en la request de movies
+				Intent shareIntent= sharer.getFacebookIntent("http://phoneticket-stg.herokuapp.com/movies/1");//mFilm.getShareURL());));
 				if (shareIntent == null ){ 
 					showSimpleAlert(getString(R.string.missingApplication));
 					return;				
-				}
-				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL()); //TODO Descomentar cuando Juan ponga el share url en la request de movies
-				"http://phoneticket-stg.herokuapp.com/movies/1");
-				//aparentemente facebook tiene un bug con esto y solo soporta el pasaje de urls
+				}		
+				
 				
 				startActivity(Intent.createChooser(shareIntent, "Share..."));				
 			}
@@ -111,15 +109,14 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		ImageView twButtonView =(ImageView) findViewById(R.id.twitterImage);
 		twButtonView.setOnClickListener(new OnClickListener() {
 			
-			public void onClick(View v) {				
-				Intent shareIntent= sharer.getTwitterIntent();
+			public void onClick(View v) {
+				//TODO Descomentar cuando Juan ponga el share url en la request de movies
+				Intent shareIntent= sharer.getTwitterIntent("Me gusta esta peli: ","http://phoneticket-stg.herokuapp.com/movies/1");//mFilm.getShareURL());));
+		
 				if (shareIntent == null ) {
 					showSimpleAlert(getString(R.string.missingApplication));
 					return;
-				}
-				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL()); //TODO Descomentar cuando Juan ponga el share url en la request de movies
-				"Me gusta esta peli: " + "http://phoneticket-stg.herokuapp.com/movies/1");
+				}		 			 
 				startActivity(Intent.createChooser(shareIntent, "Share..."));				
 			}
 		});

@@ -1,6 +1,7 @@
 package com.cinemar.phoneticket;
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
+import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
 
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BuyShowActivity extends Activity {
+public class BuyShowActivity extends AbstractApiConsumerActivity {
 
 	private TextView mTitle;
 	private TextView mCinema;
@@ -57,13 +58,27 @@ public class BuyShowActivity extends Activity {
 	
 	
 	public void shareWithTwitter(View view) {
+		AppCommunicator sharer = new AppCommunicator(this);
+		Intent shareIntent= sharer.getTwitterIntent("Compre esta peli", "www.google.com.ar");
 
-		NotificationUtil.showSimpleAlert("Twitter", "Comprartir", this);
+		if (shareIntent == null ) {
+			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			return;
+		}		 			 
+		startActivity(Intent.createChooser(shareIntent, "Share..."));
+		
 
 	}
 	
 	public void shareWithFacebook(View view) {
-		NotificationUtil.showSimpleAlert("Facebook", "Comprartir", this);
+		AppCommunicator sharer = new AppCommunicator(this);
+		Intent shareIntent= sharer.getFacebookIntent("www.google.com.ar");
+
+		if (shareIntent == null ) {
+			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			return;
+		}		 			 
+		startActivity(Intent.createChooser(shareIntent, "Share..."));
 
 	}
 	
