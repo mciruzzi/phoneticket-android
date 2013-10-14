@@ -24,6 +24,7 @@ import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.cinemar.phoneticket.model.Show;
 import com.cinemar.phoneticket.model.Theatre;
+import com.cinemar.phoneticket.util.Sharer;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
@@ -35,10 +36,12 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	List<String> listDataHeader = new ArrayList<String>();
 	HashMap<String, List<String>> listDataChild = new HashMap<String,List<String>>();
 	private ImageView mYoutubeImage;
+	Sharer sharer; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sharer = new Sharer(this);
 		setContentView(R.layout.activity_peliculas_funcion);
 
 		mFilm = new Film(getIntent().getStringExtra("filmId"), getIntent()
@@ -102,7 +105,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		twButtonView.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent shareIntent=new Intent(Intent.ACTION_SEND);
+				//Intent shareIntent=new Intent(Intent.ACTION_SEND);
+				Intent shareIntent= sharer.getTwitterClient();
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT,"Me gusta esta pelicula");
 				shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Que buena peli");				
