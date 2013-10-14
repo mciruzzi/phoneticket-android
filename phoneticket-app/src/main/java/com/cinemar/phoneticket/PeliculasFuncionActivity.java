@@ -93,9 +93,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		ImageView fbButtonView = (ImageView) findViewById(R.id.facebookImage);
 		fbButtonView.setOnClickListener(new OnClickListener() {
 			
-			public void onClick(View v) {
-				//TODO Descomentar cuando Juan ponga el share url en la request de movies
-				Intent shareIntent= sharer.getFacebookIntent("http://phoneticket-stg.herokuapp.com/movies/1");//mFilm.getShareURL());));
+			public void onClick(View v) {				
+				Intent shareIntent= sharer.getFacebookIntent(mFilm.getShareURL());
 				if (shareIntent == null ){ 
 					showSimpleAlert(getString(R.string.missingApplication));
 					return;				
@@ -110,8 +109,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		twButtonView.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				//TODO Descomentar cuando Juan ponga el share url en la request de movies
-				Intent shareIntent= sharer.getTwitterIntent("Me gusta esta peli: ","http://phoneticket-stg.herokuapp.com/movies/1");//mFilm.getShareURL());));
+				Intent shareIntent= sharer.getTwitterIntent("Me gusta esta peli: ",mFilm.getShareURL());
 		
 				if (shareIntent == null ) {
 					showSimpleAlert(getString(R.string.missingApplication));
