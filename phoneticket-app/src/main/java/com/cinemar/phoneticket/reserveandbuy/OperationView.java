@@ -23,6 +23,7 @@ public class OperationView {
 		intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
 		intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
 		intent.putExtra(OperationConstants.CODE, item.getCode());
+		intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 	}
 	
 	public ItemOperation getItem() {

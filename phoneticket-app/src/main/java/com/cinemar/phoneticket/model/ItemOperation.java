@@ -17,6 +17,7 @@ public class ItemOperation {
 	private String[] seating;
 	private String ticketsType;
 	private String code;
+	private String shareUrl;
 	
 //	public ItemOperation(String title, String cinema) {
 //		
@@ -32,7 +33,8 @@ public class ItemOperation {
 		JSONObject room = show.getJSONObject("room");
 		JSONObject cinema = show.getJSONObject("theatre");
 		JSONObject film = show.getJSONObject("movie");
-
+		
+		setShareUrl(operation.getString("share_url"));
 		setCode(operation.getString("id"));
 		setTitle(film.getString("title"));
 		setCinema(cinema.getString("name") + " " + room.getString("name"));
@@ -120,5 +122,13 @@ public class ItemOperation {
 	
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getShareUrl() {
+		return shareUrl;
+	}
+
+	public void setShareUrl(String shareUrl) {
+		this.shareUrl = shareUrl;
 	}
 }

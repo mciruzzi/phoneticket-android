@@ -20,6 +20,7 @@ public class ReserveShowActivity extends Activity {
 	private TextView mDate;
 	private TextView mSeating;
 	private TextView mCode;
+	private String mShareUrl;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class ReserveShowActivity extends Activity {
 	
 	public void shareWithTwitter(View view) {		
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Reserve esta peli", "www.google.com.ar");
+		Intent shareIntent= sharer.getTwitterIntent("Reserve esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
 			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
@@ -74,7 +75,7 @@ public class ReserveShowActivity extends Activity {
 	
 	public void shareWithFacebook(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getFacebookIntent("www.google.com.ar");
+		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
 			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
@@ -124,6 +125,8 @@ public class ReserveShowActivity extends Activity {
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + intent.getStringExtra(OperationConstants.CODE));
+		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
+		
 	}
 	
 	private void getUIElement() {

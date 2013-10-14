@@ -8,5 +8,6 @@ public interface OperationConstants {
 	public final String SEATING = "seating";
 	public final String TICKETS_TYPE = "ticketsType";
 	public final String CODE = "code";
+	public final String SHARE_URL = "shareUrl";
 	
 }

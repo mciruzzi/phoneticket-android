@@ -19,6 +19,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	private TextView mDate;
 	private TextView mSeating;
 	private ImageView mCode;
+	private String mShareUrl;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
+		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 	}
 	
 	private void getUIElement() {
@@ -53,13 +55,14 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mCinema = (TextView) findViewById(R.id.accountBuyCinema);
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
-		mCode = (ImageView) findViewById(R.id.accountBuyCode);	
+		mCode = (ImageView) findViewById(R.id.accountBuyCode);
+		
 	}
 	
 	
 	public void shareWithTwitter(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Compre esta peli", "www.google.com.ar");
+		Intent shareIntent= sharer.getTwitterIntent("Compre esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
 			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
@@ -72,7 +75,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	
 	public void shareWithFacebook(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getFacebookIntent("www.google.com.ar");
+		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
 			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
