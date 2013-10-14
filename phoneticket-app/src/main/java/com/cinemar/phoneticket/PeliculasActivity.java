@@ -168,6 +168,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		intent.putExtra("filmAudienceRating", filmSelected.getAudienceRating());
 		intent.putExtra("filmCast", filmSelected.getCast());
 		intent.putExtra("filmGenre", filmSelected.getGenre());
+		intent.putExtra("filmShareUrl", filmSelected.getShareURL());
 		if (theatreId != null) {
 			intent.putExtra("theatreId", theatreId);
 		}

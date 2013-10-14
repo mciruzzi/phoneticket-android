@@ -12,8 +12,13 @@
     <string name="title_activity_main_my_account">Mi cuenta</string>
     <string name="title_activity_show_reserve_buy">Mis compras y reservas</string>
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
+
     <string name="title_activity_reserve_show">Reserva</string>
     <string name="title_activity_buy_show">Compra</string>
     <string name="reserve">Reservar</string>
     <string name="buy">Comprar</string>
+
+    <string name="missingApplication">No posee instalada la aplicacion correspondiente para ejecutar la accion</string>
+
+
 </resources>

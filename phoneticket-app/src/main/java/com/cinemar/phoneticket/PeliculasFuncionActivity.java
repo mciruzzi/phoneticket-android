@@ -24,7 +24,7 @@ import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
 import com.cinemar.phoneticket.model.Show;
 import com.cinemar.phoneticket.model.Theatre;
-import com.cinemar.phoneticket.util.Sharer;
+import com.cinemar.phoneticket.util.AppCommunicator;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
@@ -36,12 +36,12 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	List<String> listDataHeader = new ArrayList<String>();
 	HashMap<String, List<String>> listDataChild = new HashMap<String,List<String>>();
 	private ImageView mYoutubeImage;
-	Sharer sharer; 
+	AppCommunicator sharer; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		sharer = new Sharer(this);
+		sharer = new AppCommunicator(this);
 		setContentView(R.layout.activity_peliculas_funcion);
 
 		mFilm = new Film(getIntent().getStringExtra("filmId"), getIntent()
@@ -51,7 +51,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				"filmCoverUrl"), getIntent().getStringExtra("filmDirector"),
 				getIntent().getStringExtra("filmAudienceRating"),
 				getIntent().getStringExtra("filmCast"),
-				getIntent().getStringExtra("filmGenre"));
+				getIntent().getStringExtra("filmGenre"),
+				getIntent().getStringExtra("filmShareUrl"));
 
 		theatreId = getIntent().getStringExtra("theatreId");		
 
@@ -93,10 +94,16 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		fbButtonView.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent shareIntent=new Intent(Intent.ACTION_SEND);
+				Intent shareIntent= sharer.getFacebookIntent();
+				if (shareIntent == null ){ 
+					showSimpleAlert(getString(R.string.missingApplication));
+					return;				
+				}
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,"Me gusta esta pelicula");
-				shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Que buena peli");
+				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL());
+				"http://phoneticket-stg.herokuapp.com/movies/1");
+				//aparentemente facebook tiene un bug con esto y solo soporta el pasaje de urls
+				
 				startActivity(Intent.createChooser(shareIntent, "Share..."));				
 			}
 		});
@@ -104,12 +111,15 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		ImageView twButtonView =(ImageView) findViewById(R.id.twitterImage);
 		twButtonView.setOnClickListener(new OnClickListener() {
 			
-			public void onClick(View v) {
-				//Intent shareIntent=new Intent(Intent.ACTION_SEND);
-				Intent shareIntent= sharer.getTwitterClient();
+			public void onClick(View v) {				
+				Intent shareIntent= sharer.getTwitterIntent();
+				if (shareIntent == null ) {
+					showSimpleAlert(getString(R.string.missingApplication));
+					return;
+				}
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT,"Me gusta esta pelicula");
-				shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Que buena peli");				
+				shareIntent.putExtra(Intent.EXTRA_TEXT,//mFilm.getShareURL());
+				"Me gusta esta peli: " + "http://phoneticket-stg.herokuapp.com/movies/1");
 				startActivity(Intent.createChooser(shareIntent, "Share..."));				
 			}
 		});
