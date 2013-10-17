@@ -58,8 +58,8 @@ public class MainMyAccountActivity extends Activity {
 	private EditText mPhoneNumber;
 	private EditText mAddress;
 	private UIDateUtil utilDate;
-	private ProcessBarUtil utilBar;
-	
+	private ProcessBarUtil utilBarAccount;
+	private ProcessBarUtil utilBarOperation;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -113,9 +113,11 @@ public class MainMyAccountActivity extends Activity {
 
 	private void getDataOfServer() {
 		
-		utilBar.setMessage(getString(R.string.load_progress));
-		utilBar.showProgress(true);
+		utilBarAccount.setMessage(getString(R.string.load_progress));
+		utilBarAccount.showProgress(true);
 		
+		utilBarOperation.setMessage(getString(R.string.load_progress));
+		utilBarOperation.showProgress(true);		
 		
 		final MainMyAccountActivity activity = this;
 		AuthenticationService api = new APIAuthentication();
@@ -203,7 +205,8 @@ public class MainMyAccountActivity extends Activity {
 
 			@Override
 			public void onFinish() {
-				utilBar.showProgress(false);
+				utilBarAccount.showProgress(false);
+				utilBarOperation.showProgress(false);
 			}
 		});
 
@@ -230,9 +233,14 @@ public class MainMyAccountActivity extends Activity {
 			}
 		});
 		
-		utilBar = new ProcessBarUtil( findViewById(R.id.accountForm),
+		utilBarAccount = new ProcessBarUtil( findViewById(R.id.accountForm),
 			findViewById(R.id.accountBar),
 			(TextView) findViewById(R.id.accountMessageStatus),
+			this);
+		
+		utilBarOperation = new ProcessBarUtil( findViewById(R.id.accountListViewReserveAndBuy),
+			findViewById(R.id.operationBar),
+			(TextView) findViewById(R.id.operationMessageStatus),
 			this);
 		
 
@@ -304,9 +312,9 @@ public class MainMyAccountActivity extends Activity {
 			focusView.requestFocus();
 		} else {
 
-			utilBar.setMessage(getString(R.string.save_progress));
-			utilBar.showProgress(true);
-
+			utilBarAccount.setMessage(getString(R.string.save_progress));
+			utilBarAccount.showProgress(true);
+			
 			updateData();
 
 			AuthenticationService authenticationClient = new APIAuthentication();
@@ -344,7 +352,7 @@ public class MainMyAccountActivity extends Activity {
 
 				@Override
 				public void onFinish() {
-					utilBar.showProgress(false);
+					utilBarAccount.showProgress(false);
 				}
 			});
 

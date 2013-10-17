@@ -47,6 +47,7 @@ public class ReserveShowActivity extends Activity {
 	
 	private void doTheCancellation() {
 		
+		
 //		//hacer algo
 //		// if (todo bien)
 		
@@ -63,10 +64,10 @@ public class ReserveShowActivity extends Activity {
 	
 	public void shareWithTwitter(View view) {		
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Reserve esta peli", mShareUrl);
+		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser", getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -78,7 +79,7 @@ public class ReserveShowActivity extends Activity {
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -95,7 +96,7 @@ public class ReserveShowActivity extends Activity {
 	    builder.setTitle("Confirmar");
 	    builder.setMessage("¿Está seguro que desea cancelar esta reserva?");
 
-	    builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+	    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
 	        public void onClick(DialogInterface dialog, int which) {
 	           
