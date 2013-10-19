@@ -171,8 +171,10 @@ public class MainMyAccountActivity extends Activity {
 
 					for (int i = 0; i < reservations.length(); i++) {
 						
-						groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
-								ReserveShowActivity.class));
+						ItemOperation item = new ItemOperation(reservations.getJSONObject(i));
+						item.setCode(item.getId());
+							
+						groupReserve.addItem(new OperationView(item , ReserveShowActivity.class));
 
 						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada"); 
 					}
@@ -193,8 +195,10 @@ public class MainMyAccountActivity extends Activity {
 					
 					for (int i = 0; i < purchases.length(); i++) {
 						
-						groupBuy.addItem(new OperationView( new ItemOperation(purchases.getJSONObject(i)),
-								BuyShowActivity.class ));
+						ItemOperation item = new ItemOperation(purchases.getJSONObject(i));
+						item.setCode(item.getTitle() + "|"+ item.getDate() + "|" + item.getCinema());
+						
+						groupBuy.addItem(new OperationView( item, BuyShowActivity.class ));
 						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
 					}
 				}

@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket.reserveandbuy;
 
 import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.model.ItemOperation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -38,18 +41,30 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 		  
 		final OperationView children = (OperationView) getChild(groupPosition, childPosition);
-	    TextView textTitle = null, textCinemaAndDate = null;
+		ItemOperation item = children.getItem();
+	    TextView textTitle = null, textCinema = null, textDate = null;
+	    ImageView image = null;
 	    
 	    if (convertView == null) {
 	      convertView = inflater.inflate(R.layout.operation_listrow_details, null);
 	    }
 	    
 	    textTitle = (TextView) convertView.findViewById(R.id.accountItemTitle);
-	    textTitle.setText(children.getItem().getTitle());
+	    textTitle.setText(item.getTitle());
 	    
-	    textCinemaAndDate = (TextView) convertView.findViewById(R.id.accountItemCinemaAndDate);
-	    textCinemaAndDate.setText(children.getItem().getCinema() + " - " + children.getItem().getDateToString() );
-	    
+	    textCinema = (TextView) convertView.findViewById(R.id.accountItemCinema);
+	    textCinema.setText(item.getCinema());
+
+	    textDate = (TextView) convertView.findViewById(R.id.accountItemDate);
+	    textDate.setText(item.getDateToString() );
+
+	    image = (ImageView) convertView.findViewById(R.id.accountCover);
+	    image.setMaxHeight(25);
+	    image.setMaxWidth(25);
+	    image.setImageResource(R.drawable.film_cover_missing);
+			
+		new DownloadImageTask(image).execute(item.getCover());
+		
 	    convertView.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				showActivity(children);

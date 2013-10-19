@@ -11,8 +11,7 @@
         style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MockComplejo"
-        android:textStyle="bold" />
+        android:text="MockComplejo"/>
 
     <TextView
         android:id="@+id/complejosDireccion"

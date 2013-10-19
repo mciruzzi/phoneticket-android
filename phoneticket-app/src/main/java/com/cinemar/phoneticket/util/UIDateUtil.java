@@ -130,7 +130,7 @@ public class UIDateUtil {
 	
 	public static String getStringFromDate(Date date) {
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		return dateFormat.format(date);
 	}
 }
