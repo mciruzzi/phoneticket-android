@@ -18,7 +18,7 @@
         android:paddingTop="15dp">
 		        
         <TextView
-            style="@style/TitleReserveAndBuy"
+            style="@style/Title"
             android:id="@+id/accountBuyTitle"
 	        android:text="@string/hello_world" />
     

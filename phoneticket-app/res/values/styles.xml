@@ -48,11 +48,6 @@
  		<item name="android:background">@drawable/button_menu</item>
 	</style>
 
-    <style name="Title">
-        <item name="android:textColor">#ff400080</item>
-        <item name="android:background">#ff4356</item>
-        
-    </style>
     
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
@@ -76,7 +71,7 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
     
-    <style name="TitleReserveAndBuy" parent="DetailsReserveAndBuy">
+    <style name="Title" parent="DetailsReserveAndBuy">
         <item name="android:textColor">@color/violet</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">22sp</item>

@@ -1,26 +1,36 @@
 package com.cinemar.phoneticket;
 
+import org.json.JSONObject;
+
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
+import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
+import com.cinemar.phoneticket.util.ProcessBarUtil;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
 public class ReserveShowActivity extends Activity {
 
+	private String idReserve;
+	
 	private TextView mTitle;
 	private TextView mCinema;
 	private TextView mDate;
 	private TextView mSeating;
 	private TextView mCode;
 	private String mShareUrl;
+	
+	private ProcessBarUtil bar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +57,53 @@ public class ReserveShowActivity extends Activity {
 	
 	private void doTheCancellation() {
 		
+		final ReserveShowActivity activity = this;
 		
-//		//hacer algo
-//		// if (todo bien)
+		bar.setMessage("Procesando...");
+		bar.showProgress(true);
+
+		ReserveBuyAPI api = new ReserveBuyAPI();
 		
-    	Intent data = new Intent();
-//		data.putExtra("email", sessionUser.getEmail());
-    	setResult(RESULT_OK, data);
+		Log.i("CANCELAR RESERVA", "Por cancelar " + idReserve );
+
+		api.sendCancelation(idReserve, new JsonHttpResponseHandler() {
+		@Override
+		public void onSuccess(JSONObject object) {
+			NotificationUtil.showSimpleAlert("", "Cancelación exitosa de la reserva", activity, 
+					new DialogInterface.OnClickListener() {			
+						public void onClick(DialogInterface dialog, int which) {
+							activity.finish();
+						}
+					});
+		}
+		
+		@Override
+		public void onFailure(Throwable exception, JSONObject errorResponse) {
+			
+			if (errorResponse != null) {
+				NotificationUtil.showSimpleAlert(getString(R.string.error), 
+						exception.getMessage(), activity);
+			}
+		}
+
+		@Override
+		public void onFailure(Throwable arg0, String arg1) {
+			NotificationUtil.showSimpleAlert(getString(R.string.error), 
+					"No pudo realizarse la cancelación. Intente más tarde.", activity);
+		}
+
+		@Override
+		public void onFinish() {
+			bar.showProgress(false);
+		}
+	});
+
+		Log.i("FIN DE CANCELAR RESERVA", "Por cancelar " + idReserve );
+
 	}
 
 	public void buyReserve(View view) {
 		NotificationUtil.showSimpleAlert("Comprar", "Tenés q pagar!", this);
-
 		
 	}
 	
@@ -100,9 +145,8 @@ public class ReserveShowActivity extends Activity {
 
 	        public void onClick(DialogInterface dialog, int which) {
 	           
-	        	doTheCancellation();
 	        	dialog.dismiss();
-	        	finish();
+	        	doTheCancellation();
 	        }
 
 	    });
@@ -121,11 +165,13 @@ public class ReserveShowActivity extends Activity {
 		
 		Intent intent = getIntent();
 		
+		idReserve = intent.getStringExtra(OperationConstants.CODE);
+		
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
-		mCode.setText("Cód.: " + intent.getStringExtra(OperationConstants.CODE));
+		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		
 	}
@@ -137,5 +183,11 @@ public class ReserveShowActivity extends Activity {
 		mDate = (TextView) findViewById(R.id.accountReserveDate);
 		mSeating = (TextView) findViewById(R.id.accountReserveSeating);
 		mCode = (TextView) findViewById(R.id.accountReserveCode);	
+		
+		bar = new ProcessBarUtil(findViewById(R.id.accountReserveForm),
+				findViewById(R.id.accountReserveBar),
+				(TextView) findViewById(R.id.accountReserveMessageStatus),
+				this);
+		
 	}
 }

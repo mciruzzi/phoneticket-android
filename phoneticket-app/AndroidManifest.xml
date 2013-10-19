@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" >
@@ -64,7 +64,11 @@
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.ComplejosActivity"
-            android:label="@string/title_activity_complejos" >
+            android:label="@string/title_activity_complejos"            
+            android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.ReserveShowActivity"

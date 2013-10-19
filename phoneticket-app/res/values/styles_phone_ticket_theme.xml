@@ -20,7 +20,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Phone_ticket_theme" parent="@android:style/Theme.Holo.Light">
-
+				
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Phone_ticket_theme</item>
 	    <item name="android:editTextStyle">@style/EditTextcolor_theme</item>
 	    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewcolor_theme</item>

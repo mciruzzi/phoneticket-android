@@ -60,6 +60,7 @@ public class MainMyAccountActivity extends Activity {
 	private UIDateUtil utilDate;
 	private ProcessBarUtil utilBarAccount;
 	private ProcessBarUtil utilBarOperation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,14 +75,22 @@ public class MainMyAccountActivity extends Activity {
 			requestLogin();
 		} else {
 			setupContent();
+
 		}
 	}
+	
+	@Override
+	protected void onResume() {
+
+		super.onResume();
+
+		getDataOfServer();
+	}	
 
 	private void setupContent() {
 		setTitle(email);
 		addTabs();
 		getUIElement();
-		getDataOfServer();
 	}
 
 	private void requestLogin() {
@@ -140,6 +149,10 @@ public class MainMyAccountActivity extends Activity {
 							activity);
 					
 				} catch (JSONException e) {
+
+					NotificationUtil.showSimpleAlert(getString(R.string.error),
+							"Error al procesar los datos.",
+							activity);
 					
 					Log.i("RESERVA-COMPRA", "Falla al parsear el JSON");
 					e.printStackTrace();
@@ -154,11 +167,14 @@ public class MainMyAccountActivity extends Activity {
 					
 					JSONArray reservations = userData.optJSONArray("reservations");
 					
+					Log.i("RESERVA", "Cargando reservas ... (" + reservations.length() + ")" );
+
 					for (int i = 0; i < reservations.length(); i++) {
 						
 						groupReserve.addItem(new OperationView( new ItemOperation(reservations.getJSONObject(i)),
 								ReserveShowActivity.class));
-						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
+
+						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada"); 
 					}
 				}
 
@@ -172,6 +188,8 @@ public class MainMyAccountActivity extends Activity {
 				if (userData.has("purchases")) {
 					
 					JSONArray purchases = userData.optJSONArray("purchases");
+					
+					Log.i("COMPRAS", "Cargando compras ... (" + purchases.length() + ")");
 					
 					for (int i = 0; i < purchases.length(); i++) {
 						

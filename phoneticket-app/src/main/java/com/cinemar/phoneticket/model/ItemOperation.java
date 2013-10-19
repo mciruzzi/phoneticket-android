@@ -19,13 +19,6 @@ public class ItemOperation {
 	private String code;
 	private String shareUrl;
 	
-//	public ItemOperation(String title, String cinema) {
-//		
-//		setTitle(title);
-//		setCinema(cinema);
-//		setDate(new Date());
-//	}
-	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
 		JSONObject show = operation.getJSONObject("show");
@@ -75,11 +68,7 @@ public class ItemOperation {
 			this.date = null;
 		}
 	}
-	
-	private void setDate(Date date) {
-		this.date = date;
-	}
-	
+		
 	public String[] getSeating() {
 		return seating;
 	}

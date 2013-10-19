@@ -13,7 +13,8 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:background="@color/white" >
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -37,7 +38,8 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        android:background="@color/white" >
 
         <RelativeLayout
             android:id="@+id/filmInfoLayout"
