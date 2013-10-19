@@ -1,8 +1,11 @@
 package com.cinemar.phoneticket;
 
+import java.text.ParseException;
+
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
+import com.cinemar.phoneticket.util.UIDateUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -21,6 +24,7 @@ public class ReserveShowActivity extends Activity {
 	private TextView mSeating;
 	private TextView mCode;
 	private String mShareUrl;
+	private Long mSchedulableDate;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class ReserveShowActivity extends Activity {
 		Intent shareIntent= sharer.getTwitterIntent("Reserve esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title),getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -78,14 +82,24 @@ public class ReserveShowActivity extends Activity {
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title),getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
 	}
 	
-	public void schedule(View view){
-		NotificationUtil.showSimpleAlert("Agenda", "Agendar", this);
+	public void schedule(View view){		
+		AppCommunicator sharer = new AppCommunicator(this);
+		String title = mTitle.getText().toString();
+		String description = title + " show";
+		String location = mCinema.getText().toString();
+		
+		boolean success = sharer.scheduleCalendar(title,description,location,mSchedulableDate);
+		if (success)	
+			NotificationUtil.showSimpleAlert(getString(R.string.reminder_success_title), getString(R.string.reminder_success_desc), this);
+		else
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title), getString(R.string.missingCalendar), this);
+		
 	}
 
 	private AlertDialog createWindowConfirmation() {
@@ -126,6 +140,7 @@ public class ReserveShowActivity extends Activity {
 		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
+		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		
 	}
 	

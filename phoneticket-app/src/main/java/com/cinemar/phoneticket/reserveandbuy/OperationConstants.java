@@ -9,5 +9,6 @@ public interface OperationConstants {
 	public final String TICKETS_TYPE = "ticketsType";
 	public final String CODE = "code";
 	public final String SHARE_URL = "shareUrl";
+	public final String SCHEDULABLE_DATE = "schedulableDate";
 	
 }
