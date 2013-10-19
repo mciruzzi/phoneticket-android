@@ -96,7 +96,7 @@ public class AppCommunicator {
 			} while (managedCursor.moveToNext());
 			
 			ContentValues event = new ContentValues();
-			event.put("calendar_id", calId);
+			event.put("calendar_id", calId);			
 			event.put("title", title);
 			event.put("description", desc);
 			event.put("eventLocation", location);
@@ -108,10 +108,22 @@ public class AppCommunicator {
 			event.put("eventStatus", 1); //  tentative (0), confirmed (1) or canceled (2): 
 			event.put("visibility", 0); //  x defecto(0) ,confidencial (1) publico(3) o privado(2)
 			event.put("transparency", 0); // opaque (0) or transparent (1).
-			event.put("hasAlarm", 1); // 0 false, 1 true
+			event.put("hasAlarm", 1); // 0 false, 1 true	        
 
 			Uri eventsUri = Uri.parse("content://com.android.calendar/events");
-			Uri url = appContext.getContentResolver().insert(eventsUri, event);
+			Uri eventUri = appContext.getContentResolver().insert(eventsUri, event);		
+			
+			long id = Long.parseLong(eventUri.getLastPathSegment());
+			
+		    // reminder insert
+	        Uri REMINDERS_URI = Uri.parse("content://com.android.calendar/reminders");
+	        ContentValues values = new ContentValues();
+	        values = new ContentValues();
+	        values.put( "event_id", id);
+	        values.put( "method", 1 );
+	        values.put( "minutes", 0 );
+	        appContext.getContentResolver().insert( REMINDERS_URI, values );
+	        
 			return true;				
 		}
 		return false; //No existen calendarios
