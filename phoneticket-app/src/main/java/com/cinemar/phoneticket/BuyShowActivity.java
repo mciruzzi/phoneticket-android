@@ -5,7 +5,6 @@ import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -44,7 +43,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
+		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 	}
@@ -58,7 +57,6 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);
 		
 	}
-	
 	
 	public void shareWithTwitter(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);

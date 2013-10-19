@@ -170,7 +170,7 @@ public class ReserveShowActivity extends Activity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText(intent.getStringExtra(OperationConstants.SEATING));
+		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		
