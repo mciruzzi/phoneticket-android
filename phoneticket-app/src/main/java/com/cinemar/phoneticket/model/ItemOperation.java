@@ -28,11 +28,12 @@ public class ItemOperation {
 		JSONObject film = show.getJSONObject("movie");
 		
 		setShareUrl(operation.getString("share_url"));
-		setCode(operation.getString("id"));
 		setTitle(film.getString("title"));
 		setCinema(cinema.getString("name") + " " + room.getString("name"));
 		setDate(show.getString("starts_at"));
 		setSeating(seats);
+		//setCode(operation.getString("id")); //TODO Change por lo que verdaderamente va a ser el codigo del QR
+		setCode(getTitle() + "|"+ getDate() + "|" + getCinema());
 	}
 	
 	public String getTitle() {

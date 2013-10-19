@@ -3,9 +3,14 @@ package com.cinemar.phoneticket;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
+import com.cinemar.phoneticket.util.QRCodeEncoder;
+import com.cinemar.phoneticket.util.QRContents;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,12 +55,28 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	
 	private void getUIElement() {
 
+		Intent intent = getIntent();
+		
 		mTitle = (TextView) findViewById(R.id.accountBuyTitle);
 		mCinema = (TextView) findViewById(R.id.accountBuyCinema);
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);
 		
+		//QR generation
+		//Encode with a QR Code image		
+		int smallerDimension = mCode.getWidth() < mCode.getHeight() ? mCode.getWidth() : mCode.getHeight() ;
+		QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(intent.getStringExtra(OperationConstants.CODE),
+		             null,
+		             QRContents.Type.TEXT, 
+		             BarcodeFormat.QR_CODE.toString(),
+		             smallerDimension);
+		try {
+		    Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();	   
+		    mCode.setImageBitmap(bitmap);		    
+		} catch (WriterException e) {
+		    e.printStackTrace();
+		}
 	}
 	
 	public void shareWithTwitter(View view) {
