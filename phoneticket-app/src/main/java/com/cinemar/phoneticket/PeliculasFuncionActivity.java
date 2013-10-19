@@ -32,24 +32,28 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 
-	Film mFilm;
-	String theatreId;
-	Show selectedShow = null;
-	ExpandableShowListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader = new ArrayList<String>();
-	HashMap<String, List<Show>> listDataChild = new HashMap<String,List<Show>>();
+	private Film mFilm;
+	private String theatreId;
+	private Show selectedShow = null;
+	private ExpandableShowListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader = new ArrayList<String>();
+	private HashMap<String, List<Show>> listDataChild = new HashMap<String,List<Show>>();
 	private ImageView mYoutubeImage;
-	AppCommunicator sharer;
+	private AppCommunicator sharer;
 
+	private String title;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sharer = new AppCommunicator(this);
 		setContentView(R.layout.activity_peliculas_funcion);
+		
+		title = getIntent().getStringExtra("filmTitle");
 
-		mFilm = new Film(getIntent().getStringExtra("filmId"), getIntent()
-				.getStringExtra("filmTitle"), getIntent().getStringExtra(
+		mFilm = new Film(getIntent().getStringExtra("filmId"), title,
+				getIntent().getStringExtra(
 				"filmSinopsis"), getIntent().getStringExtra(
 				"filmYouTubeTrailer"), getIntent().getStringExtra(
 				"filmCoverUrl"), getIntent().getStringExtra("filmDirector"),
@@ -154,6 +158,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		}
 		Intent intent = new Intent(this, SelectSeatsActivity.class);
 		intent.putExtra("showId", selectedShow.getShowId());
+		intent.putExtra("title", title);
 		//intent.putExtra("maxSelections",value); //Si se quisiese limitar la cant de entradas se hace mediante este parametro
 		startActivity(intent);
 	}

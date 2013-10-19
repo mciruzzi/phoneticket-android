@@ -166,7 +166,6 @@ public class ReserveShowActivity extends Activity {
 		Intent intent = getIntent();
 		
 		idReserve = intent.getStringExtra(OperationConstants.CODE);
-		
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));

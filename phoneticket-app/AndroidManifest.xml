@@ -88,7 +88,11 @@
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.SelectSeatsActivity"
-            android:label="@string/title_activity_select_seats" >
+            android:label="@string/title_activity_select_seats"
+            android:parentActivityName="com.cinemar.phoneticket.PeliculasActivity" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cinemar.phoneticket.PeliculasActivity" />
         </activity>
     </application>
 
