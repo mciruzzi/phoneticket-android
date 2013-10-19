@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,12 +46,12 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		else
 			setTitle(getString(R.string.title_activity_peliculas));
 
-		// ** Important to get in order to use the showProgress method**//
+		// TODO:** Important to get in order to use the showProgress method**
 		mMainView = findViewById(R.id.peliculasHorizontalScrollView);
 		mStatusView = findViewById(R.id.peliculas_status);
 		mStatusMessageView = (TextView) findViewById(R.id.peliculas_status_message);
 
-		HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.peliculasHorizontalScrollView);
+		findViewById(R.id.peliculasHorizontalScrollView);
 
 		this.requestPeliculas();
 	}
@@ -106,9 +105,10 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 			}
 
 			@Override public void onFailure(Throwable arg0, String arg1) {
-				showSimpleAlert(getString(R.string.error_connection));			
+				showSimpleAlert(getString(R.string.error_connection));
 			};
 
+			@Override
 			public void onFinish() {
 				showProgress(false);
 				displayFilms();
@@ -152,6 +152,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				showSimpleAlert(arg1);
 			};
 
+			@Override
 			public void onFinish() {
 				showProgress(false);
 				displayFilms();
@@ -187,6 +188,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 			ImageView imageView = new ImageView(this);
 			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {
+				@Override
 				public void onClick(View arg0) {
 					goToFuncionActivity(filmId);
 				}

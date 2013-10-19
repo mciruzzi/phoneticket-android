@@ -36,7 +36,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 	List<String> listDataHeader = new ArrayList<String>();
 	HashMap<String, List<String>> listDataChild = new HashMap<String,List<String>>();
 	private ImageView mYoutubeImage;
-	AppCommunicator sharer; 
+	AppCommunicator sharer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 				getIntent().getStringExtra("filmGenre"),
 				getIntent().getStringExtra("filmShareUrl"));
 
-		theatreId = getIntent().getStringExtra("theatreId");		
+		theatreId = getIntent().getStringExtra("theatreId");
 
 		setTitle(mFilm.getTitle());
 
@@ -78,47 +78,47 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 			mYoutubeImage.setVisibility(View.GONE);
 		}
 
-		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
-		idSinopsisText.setText("Sinopsis: " +mFilm.getSynopsis());
-		
 		TextView genreText = (TextView) findViewById(R.id.genreText);
-		genreText.setText("Genero: " +mFilm.getGenre());
-		
+		genreText.setText("Género: " + mFilm.getGenre());
+
 		TextView castText = (TextView) findViewById(R.id.castText);
 		castText.setText("Actores: " + mFilm.getCast());
+
+		TextView idSinopsisText = (TextView) findViewById(R.id.sinopsisText);
+		idSinopsisText.setText("Sinopsis: " + mFilm.getSynopsis());
 
 		ImageView coverView = (ImageView) findViewById(R.id.filmCoverImage);
 		new DownloadImageTask(coverView).execute(mFilm.getCoverURL());
 
 		ImageView fbButtonView = (ImageView) findViewById(R.id.facebookImage);
 		fbButtonView.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {				
+
+			public void onClick(View v) {
 				Intent shareIntent= sharer.getFacebookIntent(mFilm.getShareURL());
-				if (shareIntent == null ){ 
+				if (shareIntent == null ){
 					showSimpleAlert(getString(R.string.missingApplication));
-					return;				
-				}		
-				
-				
-				startActivity(Intent.createChooser(shareIntent, "Share..."));				
+					return;
+				}
+
+
+				startActivity(Intent.createChooser(shareIntent, "Share..."));
 			}
 		});
-				
+
 		ImageView twButtonView =(ImageView) findViewById(R.id.twitterImage);
 		twButtonView.setOnClickListener(new OnClickListener() {
-			
+
 			public void onClick(View v) {
 				Intent shareIntent= sharer.getTwitterIntent("Me gusta esta peli: ",mFilm.getShareURL());
-		
+
 				if (shareIntent == null ) {
 					showSimpleAlert(getString(R.string.missingApplication));
 					return;
-				}		 			 
-				startActivity(Intent.createChooser(shareIntent, "Share..."));				
+				}
+				startActivity(Intent.createChooser(shareIntent, "Share..."));
 			}
 		});
-		
+
 		this.getFunciones();
 	}
 
@@ -139,33 +139,33 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		else{
 			api.getFuncionesEnComplejo(mFilm.getId(), theatreId, responseHandler);
 		}
-	}		
-	
+	}
+
     private void prepareFuncionesList() {
         expListView = (ExpandableListView) findViewById(R.id.funcionesList);
-    	
+
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
- 
+
         for (Theatre cinema : mFilm.getCinemas()){
         	//TODO Formate funcion date properly
-        	String key = cinema.getName()+ "\n" +cinema.getAddress(); 
+		String key = cinema.getName()+ "\n" +cinema.getAddress();
         	listDataHeader.add(key);
-        	
+
         	List<String> showsDate = new ArrayList<String>();
         	for (Show show : cinema.getShows()){
-        		showsDate.add(show.getStartTimeString());        		
-        	}	
-        	
-        	listDataChild.put(key,showsDate);        		
+			showsDate.add(show.getStartTimeString());
+		}
+
+		listDataChild.put(key,showsDate);
         }
-        
+
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         // setting list adapter
         expListView.setAdapter(listAdapter);
     }
-    
-   
+
+
 	JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
 		@Override
 		public void onSuccess(JSONObject film) {

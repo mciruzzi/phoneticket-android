@@ -44,8 +44,14 @@
         <RelativeLayout
             android:id="@+id/filmInfoLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="false"
+            android:background="@drawable/actionbar_background"
             android:gravity="right"
             android:padding="10dip" >
 
@@ -53,10 +59,9 @@
                 android:id="@+id/sinopsisScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="125dp"
-                android:layout_alignBottom="@+id/sinopsisText"
-                android:layout_alignLeft="@+id/sinopsisText"
-                android:layout_alignRight="@+id/sinopsisText"
-                android:layout_alignTop="@+id/sinopsisText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="60dp"
                 android:maxHeight="220dp" >
 
                 <LinearLayout
@@ -66,45 +71,46 @@
 
                     <TextView
                         android:id="@+id/genreText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:text="genero"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:scrollHorizontally="false"
+                        android:text="Género: Película"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/castText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:text="cast"
+                        android:text="Actores: Bal kilmer"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/sinopsisText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_weight="1"
-                        android:maxWidth="195dp"
                         android:text="Sinopsisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccc"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textSize="11sp" />
-                </LinearLayout>
+
+                    </LinearLayout>
+
             </ScrollView>
 
             <ImageView
                 android:id="@+id/filmCoverImage"
                 android:layout_width="60dp"
                 android:layout_height="100dp"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/sinopsisScrollView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_weight="100"
                 android:gravity="right|center_vertical"
                 android:scaleType="centerInside"
                 android:src="@drawable/film_cover_missing" />
+
         </RelativeLayout>
 
         <LinearLayout
