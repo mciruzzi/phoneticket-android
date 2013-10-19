@@ -75,7 +75,7 @@ public class MainMenuActivity extends Activity {
 	}
 
 	protected void goToMyAccountActivity() {
-		Intent intent = new Intent(this, MainMyAccountActivity.class);
+		Intent intent = new Intent(this, MainMyAccountActivity.class);		
 		startActivity(intent);
 	}
 

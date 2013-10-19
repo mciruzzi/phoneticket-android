@@ -20,4 +20,7 @@ public class TheatresClientAPI {
 		client.get("theatres/" + theatreId + ".json", responseHandler);
 	}
 
+	public void getShowSeats(String showId, JsonHttpResponseHandler responseHandler){
+		client.get("shows/" + showId + ".json", responseHandler);
+	}
 }

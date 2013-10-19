@@ -86,6 +86,10 @@
             	android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.MainMyAccountActivity" />
         </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.SelectSeatsActivity"
+            android:label="@string/title_activity_select_seats" >
+        </activity>
     </application>
 
 </manifest>

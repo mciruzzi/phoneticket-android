@@ -12,6 +12,9 @@
     <string name="title_activity_main_my_account">Mi cuenta</string>
     <string name="title_activity_show_reserve_buy">Mis compras y reservas</string>
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
+    <string name="title_activity_select_seats">SelectSeatsActivity</string>
+    <string name="getting_sala">Obteniendo Sala</string>
+    
 
     <string name="title_activity_reserve_show">Reserva</string>
     <string name="title_activity_buy_show">Compra</string>
