@@ -1,13 +1,21 @@
 package com.cinemar.phoneticket;
 
+
 import org.json.JSONObject;
+
+import java.text.ParseException;
+
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
+
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
+
+import com.cinemar.phoneticket.util.UIDateUtil;
+
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,6 +37,7 @@ public class ReserveShowActivity extends Activity {
 	private TextView mSeating;
 	private TextView mCode;
 	private String mShareUrl;
+	private Long mSchedulableDate;
 	
 	private ProcessBarUtil bar;
 	
@@ -112,7 +121,9 @@ public class ReserveShowActivity extends Activity {
 		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podrá ser", getString(R.string.missingApplication),this);
+
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title),getString(R.string.missingApplication),this);
+
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -124,14 +135,26 @@ public class ReserveShowActivity extends Activity {
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
+
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title),getString(R.string.missingApplication),this);
+
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
 	}
 	
-	public void schedule(View view){
-		NotificationUtil.showSimpleAlert("Agenda", "Agendar", this);
+	public void schedule(View view){		
+		AppCommunicator sharer = new AppCommunicator(this);
+		String title = mTitle.getText().toString();
+		String description = title + " show";
+		String location = mCinema.getText().toString();
+		
+		boolean success = sharer.scheduleCalendar(title,description,location,mSchedulableDate);
+		if (success)	
+			NotificationUtil.showSimpleAlert(getString(R.string.reminder_success_title), getString(R.string.reminder_success_desc), this);
+		else
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title), getString(R.string.missingCalendar), this);
+		
 	}
 
 	private AlertDialog createWindowConfirmation() {
@@ -172,6 +195,7 @@ public class ReserveShowActivity extends Activity {
 		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
+		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		
 	}
 	

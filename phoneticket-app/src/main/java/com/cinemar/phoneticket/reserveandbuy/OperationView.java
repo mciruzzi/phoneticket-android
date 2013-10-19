@@ -24,6 +24,7 @@ public class OperationView {
 		intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
 		intent.putExtra(OperationConstants.CODE, item.getCode());
 		intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
+		intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 	}
 	
 	public ItemOperation getItem() {

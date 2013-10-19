@@ -24,6 +24,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	private TextView mSeating;
 	private ImageView mCode;
 	private String mShareUrl;
+	private long mSchedulableDate;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
+		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 	}
 	
 	private void getUIElement() {
@@ -105,7 +107,17 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	}
 	
 	public void schedule(View view){
-		NotificationUtil.showSimpleAlert("Agenda", "Agendar", this);
+		AppCommunicator sharer = new AppCommunicator(this);
+		String title = mTitle.getText().toString();
+		String description = title + " show";
+		String location = mCinema.getText().toString();
+		
+		boolean success = sharer.scheduleCalendar(title,description,location,mSchedulableDate);
+		if (success)	
+			NotificationUtil.showSimpleAlert(getString(R.string.reminder_success_title), getString(R.string.reminder_success_desc), this);
+		else
+			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title), getString(R.string.missingCalendar), this);
+		
 
 	}
 }

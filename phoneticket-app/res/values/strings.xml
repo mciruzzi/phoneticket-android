@@ -21,7 +21,16 @@
     <string name="reserve">Reservar</string>
     <string name="buy">Comprar</string>
 
+
     <string name="missingApplication">No posee instalada la aplicación correspondiente para ejecutar la acción</string>
+
+    
+	<string name="no_way_title">"No podra ser"</string>
+    <string name="missingApplication">No posee instalada la aplicacion correspondiente para ejecutar la accion</string>
+    <string name="missingCalendar">No existen calendarios para realizar la accion</string>
+    <string name="reminder_success_desc">Hemos agendado un recordatorio para esta funcion</string>
+    <string name="reminder_success_title">Agendado</string>
+
 
 
 </resources>

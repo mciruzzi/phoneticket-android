@@ -10,6 +10,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
+    <uses-permission android:name="android.permission.READ_CALENDAR" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" >
+    </uses-permission>
 
     <application
         android:allowBackup="true"
@@ -18,7 +22,7 @@
         android:theme="@style/Theme.Phone_ticket_theme" >
         <activity
             android:name="com.cinemar.phoneticket.MainMenuActivity"
-            android:label="@string/title_activity_main_menu">
+            android:label="@string/title_activity_main_menu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -72,18 +76,18 @@
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.ReserveShowActivity"
-            android:label="@string/title_activity_reserve_show" 
+            android:label="@string/title_activity_reserve_show"
             android:parentActivityName="com.cinemar.phoneticket.MainMyAccountActivity" >
             <meta-data
-            	android:name="android.support.PARENT_ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.MainMyAccountActivity" />
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.BuyShowActivity"
-            android:label="@string/title_activity_buy_show" 
+            android:label="@string/title_activity_buy_show"
             android:parentActivityName="com.cinemar.phoneticket.MainMyAccountActivity" >
             <meta-data
-            	android:name="android.support.PARENT_ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.MainMyAccountActivity" />
         </activity>
         <activity
