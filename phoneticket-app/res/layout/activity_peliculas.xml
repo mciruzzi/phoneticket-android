@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PeliculasActivity" >
+    tools:context=".PeliculasActivity" 
+    android:background="@color/white" >>
 
     <!-- Processing Layout... -->
 
