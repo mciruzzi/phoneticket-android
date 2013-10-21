@@ -134,9 +134,8 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 			
 			//PHOTO
 			ImageView theatrePhotoView = (ImageView) theatreView.findViewById(R.id.complejosPhoto);			
-			theatrePhotoView.setMaxHeight(50);
-			theatrePhotoView.setMaxWidth(50);
 			theatrePhotoView.setImageResource(R.drawable.film_cover_missing);
+			
 				
 			new DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());
 			
