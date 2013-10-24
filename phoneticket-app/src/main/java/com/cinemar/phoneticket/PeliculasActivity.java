@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 
 import com.cinemar.phoneticket.films.DownloadImageTask;
 import com.cinemar.phoneticket.films.FilmOnClickListener;
@@ -185,8 +186,13 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 		LinearLayout imageContainer = (LinearLayout) findViewById(R.id.peliculasImageContainer);
 
 		for (Film film : filmsMap.values()) {
-
+			
+			double ratio = 0.75;
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( (int)(imageContainer.getHeight()*ratio), imageContainer.getHeight());
+			
 			ImageView imageView = new ImageView(this);
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setLayoutParams(params);
 			imageView.setOnClickListener(new FilmOnClickListener(film.getId()) {
 				@Override
 				public void onClick(View arg0) {
