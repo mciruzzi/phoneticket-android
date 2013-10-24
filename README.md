@@ -1,4 +1,4 @@
-# Instrucciones para levantar el proyecto (15/9):
+# Instrucciones para levantar el proyecto (14/10):
 
 1. Asegurarse de tener instalados en eclipse ADT. (Help --> Install New Software):
 	* Maven Integration for Eclipse	(si se selecciona Work with: "All Available Sites") se deberia poder ver
@@ -6,6 +6,7 @@
 
 2. Desde el directorio git del proyecto forzar el bajado de la libreria de requests:
 	* `mvn install:install-file -Dfile=android-async-http-1.4.3.jar -DgroupId=com.loopj -DartifactId=android-async-http -Dversion=1.4.3 -Dpackaging=jar`
+	* `mvn install:install-file -Dfile=core-2.2.jar -DgroupId=com.google.zxing -DartifactId=core -Dversion=2.2 -Dpackaging=jar` (Puede que sea necesario tambien)
 	* `export ANDROID_HOME=<path a la sdk>` (es conveniente agregarlo a su `.bashrc`, o `.bash_profile` dependiendo lo que use su distribución)
 	* pueden hacer `mvn install` (si no tienen un emulador levantado van a fallar los tests)
 

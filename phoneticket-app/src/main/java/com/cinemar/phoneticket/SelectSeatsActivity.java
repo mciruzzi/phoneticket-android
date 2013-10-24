@@ -2,11 +2,8 @@ package com.cinemar.phoneticket;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,47 +11,41 @@ import com.cinemar.phoneticket.films.SeatOnClickListener;
 import com.cinemar.phoneticket.model.Room;
 import com.cinemar.phoneticket.model.Room.Seat;
 import com.cinemar.phoneticket.model.SeatStatus;
-import com.cinemar.phoneticket.model.Theatre;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
-import android.R.integer;
 import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 
-	String showId;
+	private String showId;
 	//String[][] seats = new String[20][20];
-	Room showRoom;
-	TableLayout cinemaLayout;
-	Map<String, ImageView> seatsImages;
-	LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
-	int maxSeatsToTake = Integer.MAX_VALUE;
-
+	private Room showRoom;
+	private TableLayout cinemaLayout;
+	private Map<String, ImageView> seatsImages;
+	private LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
+	private int maxSeatsToTake = Integer.MAX_VALUE;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_seats);
 
+		setTitle(getIntent().getStringExtra("title"));
+
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.salaView);
 		mStatusView = findViewById(R.id.sala_status);
 		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);
-
 		
 		showId = getIntent().getStringExtra("showId");
 		if (getIntent().getStringExtra("maxSelections") != null)

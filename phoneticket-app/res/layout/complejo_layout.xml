@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
-    android:background="@drawable/border"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:padding="5dp">
+    android:background="@color/white"
+    android:gravity="top"
+    android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/complejoName"
+    <RelativeLayout
+        android:id="@+id/contentLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MockComplejo"
-        android:textStyle="bold" />
+        android:layout_weight="3" >
 
-    <TextView
-        android:id="@+id/complejosDireccion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/complejoName"
-        android:text="Direccion" />
+        <TextView
+            android:id="@+id/complejoName"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MockComplejo" />
+
+        <TextView
+            android:id="@+id/complejosDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/complejoName"
+            android:text="Direccion" />
+
+        <ImageButton
+            android:id="@+id/LocationButton"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/complejosDireccion"
+            android:src="@drawable/ic_position_map" />
+
+        <ImageButton
+            android:id="@+id/TheatreFilmsButton"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_below="@+id/complejosDireccion"
+            android:layout_toRightOf="@+id/LocationButton"
+            android:src="@drawable/peliculas" />
+        
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/complejosPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/film_cover_missing" />
-
-    <ImageButton
-        android:id="@+id/LocationButton"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/complejosDireccion"
-        android:src="@drawable/ic_position_map" />
-
-    <ImageButton
-        android:id="@+id/TheatreFilmsButton"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/LocationButton"
-        android:src="@drawable/peliculas" />
+        android:layout_width="fill_parent"
+        android:layout_height="100sp"       
+        android:layout_toRightOf="@+id/contentLayout"
+        android:src="@drawable/film_cover_missing"
+        android:layout_weight="1" />
 
 </RelativeLayout>

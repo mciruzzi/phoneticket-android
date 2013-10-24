@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="violet">#400080</color>
+	<color name="bordeaux">#7f2628</color>
+	<color name="brown">#530c0e</color>
+	<color name="gray">#574f46</color>
+	<color name="light_golden">#fcb13d</color>
+	<color name="golden">#d18c32</color>	
+	<color name="dark_golden">#b07129</color>
+	<color name="white">#ffffff</color>
+	<color name="pressed_phone_ticket_theme">#CC400080</color>
+	
+</resources>

@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PeliculasActivity" >
+    tools:context=".PeliculasActivity" 
+    android:background="@color/white" >>
 
     <!-- Processing Layout... -->
 
@@ -11,7 +12,8 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:background="@color/white" >
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -32,7 +34,8 @@
     <HorizontalScrollView
         android:id="@+id/peliculasHorizontalScrollView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:background="@color/white" >
 
         <LinearLayout
             android:id="@+id/peliculasImageContainer"

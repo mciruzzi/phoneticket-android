@@ -3,7 +3,6 @@ package com.cinemar.phoneticket.films;
 import java.io.InputStream;
 import java.net.URL;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;

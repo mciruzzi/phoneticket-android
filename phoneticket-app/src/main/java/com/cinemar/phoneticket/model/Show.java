@@ -1,9 +1,12 @@
 package com.cinemar.phoneticket.model;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.cinemar.phoneticket.util.UIDateUtil;
 
 public class Show {
 	String showId;
@@ -20,8 +23,12 @@ public class Show {
 		super();
 		
 		this.showId = showObject.getString("id");
-		this.startTimeString = showObject.getString("starts_at");
-		//TODO How to parse string into a date Calendar		
+		
+		try {
+			this.startTimeString = UIDateUtil.getStringFromDate(UIDateUtil.getDateFromString(showObject.getString("starts_at")));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		//TODO Tambien bajar la sala/room donde se proyecta el show vienw bajo el showObject.getJSONObject("room")
 	}	
 		

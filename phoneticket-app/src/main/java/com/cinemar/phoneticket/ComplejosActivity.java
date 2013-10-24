@@ -8,30 +8,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.films.FilmOnClickListener;
 import com.cinemar.phoneticket.model.Theatre;
 import com.cinemar.phoneticket.theaters.TheatreOnClickListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
+
+import android.content.ActivityNotFoundException;
+
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ComplejosActivity extends AbstractApiConsumerActivity {
@@ -139,9 +134,8 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 			
 			//PHOTO
 			ImageView theatrePhotoView = (ImageView) theatreView.findViewById(R.id.complejosPhoto);			
-			theatrePhotoView.setMaxHeight(50);
-			theatrePhotoView.setMaxWidth(50);
 			theatrePhotoView.setImageResource(R.drawable.film_cover_missing);
+			
 				
 			new DownloadImageTask(theatrePhotoView).execute(theatre.getPhotoUrl());
 			
@@ -150,7 +144,22 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 			MapButtonView
 					.setOnClickListener(new TheatreOnClickListener(theatre) {
 						public void onClick(View arg0) {
-							//TODO: metodo para pedir integrar con mapa del complejo
+							double latitude = theatre.getLatitude();
+							double longitude = theatre.getLongitude();
+							String label = theatre.getName();
+							String uriBegin = "geo:" + latitude + "," + longitude;
+							String query = latitude + "," + longitude + "(" + label + ")";
+							String encodedQuery = Uri.encode(query);
+							String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+							Uri uri = Uri.parse(uriString);
+							Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+							try{
+								startActivity(intent);
+							}
+							catch(ActivityNotFoundException e){
+								showSimpleAlert(getString(R.string.missingApplication));								
+							}
+							
 						}
 
 					});

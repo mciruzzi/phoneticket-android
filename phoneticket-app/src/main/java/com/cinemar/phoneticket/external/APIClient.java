@@ -30,6 +30,10 @@ public class APIClient implements RestClient {
 			JsonHttpResponseHandler responseHandler) {
 		client.put(getAbsoluteUrl(path), params, responseHandler);
 	}
+	
+	 public void delete(String path, JsonHttpResponseHandler responseHandler) {
+         client.delete(getAbsoluteUrl(path), responseHandler);
+	 }
 
 	private String getAbsoluteUrl(String relativeUrl) {
 		return BASE_URL + relativeUrl;

@@ -3,18 +3,24 @@ package com.cinemar.phoneticket;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -22,7 +28,11 @@ import android.widget.TextView;
 
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.reserveandbuy.GroupOperation;
+import com.cinemar.phoneticket.reserveandbuy.OperationExpandableListAdapter;
+import com.cinemar.phoneticket.reserveandbuy.OperationView;
 import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.cinemar.phoneticket.util.UIDateUtil;
@@ -30,7 +40,13 @@ import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainMyAccountActivity extends Activity {
-	public static int REQUEST_LOGIN = 0;
+	
+	public final static int REQUEST_LOGIN = 0;
+
+	private final static int ID_BUY = 0;
+	private final static int ID_RESERVE = 1;
+	
+	private SparseArray<GroupOperation> groups = new SparseArray<GroupOperation>();
 
 	private String email;
 	private User user;
@@ -42,8 +58,9 @@ public class MainMyAccountActivity extends Activity {
 	private EditText mPhoneNumber;
 	private EditText mAddress;
 	private UIDateUtil utilDate;
-	private ProcessBarUtil utilBar;
-	
+	private ProcessBarUtil utilBarAccount;
+	private ProcessBarUtil utilBarOperation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -58,14 +75,22 @@ public class MainMyAccountActivity extends Activity {
 			requestLogin();
 		} else {
 			setupContent();
+
 		}
 	}
+	
+	@Override
+	protected void onResume() {
+
+		super.onResume();
+
+		getDataOfServer();
+	}	
 
 	private void setupContent() {
 		setTitle(email);
 		addTabs();
 		getUIElement();
-		getDataOfServer();
 	}
 
 	private void requestLogin() {
@@ -97,9 +122,11 @@ public class MainMyAccountActivity extends Activity {
 
 	private void getDataOfServer() {
 		
-		utilBar.setMessage(getString(R.string.load_progress));
-		utilBar.showProgress(true);
+		utilBarAccount.setMessage(getString(R.string.load_progress));
+		utilBarAccount.showProgress(true);
 		
+		utilBarOperation.setMessage(getString(R.string.load_progress));
+		utilBarOperation.showProgress(true);		
 		
 		final MainMyAccountActivity activity = this;
 		AuthenticationService api = new APIAuthentication();
@@ -110,15 +137,75 @@ public class MainMyAccountActivity extends Activity {
 				try {
 
 					user = new User(userData);
+					loadReserveInformation(userData);
+					loadBuyInformation(userData);
+
 					completeDataRequest();
 					
 				} catch (ParseException e) {
+				
 					NotificationUtil.showSimpleAlert(getString(R.string.error),
 							"Error al obtener los datos. Intente más tarde.",
 							activity);
+					
+				} catch (JSONException e) {
+
+					NotificationUtil.showSimpleAlert(getString(R.string.error),
+							"Error al procesar los datos.",
+							activity);
+					
+					Log.i("RESERVA-COMPRA", "Falla al parsear el JSON");
+					e.printStackTrace();
 				}
 			}
 
+			private void loadReserveInformation(JSONObject userData) throws JSONException {
+				
+				GroupOperation groupReserve = new GroupOperation("Reservas");
+				
+				if (userData.has("reservations")) {
+					
+					JSONArray reservations = userData.optJSONArray("reservations");
+					
+					Log.i("RESERVA", "Cargando reservas ... (" + reservations.length() + ")" );
+
+					for (int i = 0; i < reservations.length(); i++) {
+						
+						ItemOperation item = new ItemOperation(reservations.getJSONObject(i));
+						item.setCode(item.getId());
+							
+						groupReserve.addItem(new OperationView(item , ReserveShowActivity.class));
+
+						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada"); 
+					}
+				}
+
+				groups.append(ID_RESERVE, groupReserve);
+			}
+
+			private void loadBuyInformation(JSONObject userData) throws JSONException {
+				
+				GroupOperation groupBuy = new GroupOperation("Compras");
+				
+				if (userData.has("purchases")) {
+					
+					JSONArray purchases = userData.optJSONArray("purchases");
+					
+					Log.i("COMPRAS", "Cargando compras ... (" + purchases.length() + ")");
+					
+					for (int i = 0; i < purchases.length(); i++) {
+						
+						ItemOperation item = new ItemOperation(purchases.getJSONObject(i));
+						item.setCode(item.getTitle() + "|"+ item.getDate() + "|" + item.getCinema());
+						
+						groupBuy.addItem(new OperationView( item, BuyShowActivity.class ));
+						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
+					}
+				}
+
+				groups.append(ID_BUY, groupBuy);
+			}
+			
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
 				if (errorResponse != null) {
@@ -140,7 +227,8 @@ public class MainMyAccountActivity extends Activity {
 
 			@Override
 			public void onFinish() {
-				utilBar.showProgress(false);
+				utilBarAccount.showProgress(false);
+				utilBarOperation.showProgress(false);
 			}
 		});
 
@@ -167,9 +255,14 @@ public class MainMyAccountActivity extends Activity {
 			}
 		});
 		
-		utilBar = new ProcessBarUtil( findViewById(R.id.accountForm),
+		utilBarAccount = new ProcessBarUtil( findViewById(R.id.accountForm),
 			findViewById(R.id.accountBar),
 			(TextView) findViewById(R.id.accountMessageStatus),
+			this);
+		
+		utilBarOperation = new ProcessBarUtil( findViewById(R.id.accountListViewReserveAndBuy),
+			findViewById(R.id.operationBar),
+			(TextView) findViewById(R.id.operationMessageStatus),
 			this);
 		
 
@@ -181,23 +274,34 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private void addTabs() {
-
+        
 		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
 		tabHost.setup();
+		
+		View tabView1 = createTabView(tabHost.getContext(), "Funciones");
+		TabSpec setContent1 = tabHost.newTabSpec("Funciones").setIndicator(tabView1).setContent(R.id.myReservesBuys);
+		tabHost.addTab(setContent1);
+		
+		View tabView2 = createTabView(tabHost.getContext(), "Datos");
+		TabSpec setContent2 = tabHost.newTabSpec("Datos").setIndicator(tabView2).setContent(R.id.myAccountData);
+		tabHost.addTab(setContent2);
+    }
 
-		TabSpec spec1 = tabHost.newTabSpec("tabFunctions");
-        spec1.setIndicator("Funciones", null);
-        spec1.setContent(R.id.myReservesBuys);
-        tabHost.addTab(spec1);
-
-		TabSpec spec2 = tabHost.newTabSpec("tabData");
-        spec2.setIndicator("Datos", null);
-        spec2.setContent(R.id.myAccountData);
-        tabHost.addTab(spec2);
-	}
-
+    private static View createTabView(final Context context, final String text) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        tv.setText(text);
+        return view;
+    }
+        
 	private void completeDataRequest() {
 
+		setUserData();
+		setOperationData();
+	}
+	
+	private void setUserData() {
+		
 		mName.setText(user.getNombre());
 		mLastName.setText(user.getApellido());
 		mDNI.setText(user.getDni());
@@ -208,7 +312,15 @@ public class MainMyAccountActivity extends Activity {
 		utilDate.setDate(user.getFechaNacimiento());
 		utilDate.update();
 	}
-
+	
+	private void setOperationData() {
+		
+		ExpandableListView listView = (ExpandableListView) findViewById(R.id.accountListViewReserveAndBuy);
+	    OperationExpandableListAdapter adapter = new OperationExpandableListAdapter(this, groups);
+	    listView.setAdapter(adapter);
+	    listView.expandGroup(ID_BUY);
+	    listView.expandGroup(ID_RESERVE);
+	}
 
 	private void saveChanges() {
 
@@ -222,9 +334,9 @@ public class MainMyAccountActivity extends Activity {
 			focusView.requestFocus();
 		} else {
 
-			utilBar.setMessage(getString(R.string.save_progress));
-			utilBar.showProgress(true);
-
+			utilBarAccount.setMessage(getString(R.string.save_progress));
+			utilBarAccount.showProgress(true);
+			
 			updateData();
 
 			AuthenticationService authenticationClient = new APIAuthentication();
@@ -262,7 +374,7 @@ public class MainMyAccountActivity extends Activity {
 
 				@Override
 				public void onFinish() {
-					utilBar.showProgress(false);
+					utilBarAccount.showProgress(false);
 				}
 			});
 

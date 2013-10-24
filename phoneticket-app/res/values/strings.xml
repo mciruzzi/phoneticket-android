@@ -5,6 +5,7 @@
     <string name="action_settings">Configuración</string>
     <string name="error">Error</string>
     <string name="default_accept">Aceptar</string>
+    <string name="default_cancel">Cancelar</string>
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_my_account">Mis datos</string>
@@ -14,5 +15,20 @@
     <string name="title_activity_select_seats">SelectSeatsActivity</string>
     <string name="getting_sala">Obteniendo Sala</string>
     
+
+    <string name="title_activity_reserve_show">Reserva</string>
+    <string name="title_activity_buy_show">Compra</string>
+    <string name="reserve">Reservar</string>
+    <string name="buy">Comprar</string>
+
+
+       
+	<string name="no_way_title">"No podra ser"</string>
+    <string name="missingApplication">No posee instalada la aplicacion correspondiente para ejecutar la accion</string>
+    <string name="missingCalendar">No existen calendarios para realizar la accion</string>
+    <string name="reminder_success_desc">Hemos agendado un recordatorio para esta funcion</string>
+    <string name="reminder_success_title">Agendado</string>
+
+
 
 </resources>
