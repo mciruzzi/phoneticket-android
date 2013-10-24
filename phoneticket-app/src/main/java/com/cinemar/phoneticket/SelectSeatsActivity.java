@@ -1,5 +1,6 @@
 package com.cinemar.phoneticket;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,11 +17,13 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
 import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -112,16 +115,19 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 	private void displaySeats() {
 		ImageView seatView;
 
-		LayoutParams params = new LayoutParams(
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		params.setMargins(10, 15, 10, 15);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		int lastLeftColumn = showRoom.getLeftWidth();
+		int lastMiddleColumn = showRoom.getMiddleWidth()+showRoom.getLeftWidth();
 
 		for (Integer i = 0; i < showRoom.getRowsLength(); i++) {
 
 			TableRow fila = new TableRow(this);
-			fila.setPadding(15, 10, 15, 10);
-			fila.setLayoutParams(params);
+			fila.setPadding(15, 10, 15, 10);		
+			fila.setLayoutParams(params);			
 			cinemaLayout.addView(fila);
 
 			for (Integer j = 0; j < showRoom.getColumnsLength() ; j++) {
@@ -129,10 +135,14 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 				
 				seatView = new ImageView(this);
 				seatView.setPadding(2, 0, 2, 0);
+				if ((j+1 == lastLeftColumn) || (j+1 == lastMiddleColumn)){
+					seatView.setPadding(2, 0, 40, 0);					
+				}
+				
 				seatsImages.put(seatModel.getId(), seatView);		
 				
 				if (seatModel.getStatus().equals(SeatStatus.NON_EXISTENT)){
-					seatView.setImageResource(R.drawable.seat_available);// podria ser cualquier otro
+					seatView.setImageResource(R.drawable.seat_available);// podria ser cualquier otro(es solo para que ocupe el lugar vacio)
 					seatView.setVisibility(View.INVISIBLE); //la hago invisible aunque quizas no sea lo mejor 
 				}
 				
@@ -152,6 +162,27 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 
 		}
 
+	}
+	
+	public void readySelectingSeats(View view){
+		if (SelectedSeats.isEmpty()){
+			showSimpleAlert(getString(R.string.no_seats_selected));
+			return;
+		}
+		
+	
+		Intent intent = new Intent(this, SelectTicketsActivity.class);
+		intent.putExtra("showId", showId);
+		
+		ArrayList<String> seatsIds = new ArrayList<String>();
+		for (Seat seat : SelectedSeats){
+			seatsIds.add(seat.getId());
+		}
+		
+		intent.putExtra("selectedSeats", seatsIds.toArray());
+		startActivity(intent);
+		
+		
 	}
 
 }

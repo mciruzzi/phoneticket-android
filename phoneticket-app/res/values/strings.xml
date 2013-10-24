@@ -14,22 +14,17 @@
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
     <string name="title_activity_select_seats">SelectSeatsActivity</string>
     <string name="getting_sala">Obteniendo Sala</string>
-    
-
     <string name="title_activity_reserve_show">Reserva</string>
     <string name="title_activity_buy_show">Compra</string>
     <string name="reserve">Reservar</string>
     <string name="buy">Comprar</string>
     <string name="select">Seleccionar</string>
-
-
-       
-	<string name="no_way_title">"No podra ser"</string>
+    <string name="no_way_title">"No podra ser"</string>
     <string name="missingApplication">No posee instalada la aplicacion correspondiente para ejecutar la accion</string>
     <string name="missingCalendar">No existen calendarios para realizar la accion</string>
     <string name="reminder_success_desc">Hemos agendado un recordatorio para esta funcion</string>
     <string name="reminder_success_title">Agendado</string>
-
-
+    <string name="no_seats_selected">Debe seleccionar al menos un asiento</string>
+    <string name="title_activity_select_tickets">SelectTicketsActivity</string>
 
 </resources>
