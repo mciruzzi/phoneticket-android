@@ -46,44 +46,52 @@
         android:hint="@string/numeroDeTarjeta"
         android:inputType="numberSigned" >
     </EditText>
-    
-      <EditText
-          android:id="@+id/codigoDeSeguridad"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentLeft="true"
-          android:layout_alignParentTop="true"
-          android:layout_weight="1"
-          android:ems="10"
-          android:hint="@string/codigoDeSeguridad"
-          android:inputType="numberSigned" >
 
+    <EditText
+        android:id="@+id/codigoDeSeguridad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/codigoDeSeguridad"
+        android:inputType="numberSigned" >
     </EditText>
-    
-        <EditText
-            android:id="@+id/nombreDeltitular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/nombreDeltitular"
-            android:inputType="textPersonName" >
 
+    <EditText
+        android:id="@+id/nombreDeltitular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/nombreDeltitular"
+        android:inputType="textPersonName" >
     </EditText>
-    
-          <EditText
-              android:id="@+id/fechaVencimiento"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_alignParentLeft="true"
-              android:layout_alignParentTop="true"
-              android:layout_weight="1"
-              android:ems="10"
-              android:hint="@string/fechaVencimiento"
-              android:inputType="date" >
 
+    <EditText
+        android:id="@+id/fechaVencimiento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/fechaVencimiento"
+        android:inputType="date" >
     </EditText>
+
+    <Button
+        android:id="@+id/selectSeatsButton"
+        style="@style/Buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:onClick="onClickDone"
+        android:text="@string/done" />
 
 </LinearLayout>
