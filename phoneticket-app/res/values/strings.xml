@@ -25,6 +25,12 @@
     <string name="reminder_success_desc">Hemos agendado un recordatorio para esta funcion</string>
     <string name="reminder_success_title">Agendado</string>
     <string name="no_seats_selected">Debe seleccionar al menos un asiento</string>
+    <string name="numeroDeTarjeta">Numero de Tarjeta</string>
+    <string name="codigoDeSeguridad">Codigo de Seguridad</string>
+    <string name="nombreDeltitular">Nombre del titular</string>
+    <string name="fechaVencimiento">Fecha de Vencimiento</string>
     <string name="title_activity_select_tickets">SelectTicketsActivity</string>
+    <string name="seleccioneTiposEntrada">Seleccion de Pago</string>
 
+    
 </resources>

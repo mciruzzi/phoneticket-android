@@ -1,6 +1,7 @@
 package com.cinemar.phoneticket;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		params.setMargins(10, 15, 10, 15);
-		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
 		int lastLeftColumn = showRoom.getLeftWidth();
 		int lastMiddleColumn = showRoom.getMiddleWidth()+showRoom.getLeftWidth();
 
@@ -174,12 +175,14 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
 		intent.putExtra("showId", showId);
 		
-		ArrayList<String> seatsIds = new ArrayList<String>();
+		ArrayList<String> seatsIds = new ArrayList<String>();		
 		for (Seat seat : SelectedSeats){
-			seatsIds.add(seat.getId());
+			seatsIds.add(seat.getId());			
 		}
 		
-		intent.putExtra("selectedSeats", seatsIds.toArray());
+		
+		intent.putStringArrayListExtra("selectedSeats", seatsIds);
+		
 		startActivity(intent);
 		
 		
