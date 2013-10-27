@@ -81,8 +81,15 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 
 		adultsTicketsItem = new TicketItemViewController(
 				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,null);
+		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
+		adultsTicketsItem.setDescription("Entrada de adulto");
+		adultsTicketsItem.setSubtotal(new Double(0));		
+		
 		childrenTicketsItem = new TicketItemViewController(
 				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,null);
+		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
+		childrenTicketsItem.setDescription("Entrada de ninio");
+		childrenTicketsItem.setSubtotal(new Double(0));
 	    
 	}
 

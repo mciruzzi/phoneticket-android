@@ -32,6 +32,8 @@
     <string name="fechaVencimiento">Fecha de Vencimiento</string>
     <string name="title_activity_select_tickets">SelectTicketsActivity</string>
     <string name="seleccioneTiposEntrada">Seleccion de Pago</string>
+    <string name="adult_ticket">Adultos</string>
+    <string name="children_ticket">Ninios</string>
 
     
 </resources>

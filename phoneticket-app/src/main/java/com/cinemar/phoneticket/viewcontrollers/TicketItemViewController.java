@@ -28,6 +28,13 @@ public class TicketItemViewController {
 		spinner = (Spinner) layout.findViewById(R.id.promoSpinner);
 		context = ctx;
 		promotion = promo;
+
+		if (promotion != null) {
+			this.setTitle(promotion.getName());
+			this.setDescription(promotion.getName()); // TODO Change for description
+			this.setSubtotal(new Double(0));
+		}
+
 	}
 
 	public void setTitle(String title) {
@@ -60,17 +67,16 @@ public class TicketItemViewController {
 			for (int i = 1; i * promotion.getSeatsNeeded() <= maxTicketsAllowed; i++) {
 				options.add(promotion.getSeatsNeeded() * i);
 			}
-		}
-		else {
+		} else {
 			// default behaviour (one promo == one item) ==> Child and Adults
 			// Tickets
 			for (int i = 1; i <= maxTicketsAllowed; i++) {
 				options.add(i);
 			}
 		}
-		
-		ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(
-				context, android.R.layout.simple_spinner_item, options);
+
+		ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(context,
+				android.R.layout.simple_spinner_item, options);
 		dataAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
