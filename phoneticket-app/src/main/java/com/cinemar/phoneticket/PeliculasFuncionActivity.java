@@ -158,7 +158,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity {
 		}
 		Intent intent = new Intent(this, SelectSeatsActivity.class);
 		intent.putExtra("showId", selectedShow.getShowId());
-		intent.putExtra("title", title);
+		intent.putExtra("title", title);		
 		//intent.putExtra("maxSelections",value); //Si se quisiese limitar la cant de entradas se hace mediante este parametro
 		startActivity(intent);
 	}

@@ -13,6 +13,7 @@ import com.cinemar.phoneticket.films.SeatOnClickListener;
 import com.cinemar.phoneticket.model.Room;
 import com.cinemar.phoneticket.model.Room.Seat;
 import com.cinemar.phoneticket.model.SeatStatus;
+import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -34,6 +35,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 	private String showId;
 	//String[][] seats = new String[20][20];
 	private Room showRoom;
+	private PriceInfo priceInfo;
 	private TableLayout cinemaLayout;
 	private Map<String, ImageView> seatsImages;
 	private LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
@@ -79,11 +81,12 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 		api.getShowSeats(showId, new JsonHttpResponseHandler() {
 
 			@Override
-			public void onSuccess(JSONObject room) {
+			public void onSuccess(JSONObject roomInfo) {
 				Log.i("SelectSeats Activity", "Complejos Recibidos");
 				try {
-					showRoom = new Room(room);
-					Log.i("SelectSeats Activity", "Seats" + room + "recibido");
+					showRoom = new Room(roomInfo);
+					priceInfo = new PriceInfo(roomInfo); //just to validate parsing at this moment
+					Log.i("SelectSeats Activity", "Seats" + roomInfo + "recibido");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -174,18 +177,16 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 	
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
 		intent.putExtra("showId", showId);
+		intent.putExtra("priceInfo", priceInfo);
 		
 		ArrayList<String> seatsIds = new ArrayList<String>();		
 		for (Seat seat : SelectedSeats){
 			seatsIds.add(seat.getId());			
-		}
-		
+		}		
 		
 		intent.putStringArrayListExtra("selectedSeats", seatsIds);
 		
-		startActivity(intent);
-		
-		
+		startActivity(intent);				
 	}
 
 }

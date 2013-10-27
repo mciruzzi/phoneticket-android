@@ -3,6 +3,8 @@ package com.cinemar.phoneticket;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.cinemar.phoneticket.model.prices.PriceInfo;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -14,6 +16,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	String showId;
 	Set<String> selectedSeats = new HashSet<String>();	
 	boolean compra,reserva;
+	PriceInfo priceInfo;
 	
 	//Views
 	RadioButton compraRadioButton,reservaRadioButton;	
@@ -28,6 +31,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		
 		showId = getIntent().getStringExtra("showId");
 		selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
+		priceInfo = (PriceInfo) getIntent().getSerializableExtra("priceInfo");
+		
 
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.salaView);
