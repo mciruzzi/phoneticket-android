@@ -21,8 +21,8 @@ public class PercentejePromo extends Promotion {
 	}
 
 	@Override
-	public int getSeatsNeeded(int howManyPromos) {
-		return howManyPromos;
+	public int getSeatsNeeded() {
+		return 1;
 
 	}
 

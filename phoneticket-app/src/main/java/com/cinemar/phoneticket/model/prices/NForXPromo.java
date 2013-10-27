@@ -15,17 +15,14 @@ public class NForXPromo extends Promotion {
 		x = jsonObject.getJSONObject("discount_calculation").getInt("x");
 	}
 
-
 	@Override
 	public double getPrice(int howManyPromos, PriceInfo priceInfo) {
 		return x * howManyPromos;
-
 	}
 
 	@Override
-	public int getSeatsNeeded(int howManyPromos) {
-		return howManyPromos * n;
-
+	public int getSeatsNeeded() {
+		return n;
 	}
 
 }

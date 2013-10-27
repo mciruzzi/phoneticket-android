@@ -1,48 +1,59 @@
 package com.cinemar.phoneticket;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.cinemar.phoneticket.model.prices.PriceInfo;
+import com.cinemar.phoneticket.model.prices.Promotion;
+import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
 import android.widget.TextView;
 
 public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	String showId;
-	Set<String> selectedSeats = new HashSet<String>();	
-	boolean compra,reserva;
+	Set<String> selectedSeats = new HashSet<String>();
+	boolean compra, reserva;
 	PriceInfo priceInfo;
-	
-	//Views
-	RadioButton compraRadioButton,reservaRadioButton;	
-	EditText editNumeroDeTarjeta,editTitular,editCodigoSeg,editFechaVencimiento;
-	
+	int selectedTickets = 0;
+
+	// Views
+	RadioButton compraRadioButton, reservaRadioButton;
+	EditText editNumeroDeTarjeta, editTitular, editCodigoSeg,
+			editFechaVencimiento;
+	TicketItemViewController adultsTicketsItem, childrenTicketsItem;
+	List<TicketItemViewController> promosItems = new ArrayList<TicketItemViewController>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_tickets);
 
 		setTitle(getString(R.string.seleccioneTiposEntrada));
-		
+
 		showId = getIntent().getStringExtra("showId");
-		selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
+		selectedSeats.addAll(getIntent().getStringArrayListExtra(
+				"selectedSeats"));
 		priceInfo = (PriceInfo) getIntent().getSerializableExtra("priceInfo");
-		
 
 		// ** Important to get in order to use the showProgress method**//
 		mMainView = findViewById(R.id.salaView);
 		mStatusView = findViewById(R.id.sala_status);
-		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);		
-		
+		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);
+
 		getUIItems();
 		showTicketTypes();
-		
-		
+		displayPromos();
+		updateValues();
 	}
 
 	@Override
@@ -51,24 +62,31 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		getMenuInflater().inflate(R.menu.select_tickets, menu);
 		return true;
 	}
-	
+
 	private void showTicketTypes() {
-		// TODO consultar a la api de promociones por los tipos de entrada y mostrarla
-		// tener en cuenta que el maximo numero de entradas no puede superar el maximo de asientos
+		// TODO consultar a la api de promociones por los tipos de entrada y
+		// mostrarla
+		// tener en cuenta que el maximo numero de entradas no puede superar el
+		// maximo de asientos
 		// seleccionados
 	}
 
 	private void getUIItems() {
-		compraRadioButton = (RadioButton)findViewById(R.id.compraRadioButton);
-		reservaRadioButton = (RadioButton)findViewById(R.id.reservaRadioButton);
-		editNumeroDeTarjeta =  (EditText) findViewById(R.id.numeroDeTarjeta);
-		editTitular =   (EditText) findViewById(R.id.nombreDeltitular);
-		editCodigoSeg =  (EditText) findViewById(R.id.codigoDeSeguridad);
-		editFechaVencimiento =  (EditText) findViewById(R.id.fechaVencimiento);
-		
+		compraRadioButton = (RadioButton) findViewById(R.id.compraRadioButton);
+		reservaRadioButton = (RadioButton) findViewById(R.id.reservaRadioButton);
+		editNumeroDeTarjeta = (EditText) findViewById(R.id.numeroDeTarjeta);
+		editTitular = (EditText) findViewById(R.id.nombreDeltitular);
+		editCodigoSeg = (EditText) findViewById(R.id.codigoDeSeguridad);
+		editFechaVencimiento = (EditText) findViewById(R.id.fechaVencimiento);
+
+		adultsTicketsItem = new TicketItemViewController(
+				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,null);
+		childrenTicketsItem = new TicketItemViewController(
+				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,null);
+	    
 	}
-	
-	public void reservaSelected(View view){
+
+	public void reservaSelected(View view) {
 		reserva = true;
 		compra = false;
 		compraRadioButton.setChecked(compra);
@@ -78,25 +96,45 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		editCodigoSeg.setVisibility(View.GONE);
 		editFechaVencimiento.setVisibility(View.GONE);
 	}
-	
-	public void compraSelected(View view){
+
+	public void compraSelected(View view) {
 		compra = true;
 		reserva = false;
 		compraRadioButton.setChecked(compra);
-		reservaRadioButton.setChecked(reserva);		
-		
+		reservaRadioButton.setChecked(reserva);
+
 		editNumeroDeTarjeta.setVisibility(View.VISIBLE);
 		editTitular.setVisibility(View.VISIBLE);
 		editCodigoSeg.setVisibility(View.VISIBLE);
 		editFechaVencimiento.setVisibility(View.VISIBLE);
-				
-	}
-	
-	public void onClickDone(View view){
-		//TODO validar/chequear datos de compra/reserva y hacer call a la api
-		//de compras/reservas para registrala
 	}
 
+	public void onClickDone(View view) {
+		// TODO validar/chequear datos de compra/reserva y hacer call a la api
+		// de compras/reservas para registrala
+	}
+
+	private void displayPromos() {		
+		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
+		
+		for (Promotion promo : priceInfo.getPromotions()){
+			LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
+			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
+			
+			promosItems.add(new TicketItemViewController(promoItem, this,promo));		
+			ticketsItemContainer.addView(promoItem);
+		}
+	}
 	
+	private void updateValues(){
+		int maxTicketsAllowed = selectedSeats.size() - selectedTickets; 
+		adultsTicketsItem.updateTicketsView(maxTicketsAllowed);
+		childrenTicketsItem.updateTicketsView(maxTicketsAllowed);		
+		
+		for (TicketItemViewController promoItem :promosItems){
+			promoItem.updateTicketsView(maxTicketsAllowed);			
+		}	
+		
+	}
 
 }

@@ -16,9 +16,15 @@ public abstract class Promotion implements Serializable {
 		name = jsonObject.getString("name");
 		validationType = jsonObject.getString("validation_type");		
 	}
+	
 		
+	public Promotion(String name) {		
+		this.name = name;
+	}
+
+
 	public abstract double getPrice (int howManyPromos, PriceInfo priceInfo);
-	public abstract int getSeatsNeeded (int howManyPromos);
+	public abstract int getSeatsNeeded ();
 	
 	
 	public String getName() {

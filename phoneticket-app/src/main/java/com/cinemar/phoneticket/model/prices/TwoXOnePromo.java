@@ -16,8 +16,8 @@ public class TwoXOnePromo extends Promotion {
 	}
 
 	@Override
-	public int getSeatsNeeded(int howManyPromos) {
-		return 2 * howManyPromos;
+	public int getSeatsNeeded() {
+		return 2;
 		
 	}
 
