@@ -12,7 +12,7 @@ public class TwoXOnePromo extends Promotion {
 
 	@Override
 	public double getPrice(int howManyPromos, PriceInfo priceInfo) {
-		return priceInfo.getAdultPrice() * howManyPromos;
+		return (priceInfo.getAdultPrice() * howManyPromos) / 2;
 	}
 
 	@Override

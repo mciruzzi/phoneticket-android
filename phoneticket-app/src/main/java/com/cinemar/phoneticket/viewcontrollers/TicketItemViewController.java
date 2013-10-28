@@ -4,37 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.SelectTicketsActivity;
 import com.cinemar.phoneticket.model.prices.Promotion;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class TicketItemViewController {
+public class TicketItemViewController implements OnItemSelectedListener {
 
 	Spinner spinner;
+	Integer selectedAmount;
 	TextView description, title, subtotal;
-	Context context;
+
+
+
+	SelectTicketsActivity context;
 	Promotion promotion; // If it belongs to a promotion some behavior is
 							// delegated in it
 
-	public TicketItemViewController(LinearLayout layout, Context ctx,
+	public TicketItemViewController(LinearLayout layout, SelectTicketsActivity ctx,
 			Promotion promo) {
 		title = (TextView) layout.findViewById(R.id.promoTitle);
 		description = (TextView) layout.findViewById(R.id.promoDescription);
 		subtotal = (TextView) layout.findViewById(R.id.promoSubtotal);
 		spinner = (Spinner) layout.findViewById(R.id.promoSpinner);
+		spinner.setOnItemSelectedListener(this);
 		context = ctx;
 		promotion = promo;
+		
+		this.setSubtotal(new Double(0));
+		selectedAmount = 0;
 
 		if (promotion != null) {
 			this.setTitle(promotion.getName());
-			this.setDescription(promotion.getName()); // TODO Change for description
-			this.setSubtotal(new Double(0));
+			this.setDescription(promotion.getName()); // TODO Change for description			
 		}
-
 	}
 
 	public void setTitle(String title) {
@@ -48,38 +58,58 @@ public class TicketItemViewController {
 	public void setSubtotal(Double subtotal) {
 		this.subtotal.setText(subtotal.toString());
 	}
-
-	public int getSelectedAmount() {
-		//
-		return 0;
+	
+	public Integer getSelectedAmount() {
+		return selectedAmount;
+	}
+	
+	public double getSubtotal() {
+		return promotion.getPrice(selectedAmount, context.getPriceInfo());
 	}
 
 	public void updateTicketsView(int maxTicketsAllowed) {
 		this.setSpinnerOptions(maxTicketsAllowed);
-
+		setSubtotal(getSubtotal());
 	}
 
-	private void setSpinnerOptions(int maxTicketsAllowed) {
+	protected void setSpinnerOptions(int maxTicketsAllowed) {
+		if (spinner.getAdapter() == null){
+			ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(context,
+				android.R.layout.simple_spinner_item, getOptions(maxTicketsAllowed));		
+			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(dataAdapter);
+		}
+		else {
+			ArrayAdapter<Integer> dataAdapter = (ArrayAdapter<Integer>) spinner.getAdapter();
+			dataAdapter.clear();
+			dataAdapter.addAll(getOptions(maxTicketsAllowed));
+		}
+		
+	}
+
+	protected List<Integer> getOptions(int maxTicketsAllowed) {
 		List<Integer> options = new ArrayList<Integer>();
 		options.add(0); // default Option
-
-		if (promotion != null) {
-			for (int i = 1; i * promotion.getSeatsNeeded() <= maxTicketsAllowed; i++) {
-				options.add(promotion.getSeatsNeeded() * i);
-			}
-		} else {
-			// default behaviour (one promo == one item) ==> Child and Adults
-			// Tickets
-			for (int i = 1; i <= maxTicketsAllowed; i++) {
-				options.add(i);
-			}
+		
+		for (int i = 1; i * promotion.getSeatsNeeded() <= maxTicketsAllowed+selectedAmount; i++) {
+			options.add(promotion.getSeatsNeeded() * i);
 		}
+	
+		return options;
+	}
+	
+	
+	public void onItemSelected(AdapterView<?> parent, View view, 
+            int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)		
+		selectedAmount = (Integer) parent.getItemAtPosition(pos);		
+		context.updateValues();
+    }
 
-		ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(context,
-				android.R.layout.simple_spinner_item, options);
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter);
+
+	public void onNothingSelected(AdapterView<?> arg0) {
+		this.setSubtotal(new Double(0));		
 	}
 
 }

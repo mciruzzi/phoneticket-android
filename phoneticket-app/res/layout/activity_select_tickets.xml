@@ -24,6 +24,13 @@
             layout="@layout/tickets_item_layout" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/ticketsTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Total" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
