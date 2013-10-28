@@ -8,6 +8,7 @@ import org.json.JSONObject;
 public abstract class Promotion implements Serializable {
 
 	private static final long serialVersionUID = 6023972663947325236L;
+	public static final String CODE="code";
 	
 	private String id,name,validationType;
 	private PriceInfo priceInfo;

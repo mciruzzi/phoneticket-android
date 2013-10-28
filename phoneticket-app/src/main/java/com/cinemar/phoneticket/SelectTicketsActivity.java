@@ -31,7 +31,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	RadioButton compraRadioButton, reservaRadioButton;
 	EditText editNumeroDeTarjeta, editTitular, editCodigoSeg,
 			editFechaVencimiento;
-	TextView ticketsTotal;
+	TextView ticketsTotal,cantTickets;
 	SingleTicketItemViewController adultsTicketsItem, childrenTicketsItem;
 	List<TicketItemViewController> promosItems = new ArrayList<TicketItemViewController>();
 
@@ -81,17 +81,19 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		editCodigoSeg = (EditText) findViewById(R.id.codigoDeSeguridad);
 		editFechaVencimiento = (EditText) findViewById(R.id.fechaVencimiento);
 		ticketsTotal = (TextView) findViewById(R.id.ticketsTotal);
-
-		adultsTicketsItem = new SingleTicketItemViewController(
-				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo.getAdultPrice());
-		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-		adultsTicketsItem.setDescription("Entrada de adulto");
-			
+		cantTickets = (TextView) findViewById(R.id.cantTickets);
+		cantTickets.setText("Seleccione sus "+ selectedSeats.size() + " tickets:");
 		
-		childrenTicketsItem = new SingleTicketItemViewController(
-				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo.getChildPrice());
-		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-		childrenTicketsItem.setDescription("Entrada de ninio");
+//		adultsTicketsItem = new SingleTicketItemViewController(
+//				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo.getAdultPrice());
+//		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
+//		adultsTicketsItem.setDescription("Entrada de adulto");
+//			
+//		
+//		childrenTicketsItem = new SingleTicketItemViewController(
+//				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo.getChildPrice());
+//		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
+//		childrenTicketsItem.setDescription("Entrada de ninio");
 		
 	    
 	}
@@ -131,8 +133,25 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	private void displayPromos() {		
 		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
 		
+		LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
+		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);		
+		adultsTicketsItem = new SingleTicketItemViewController(
+				adultsItem,this,priceInfo.getAdultPrice());
+		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
+		adultsTicketsItem.setDescription("Entrada de adulto");				
+		 
+		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
+		childrenTicketsItem = new SingleTicketItemViewController(
+				childrenItem,this,priceInfo.getChildPrice());
+		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
+		childrenTicketsItem.setDescription("Entrada de ninio");
+		
+		promosItems.add(adultsTicketsItem);
+		promosItems.add(childrenTicketsItem);
+		ticketsItemContainer.addView(adultsItem);
+		ticketsItemContainer.addView(childrenItem);
+		
 		for (Promotion promo : priceInfo.getPromotions()){
-			LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
 			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 			
 			promosItems.add(new TicketItemViewController(promoItem, this,promo));		
@@ -148,22 +167,16 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		for (TicketItemViewController promoItem : promosItems){
 			selectedTickets += promoItem.getSelectedAmount();			
 		}
-		selectedTickets += (adultsTicketsItem.getSelectedAmount() + childrenTicketsItem.getSelectedAmount()); 
-		
+	
 		//tickets que faltan seleccionar
 		int maxTicketsAllowed = selectedSeats.size() - selectedTickets;
 		
-		//Hago update de los valores que puedo escojer en cada item/spinner
-		adultsTicketsItem.updateTicketsView(maxTicketsAllowed);
-		childrenTicketsItem.updateTicketsView(maxTicketsAllowed);
-		
-		
+		//Hago update de los valores que puedo escojer en cada item/spinner	
 		for (TicketItemViewController promoItem :promosItems){
 			promoItem.updateTicketsView(maxTicketsAllowed);			
 			total += promoItem.getSubtotal();
 		}	
 		
-		total += (adultsTicketsItem.getSubtotal() + childrenTicketsItem.getSubtotal());
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
 		

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class TicketItemViewController implements OnItemSelectedListener {
 	Spinner spinner;
 	Integer selectedAmount;
 	TextView description, title, subtotal;
+	EditText promoCode;
 
 
 
@@ -34,6 +36,7 @@ public class TicketItemViewController implements OnItemSelectedListener {
 		description = (TextView) layout.findViewById(R.id.promoDescription);
 		subtotal = (TextView) layout.findViewById(R.id.promoSubtotal);
 		spinner = (Spinner) layout.findViewById(R.id.promoSpinner);
+		promoCode = (EditText) layout.findViewById(R.id.codeText);		
 		spinner.setOnItemSelectedListener(this);
 		context = ctx;
 		promotion = promo;
@@ -103,7 +106,11 @@ public class TicketItemViewController implements OnItemSelectedListener {
             int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)		
-		selectedAmount = (Integer) parent.getItemAtPosition(pos);		
+		selectedAmount = (Integer) parent.getItemAtPosition(pos);
+		if (selectedAmount > 0 && promotion.getValidationType().equals(Promotion.CODE))
+			promoCode.setVisibility(View.VISIBLE);
+		else
+			promoCode.setVisibility(View.GONE);
 		context.updateValues();
     }
 

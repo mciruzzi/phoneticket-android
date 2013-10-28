@@ -25,6 +25,15 @@
             android:layout_height="wrap_content"
             android:text="Description"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/codeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"            
+            android:ems="9"
+            android:visibility="gone" 
+            android:hint="@string/promo_code"/>
+        
     </LinearLayout>
 
     <Spinner

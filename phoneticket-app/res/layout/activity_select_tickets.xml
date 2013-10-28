@@ -9,19 +9,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SelectTicketsActivity" >
 
+    <TextView
+        android:id="@+id/cantTickets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <LinearLayout
         android:id="@+id/ticketItemContainer"        
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <include
-            android:id="@+id/adultsTicketsLayout"
-            layout="@layout/tickets_item_layout" />
+<!--         <include -->
+<!--             android:id="@+id/adultsTicketsLayout" -->
+<!--             layout="@layout/tickets_item_layout" /> -->
 
-        <include
-            android:id="@+id/childrenTicketsLayout"
-            layout="@layout/tickets_item_layout" />
+<!--         <include -->
+<!--             android:id="@+id/childrenTicketsLayout" -->
+<!--             layout="@layout/tickets_item_layout" /> -->
     </LinearLayout>
 
     <TextView
