@@ -12,6 +12,9 @@ public class Show {
 	String showId;
 	Calendar startTime;
 	String startTimeString;	
+	boolean isNumbered = false; //TODO change para tomarlo en el constructor
+
+
 
 	public Show(String showId, Calendar startTime) {
 		super();
@@ -23,6 +26,7 @@ public class Show {
 		super();
 		
 		this.showId = showObject.getString("id");
+		// TODO chequear this.isNumbered = showObject.getString("numbered");
 		
 		try {
 			this.startTimeString = UIDateUtil.getStringFromDate(UIDateUtil.getDateFromString(showObject.getString("starts_at")));
@@ -54,6 +58,10 @@ public class Show {
 
 	public void setStartTimeString(String startTimeString) {
 		this.startTimeString = startTimeString;
+	}
+
+	public boolean isNumbered() {
+		return isNumbered;
 	}
 
 

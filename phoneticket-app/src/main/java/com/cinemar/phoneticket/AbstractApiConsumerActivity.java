@@ -7,10 +7,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-public class AbstractApiConsumerActivity extends Activity {
+public class AbstractApiConsumerActivity extends FragmentActivity {
 
 	protected View mStatusView;
 	protected TextView mStatusMessageView;

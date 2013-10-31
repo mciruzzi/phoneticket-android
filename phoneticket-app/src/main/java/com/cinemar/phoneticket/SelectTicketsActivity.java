@@ -5,13 +5,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.model.prices.Promotion;
+import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -22,11 +29,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class SelectTicketsActivity extends AbstractApiConsumerActivity {
-	String showId;
-	Set<String> selectedSeats = new HashSet<String>();
-	boolean compra, reserva;
-	PriceInfo priceInfo;
-	int selectedTickets = 0;
+	private String showId;
+	private Set<String> selectedSeats = new HashSet<String>();
+	private int seatsCount;
+	private boolean isBuy, isReserve;
+	private PriceInfo priceInfo;
+	private int selectedTickets = 0;
 
 	// Views
 	RadioButton compraRadioButton, reservaRadioButton;
@@ -45,8 +53,16 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		setTitle(getString(R.string.seleccioneTiposEntrada));
 
 		showId = getIntent().getStringExtra("showId");
-		selectedSeats.addAll(getIntent().getStringArrayListExtra(
-				"selectedSeats"));
+		isReserve = getIntent().getBooleanExtra("isReserve", false);
+		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
+		if (getIntent().hasExtra("selectedSeats")){
+			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
+			seatsCount = selectedSeats.size();
+		}
+		else{
+			seatsCount = getIntent().getIntExtra("seatsCount",0);
+		}
+			
 		priceInfo = (PriceInfo) getIntent().getSerializableExtra("priceInfo");
 
 		// ** Important to get in order to use the showProgress method**//
@@ -54,8 +70,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		mStatusView = findViewById(R.id.sala_status);
 		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);
 
-		getUIItems();
-		showTicketTypes();
+		getUIItems();		
 		displayPromos();
 		updateValues();
 	}
@@ -67,14 +82,6 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		return true;
 	}
 
-	private void showTicketTypes() {
-		// TODO consultar a la api de promociones por los tipos de entrada y
-		// mostrarla
-		// tener en cuenta que el maximo numero de entradas no puede superar el
-		// maximo de asientos
-		// seleccionados
-	}
-
 	private void getUIItems() {
 		compraRadioButton = (RadioButton) findViewById(R.id.compraRadioButton);
 		reservaRadioButton = (RadioButton) findViewById(R.id.reservaRadioButton);
@@ -84,7 +91,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		editFechaVencimiento = (EditText) findViewById(R.id.fechaVencimiento);
 		ticketsTotal = (TextView) findViewById(R.id.ticketsTotal);
 		cantTickets = (TextView) findViewById(R.id.cantTickets);
-		cantTickets.setText("Seleccione sus "+ selectedSeats.size() + " tickets:");
+		cantTickets.setText("Seleccione sus "+ seatsCount + " tickets:"+ '\n'+ "* Las promociones no son acumulables");
 		
 		adultsTicketsItem = new AdultsTicketItemViewController(
 				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo);
@@ -101,10 +108,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	}
 
 	public void reservaSelected(View view) {
-		reserva = true;
-		compra = false;
-		compraRadioButton.setChecked(compra);
-		reservaRadioButton.setChecked(reserva);
+		isReserve = true;
+		isBuy = false;
+		compraRadioButton.setChecked(isBuy);
+		reservaRadioButton.setChecked(isReserve);
 		editNumeroDeTarjeta.setVisibility(View.GONE);
 		editTitular.setVisibility(View.GONE);
 		editCodigoSeg.setVisibility(View.GONE);
@@ -112,20 +119,15 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	}
 
 	public void compraSelected(View view) {
-		compra = true;
-		reserva = false;
-		compraRadioButton.setChecked(compra);
-		reservaRadioButton.setChecked(reserva);
+		isBuy = true;
+		isReserve = false;
+		compraRadioButton.setChecked(isBuy);
+		reservaRadioButton.setChecked(isReserve);
 
 		editNumeroDeTarjeta.setVisibility(View.VISIBLE);
 		editTitular.setVisibility(View.VISIBLE);
 		editCodigoSeg.setVisibility(View.VISIBLE);
 		editFechaVencimiento.setVisibility(View.VISIBLE);
-	}
-
-	public void onClickDone(View view) {
-		// TODO validar/chequear datos de compra/reserva y hacer call a la api
-		// de compras/reservas para registrala
 	}
 
 	public PriceInfo getPriceInfo(){
@@ -177,7 +179,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		selectedTickets += childrenTicketsItem.getSelectedAmount();
 	
 		//tickets que faltan seleccionar
-		int maxTicketsAllowed = selectedSeats.size() - selectedTickets;
+		int maxTicketsAllowed = seatsCount - selectedTickets;
 		
 		//Hago update de los valores que puedo escojer en cada item/spinner	
 		for (TicketItemViewController promoItem :promosItems){
@@ -193,5 +195,52 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
 		
 	}
+	
+	public void onClickDone(View view) {
+		// TODO validar/chequear datos de compra/reserva y hacer call a la api
+		// de compras/reservas para registrala
+		if (isReserve){
+			ReserveRequest reserve = new ReserveRequest();
+			reserve.setEmail("snipperme@gmail.com"); // TODO evitar hardcoding
+			reserve.setShowId(showId);
+			reserve.setSeats(selectedSeats);
+			
+			ReserveBuyAPI api = new ReserveBuyAPI();
+			api.performReserve(reserve, reserveResponseHandler);
+		}
+		else if(isBuy){
+			
+		}
+	}
+	
+	JsonHttpResponseHandler reserveResponseHandler = new JsonHttpResponseHandler() {
+		@Override
+		public void onSuccess(JSONObject film) {
+			Log.i("Funciones Activity", "Funciones Recibidas");
+			Log.i("Funciones Activity",	"Funciones" + film + "recibida");			
+			
+		}
+
+		@Override
+		public void onFailure(Throwable arg0, String arg1) {
+			showSimpleAlert(arg1);
+		};
+
+		@Override
+		public void onFailure(Throwable e, JSONObject errorResponse) {
+			Log.i("Funciones Activity", "Failure pidiendo funciones");
+			if (errorResponse != null) {
+				showSimpleAlert(errorResponse.optString("error"));
+			} else {
+				showSimpleAlert(e.getMessage());
+			}
+		}
+
+		@Override
+		public void onFinish() {
+			showProgress(false);			
+		}
+
+	};
 
 }

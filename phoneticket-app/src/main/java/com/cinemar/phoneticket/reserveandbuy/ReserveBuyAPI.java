@@ -3,6 +3,7 @@ package com.cinemar.phoneticket.reserveandbuy;
 import com.cinemar.phoneticket.external.APIClient;
 import com.cinemar.phoneticket.external.RestClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 public class ReserveBuyAPI {
 	
@@ -14,6 +15,15 @@ public class ReserveBuyAPI {
 	
 	public void sendCancelation(String reservationId, JsonHttpResponseHandler responseHandler){
 		client.delete("reservations/" + reservationId + ".json", responseHandler);
+	}
+	
+	public void performReserve( ReserveRequest reserve , JsonHttpResponseHandler responseHandler){
+		RequestParams params =new RequestParams();
+		params.put("email", reserve.getEmail());
+		params.put("show_id", reserve.getShowId());
+		params.put("seats", reserve.getSeatsAsArray());	
+		
+		client.post("reservations.json", params, responseHandler);
 	}
 
 }

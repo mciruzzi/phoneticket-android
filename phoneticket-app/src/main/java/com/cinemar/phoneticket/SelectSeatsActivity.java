@@ -33,6 +33,7 @@ import android.widget.TextView;
 public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 
 	private String showId;
+	private boolean isReserve;
 	//String[][] seats = new String[20][20];
 	private Room showRoom;
 	private PriceInfo priceInfo;
@@ -54,6 +55,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);
 		
 		showId = getIntent().getStringExtra("showId");
+		isReserve = getIntent().getBooleanExtra("isReserve", false);
 		if (getIntent().getStringExtra("maxSelections") != null)
 			//supongamos que viene dicho de afuera si hay una pantalla extra donde se dice que cantidad de butacas se va a comprar
 			maxSeatsToTake = Integer.parseInt(getIntent().getStringExtra("maxSelections"));
@@ -173,11 +175,11 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity {
 			showSimpleAlert(getString(R.string.no_seats_selected));
 			return;
 		}
-		
-	
+			
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
 		intent.putExtra("showId", showId);
 		intent.putExtra("priceInfo", priceInfo);
+		intent.putExtra("isReserve", isReserve);
 		
 		ArrayList<String> seatsIds = new ArrayList<String>();		
 		for (Seat seat : SelectedSeats){
