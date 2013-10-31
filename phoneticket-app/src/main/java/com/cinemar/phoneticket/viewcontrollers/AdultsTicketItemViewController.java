@@ -40,10 +40,23 @@ public class AdultsTicketItemViewController extends TicketItemViewController {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, 
             int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)		
 		selectedAmount = (Integer) parent.getItemAtPosition(pos);
 		context.updateValues();
     }
+	
+	
+	@Override
+	public void updateTicketsView(int maxTicketsAllowed, boolean promoSelected) {
+		//Idem entradas de ninios
+		this.setSpinnerOptions(maxTicketsAllowed);
+		setSubtotal(getSubtotal());
+	}
+	
+
+	
+
+	
+
+
 	
 }

@@ -47,4 +47,13 @@ public class ChildrenTicketItemViewController extends TicketItemViewController {
 		context.updateValues();
     }
 	
+	
+	@Override
+	public void updateTicketsView(int maxTicketsAllowed, boolean promoSelected) {
+		//Le chupa un huevo si hay otra promo
+
+		this.setSpinnerOptions(maxTicketsAllowed);
+		setSubtotal(getSubtotal());
+	}
+
 }

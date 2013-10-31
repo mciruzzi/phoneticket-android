@@ -71,7 +71,12 @@ public class TicketItemViewController implements OnItemSelectedListener {
 		return promotion.getPrice(selectedAmount, context.getPriceInfo());
 	}
 
-	public void updateTicketsView(int maxTicketsAllowed) {
+	public void updateTicketsView(int maxTicketsAllowed, boolean promoSelected) {
+		//Si hay otra promo seleccionada y no soy yo no puedo ser seleccionada
+		if (promoSelected && selectedAmount == 0)
+			maxTicketsAllowed = 0;
+
+		
 		this.setSpinnerOptions(maxTicketsAllowed);
 		setSubtotal(getSubtotal());
 	}

@@ -166,10 +166,12 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	public void updateValues(){
 		selectedTickets = 0;
 		double total = 0;
+		boolean promoSelected = false; // para dejar elejir solo 1 promo (no acumulables)
 		
 		//recoletamos la cantidad de tickets ya seleccionados
 		for (TicketItemViewController promoItem : promosItems){
-			selectedTickets += promoItem.getSelectedAmount();			
+			selectedTickets += promoItem.getSelectedAmount();
+			if (selectedTickets>0) promoSelected = true;
 		}
 		
 		selectedTickets += childrenTicketsItem.getSelectedAmount();
@@ -179,13 +181,13 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		
 		//Hago update de los valores que puedo escojer en cada item/spinner	
 		for (TicketItemViewController promoItem :promosItems){
-			promoItem.updateTicketsView(maxTicketsAllowed);			
+			promoItem.updateTicketsView(maxTicketsAllowed, promoSelected);			
 			total += promoItem.getSubtotal();
 		}	
 		
 		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
-		adultsTicketsItem.updateTicketsView(maxTicketsAllowed);
-		childrenTicketsItem.updateTicketsView(maxTicketsAllowed);
+		adultsTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
+		childrenTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
 		
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
