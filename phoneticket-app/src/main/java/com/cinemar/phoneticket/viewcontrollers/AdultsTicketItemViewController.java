@@ -8,27 +8,27 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.cinemar.phoneticket.SelectTicketsActivity;
-import com.cinemar.phoneticket.model.prices.Promotion;
+import com.cinemar.phoneticket.model.prices.PriceInfo;
 
 
-public class SingleTicketItemViewController extends TicketItemViewController {
+
+public class AdultsTicketItemViewController extends TicketItemViewController {
 	
 	Double unitPrice;
 
-	public SingleTicketItemViewController(LinearLayout layout,	SelectTicketsActivity ctx, Double price) {
+	public AdultsTicketItemViewController(LinearLayout layout,	SelectTicketsActivity ctx, PriceInfo price) {
 		//it does not have any promotion, it just a ticket value entry
 		super(layout, ctx, null);
-		unitPrice = price;
+		unitPrice = price.getAdultPrice();		
 	}
 
 	@Override
 	protected List<Integer> getOptions(int maxTicketsAllowed) {
+		// Los ticket de adulto por defecto se comen toda la cantidad de asientos disponibles
 		List<Integer> options = new ArrayList<Integer>();
-		options.add(0); 
-		
-		for (int i = 1; i <= maxTicketsAllowed+selectedAmount; i++) {
-			options.add(i);
-		}	
+		options.add(maxTicketsAllowed);
+		selectedAmount = maxTicketsAllowed;
+
 		return options;
 	}
 	

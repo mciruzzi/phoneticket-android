@@ -7,7 +7,8 @@ import java.util.Set;
 
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.model.prices.Promotion;
-import com.cinemar.phoneticket.viewcontrollers.SingleTicketItemViewController;
+import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
+import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
 
 import android.os.Bundle;
@@ -32,7 +33,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	EditText editNumeroDeTarjeta, editTitular, editCodigoSeg,
 			editFechaVencimiento;
 	TextView ticketsTotal,cantTickets;
-	SingleTicketItemViewController adultsTicketsItem, childrenTicketsItem;
+	TicketItemViewController adultsTicketsItem;
+	TicketItemViewController childrenTicketsItem;
 	List<TicketItemViewController> promosItems = new ArrayList<TicketItemViewController>();
 
 	@Override
@@ -84,16 +86,16 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		cantTickets = (TextView) findViewById(R.id.cantTickets);
 		cantTickets.setText("Seleccione sus "+ selectedSeats.size() + " tickets:");
 		
-//		adultsTicketsItem = new SingleTicketItemViewController(
-//				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo.getAdultPrice());
-//		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-//		adultsTicketsItem.setDescription("Entrada de adulto");
-//			
-//		
-//		childrenTicketsItem = new SingleTicketItemViewController(
-//				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo.getChildPrice());
-//		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-//		childrenTicketsItem.setDescription("Entrada de ninio");
+		adultsTicketsItem = new AdultsTicketItemViewController(
+				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo);
+		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
+		adultsTicketsItem.setDescription("Entrada de adulto");
+			
+		
+		childrenTicketsItem = new ChildrenTicketItemViewController(
+				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo);
+		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
+		childrenTicketsItem.setDescription("Entrada de ninio");
 		
 	    
 	}
@@ -134,22 +136,24 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
 		
 		LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
-		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);		
-		adultsTicketsItem = new SingleTicketItemViewController(
-				adultsItem,this,priceInfo.getAdultPrice());
-		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-		adultsTicketsItem.setDescription("Entrada de adulto");				
-		 
-		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-		childrenTicketsItem = new SingleTicketItemViewController(
-				childrenItem,this,priceInfo.getChildPrice());
-		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-		childrenTicketsItem.setDescription("Entrada de ninio");
+		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 		
-		promosItems.add(adultsTicketsItem);
-		promosItems.add(childrenTicketsItem);
-		ticketsItemContainer.addView(adultsItem);
-		ticketsItemContainer.addView(childrenItem);
+		//No son necesarios ahora que son tratados distintos
+//		adultsTicketsItem = new SingleTicketItemViewController(
+//				adultsItem,this,priceInfo.getAdultPrice());
+//		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
+//		adultsTicketsItem.setDescription("Entrada de adulto");				
+//		 
+//		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
+//		childrenTicketsItem = new SingleTicketItemViewController(
+//				childrenItem,this,priceInfo.getChildPrice());
+//		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
+//		childrenTicketsItem.setDescription("Entrada de ninio");
+//		
+//		promosItems.add(adultsTicketsItem);
+//		promosItems.add(childrenTicketsItem);
+//		ticketsItemContainer.addView(adultsItem);
+//		ticketsItemContainer.addView(childrenItem);
 		
 		for (Promotion promo : priceInfo.getPromotions()){
 			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
@@ -167,6 +171,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		for (TicketItemViewController promoItem : promosItems){
 			selectedTickets += promoItem.getSelectedAmount();			
 		}
+		
+		selectedTickets += childrenTicketsItem.getSelectedAmount();
 	
 		//tickets que faltan seleccionar
 		int maxTicketsAllowed = selectedSeats.size() - selectedTickets;
@@ -176,6 +182,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 			promoItem.updateTicketsView(maxTicketsAllowed);			
 			total += promoItem.getSubtotal();
 		}	
+		
+		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
+		adultsTicketsItem.updateTicketsView(maxTicketsAllowed);
+		childrenTicketsItem.updateTicketsView(maxTicketsAllowed);
 		
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));

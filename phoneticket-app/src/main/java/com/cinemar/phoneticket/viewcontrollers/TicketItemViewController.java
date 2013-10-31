@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+// The default View Controller, corresponde con los items de promociones (ninios y adultos se modelan heredando de este)
 public class TicketItemViewController implements OnItemSelectedListener {
 
 	Spinner spinner;

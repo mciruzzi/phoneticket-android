@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-<!--         <include -->
-<!--             android:id="@+id/adultsTicketsLayout" -->
-<!--             layout="@layout/tickets_item_layout" /> -->
+        <include
+            android:id="@+id/adultsTicketsLayout"
+            layout="@layout/tickets_item_layout" />
 
-<!--         <include -->
-<!--             android:id="@+id/childrenTicketsLayout" -->
-<!--             layout="@layout/tickets_item_layout" /> -->
+        <include
+            android:id="@+id/childrenTicketsLayout"
+            layout="@layout/tickets_item_layout" />
     </LinearLayout>
 
     <TextView
