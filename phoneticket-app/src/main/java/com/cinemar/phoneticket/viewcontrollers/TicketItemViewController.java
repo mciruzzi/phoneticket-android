@@ -3,11 +3,6 @@ package com.cinemar.phoneticket.viewcontrollers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cinemar.phoneticket.R;
-import com.cinemar.phoneticket.SelectTicketsActivity;
-import com.cinemar.phoneticket.model.prices.Promotion;
-
-import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -16,6 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.SelectTicketsActivity;
+import com.cinemar.phoneticket.model.prices.Promotion;
 
 // The default View Controller, corresponde con los items de promociones (ninios y adultos se modelan heredando de este)
 public class TicketItemViewController implements OnItemSelectedListener {

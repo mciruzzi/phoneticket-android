@@ -3,10 +3,9 @@ package com.cinemar.phoneticket.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.cinemar.phoneticket.R.id;
 
 public class Room {
 

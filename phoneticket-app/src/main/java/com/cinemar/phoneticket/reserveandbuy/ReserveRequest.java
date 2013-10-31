@@ -3,14 +3,13 @@ package com.cinemar.phoneticket.reserveandbuy;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.cinemar.phoneticket.model.Room.Seat;
-
 public class ReserveRequest {
 	
 	String email;
 	String showId;
 	Collection<String> seatsIds; 
-	
+	int seatsCount;
+
 	public String getEmail() {
 		return email;
 	}
@@ -31,7 +30,14 @@ public class ReserveRequest {
 		return result;
 	}
 	public void setSeats(Collection<String> seatsIds) {
-		this.seatsIds = seatsIds;		
+		this.seatsIds = seatsIds;
+		seatsCount = seatsIds.size();
+	}	
+	public int getSeatsCount() {
+		return seatsCount;
+	}
+	public void setSeatsCount(int seatsAmount) {
+		this.seatsCount = seatsAmount;
 	}
 	
 	

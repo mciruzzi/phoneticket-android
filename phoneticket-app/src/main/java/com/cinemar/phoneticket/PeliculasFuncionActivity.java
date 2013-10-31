@@ -29,6 +29,10 @@ import com.cinemar.phoneticket.model.Film;
 import com.cinemar.phoneticket.model.Show;
 import com.cinemar.phoneticket.model.Theatre;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
+import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
+import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.viewcontrollers.SeatQuantityPickerFragment;
@@ -36,7 +40,7 @@ import com.cinemar.phoneticket.viewcontrollers.SeatQuantityPickerFragment.Notice
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
-		implements NoticeDialogListener {
+		implements NoticeDialogListener,PerformReserveListener {
 
 	private Film mFilm;
 	private String theatreId;
@@ -122,8 +126,10 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(false);
-				else
-					displaySeatsPicker(false);
+				else{
+					displaySeatsPicker();
+					isReserveSelected = false;
+				}
 			}
 
 		});
@@ -139,8 +145,10 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(true);
-				else
-					displaySeatsPicker(true);
+				else{
+					displaySeatsPicker();
+					isReserveSelected = true;
+				}
 			}
 		});
 
@@ -194,7 +202,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		startActivity(intent);
 	}
 
-	private void displaySeatsPicker(boolean isReserve) {		
+	private void displaySeatsPicker() {		
 		//picker.displayPicker();				
         picker.show(getSupportFragmentManager(), "SeatQuantityPickerFragment");
 
@@ -290,7 +298,14 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	public void onSeatsCountSelected(DialogInterface dialog,final int seatsCount) {
 				
 		if (isReserveSelected) {
-			// TODO directamente hago la reserva
+			ReserveRequest reserve = new ReserveRequest();
+			reserve.setEmail("snipperme@gmail.com"); // TODO evitar hardcoding, tomar el usuario logueado
+			reserve.setShowId(selectedShow.getShowId());
+			reserve.setSeatsCount(seatsCount);
+			
+			ReserveBuyAPI api = new ReserveBuyAPI();
+			ReserveResponseHandler reserveResponseHandler = new ReserveResponseHandler(this);
+			api.performUnNumberedReserve(reserve, reserveResponseHandler);			
 
 		} else {
 			// Hack para conseguir la informacion de precios
@@ -326,5 +341,15 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	intent.putExtra("isReserve", false);
 	
 	startActivity(intent);
+	}
+
+	public void onReserveOk(String msg) {
+		showSimpleAlert(msg);
+		
+	}
+
+	public void onErrorWhenReserving(String msg) {
+		showSimpleAlert(msg);
+		
 	}
 }

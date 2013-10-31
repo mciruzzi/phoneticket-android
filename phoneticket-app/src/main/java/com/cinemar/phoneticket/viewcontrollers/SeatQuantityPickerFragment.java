@@ -1,8 +1,5 @@
 package com.cinemar.phoneticket.viewcontrollers;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,10 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 import com.cinemar.phoneticket.R;
-import com.cinemar.phoneticket.model.Show;
-import com.cinemar.phoneticket.model.prices.PriceInfo;
-import com.cinemar.phoneticket.theaters.TheatresClientAPI;
-import com.loopj.android.http.JsonHttpResponseHandler;
+
 
 //In Charge of displaying a pop up an selecting the number of seats to reserve/buy
 // (In cases of un-numbered shows) 
@@ -48,7 +42,6 @@ public class SeatQuantityPickerFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-
 					}
 				});
 

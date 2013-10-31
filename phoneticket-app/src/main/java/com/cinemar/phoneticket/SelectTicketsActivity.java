@@ -5,17 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.cinemar.phoneticket.model.prices.PriceInfo;
-import com.cinemar.phoneticket.model.prices.Promotion;
-import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
-import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
-import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
-import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
-import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -25,10 +15,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-
 import android.widget.TextView;
 
-public class SelectTicketsActivity extends AbstractApiConsumerActivity {
+import com.cinemar.phoneticket.model.prices.PriceInfo;
+import com.cinemar.phoneticket.model.prices.Promotion;
+import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListener;
+import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
+import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
+import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
+import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+public class SelectTicketsActivity extends AbstractApiConsumerActivity implements PerformBuyListener{
 	private String showId;
 	private Set<String> selectedSeats = new HashSet<String>();
 	private int seatsCount;
@@ -53,7 +52,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 		setTitle(getString(R.string.seleccioneTiposEntrada));
 
 		showId = getIntent().getStringExtra("showId");
-		isReserve = getIntent().getBooleanExtra("isReserve", false);
+		//isReserve = getIntent().getBooleanExtra("isReserve", false);
 		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
 		if (getIntent().hasExtra("selectedSeats")){
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
@@ -137,10 +136,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	private void displayPromos() {		
 		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
 		
-		LayoutInflater inflater = LayoutInflater.from(getBaseContext()); 
-		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
+		LayoutInflater inflater = LayoutInflater.from(getBaseContext());
 		
 		//No son necesarios ahora que son tratados distintos
+//		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 //		adultsTicketsItem = new SingleTicketItemViewController(
 //				adultsItem,this,priceInfo.getAdultPrice());
 //		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
@@ -197,50 +196,28 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity {
 	}
 	
 	public void onClickDone(View view) {
-		// TODO validar/chequear datos de compra/reserva y hacer call a la api
-		// de compras/reservas para registrala
-		if (isReserve){
-			ReserveRequest reserve = new ReserveRequest();
-			reserve.setEmail("snipperme@gmail.com"); // TODO evitar hardcoding
-			reserve.setShowId(showId);
-			reserve.setSeats(selectedSeats);
-			
-			ReserveBuyAPI api = new ReserveBuyAPI();
-			api.performReserve(reserve, reserveResponseHandler);
-		}
-		else if(isBuy){
+		// TODO validar/chequear datos de compra/ y hacer call a la api
+		// de compras para registrala
+		// Nota : Si es reserva jamas llega a seleccionar tipo de entradas
+
+		if(isBuy){
 			
 		}
 	}
+
+	public void onBuyOk(String msg) {
+		showSimpleAlert(msg);
+		
+	}
+
+	public void onErrorWhenBuying(String msg) {
+		showSimpleAlert(msg);
+		
+	}
 	
-	JsonHttpResponseHandler reserveResponseHandler = new JsonHttpResponseHandler() {
-		@Override
-		public void onSuccess(JSONObject film) {
-			Log.i("Funciones Activity", "Funciones Recibidas");
-			Log.i("Funciones Activity",	"Funciones" + film + "recibida");			
-			
-		}
+	
 
-		@Override
-		public void onFailure(Throwable arg0, String arg1) {
-			showSimpleAlert(arg1);
-		};
+	
 
-		@Override
-		public void onFailure(Throwable e, JSONObject errorResponse) {
-			Log.i("Funciones Activity", "Failure pidiendo funciones");
-			if (errorResponse != null) {
-				showSimpleAlert(errorResponse.optString("error"));
-			} else {
-				showSimpleAlert(e.getMessage());
-			}
-		}
-
-		@Override
-		public void onFinish() {
-			showProgress(false);			
-		}
-
-	};
 
 }

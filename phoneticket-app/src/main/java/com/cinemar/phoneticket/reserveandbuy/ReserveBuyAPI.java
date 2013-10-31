@@ -17,11 +17,21 @@ public class ReserveBuyAPI {
 		client.delete("reservations/" + reservationId + ".json", responseHandler);
 	}
 	
-	public void performReserve( ReserveRequest reserve , JsonHttpResponseHandler responseHandler){
+	public void performNumberedReserve( ReserveRequest reserve , JsonHttpResponseHandler responseHandler){
 		RequestParams params =new RequestParams();
 		params.put("email", reserve.getEmail());
 		params.put("show_id", reserve.getShowId());
 		params.put("seats", reserve.getSeatsAsArray());	
+		
+		client.post("reservations.json", params, responseHandler);
+	}
+	
+	
+	public void performUnNumberedReserve( ReserveRequest reserve , JsonHttpResponseHandler responseHandler){
+		RequestParams params =new RequestParams();
+		params.put("email", reserve.getEmail());
+		params.put("show_id", reserve.getShowId());
+		params.put("seats_count", Integer.toString(reserve.getSeatsCount()));	
 		
 		client.post("reservations.json", params, responseHandler);
 	}

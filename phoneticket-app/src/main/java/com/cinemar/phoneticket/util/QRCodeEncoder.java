@@ -16,16 +16,12 @@
  
 package com.cinemar.phoneticket.util;
  
-import android.provider.ContactsContract;
+import java.util.EnumMap;
+import java.util.Map;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
- 
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
- 
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;

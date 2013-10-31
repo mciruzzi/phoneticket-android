@@ -3,9 +3,6 @@ package com.cinemar.phoneticket;
 
 import org.json.JSONObject;
 
-import java.text.ParseException;
-
-
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
@@ -14,7 +11,7 @@ import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import com.cinemar.phoneticket.util.UIDateUtil;
+
 
 
 import android.os.Bundle;

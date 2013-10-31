@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class TwoXOnePromo extends Promotion {
 	
+	private static final long serialVersionUID = 5483967907983463039L;
 
 	public TwoXOnePromo(JSONObject jsonObject) throws JSONException {
 		super(jsonObject);
