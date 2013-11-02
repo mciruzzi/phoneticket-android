@@ -8,10 +8,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -186,9 +189,19 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 		for (Film film : filmsMap.values()) {
 			
-			double ratio = 0.60;
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( (int)(imageContainer.getHeight()*ratio), imageContainer.getHeight());
+			double ratio = 0.75;
+			LinearLayout.LayoutParams params;
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int width = (int) (size.x * 0.8);
+			int height = (int) (size.y * 0.8);
 			
+			if (width > height)
+				params = new LinearLayout.LayoutParams( height, width);
+			else
+				params = new LinearLayout.LayoutParams( width, height);
+
 			ImageView imageView = new ImageView(this);
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 			imageView.setLayoutParams(params);

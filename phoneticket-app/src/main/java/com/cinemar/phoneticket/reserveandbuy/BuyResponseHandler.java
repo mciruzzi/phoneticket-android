@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class BuyResponseHandler extends JsonHttpResponseHandler{
