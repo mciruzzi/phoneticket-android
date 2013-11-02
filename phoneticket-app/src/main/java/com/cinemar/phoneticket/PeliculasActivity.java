@@ -186,7 +186,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 		for (Film film : filmsMap.values()) {
 			
-			double ratio = 0.75;
+			double ratio = 0.60;
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( (int)(imageContainer.getHeight()*ratio), imageContainer.getHeight());
 			
 			ImageView imageView = new ImageView(this);

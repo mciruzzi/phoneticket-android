@@ -14,7 +14,7 @@ import android.net.Uri;
 
 public class AppCommunicator {
 
-	private final Context appContext;
+	private Context appContext;
 
 	public AppCommunicator(Context context) {
 		appContext = context;
@@ -77,42 +77,41 @@ public class AppCommunicator {
 		Uri calendars = Uri.parse("content://com.android.calendar/calendars");
 
 		Cursor managedCursor = appContext.getContentResolver().query(calendars,
-				projection, null, null, null);
+				projection, "selected=1", null, null);
 
 		if (managedCursor.moveToFirst()) {
 			String calName;
 			String calId;
 			int nameColumn = managedCursor.getColumnIndex("name");
 			int idColumn = managedCursor.getColumnIndex("_id");
-
+			
 			do {
 				calName = managedCursor.getString(nameColumn);
 				calId = managedCursor.getString(idColumn);
-				if (calName.contains("calendar")) // Por defecto pongo este (android),pero podria ser el de gmail o cualquier otro
+				if (calName.contains("mycalendar")) // Por defecto pongo este (android),pero podria ser el de gmail o cualquier otro
 					break;
 			} while (managedCursor.moveToNext());
-
+			
 			ContentValues event = new ContentValues();
-			event.put("calendar_id", calId);
+			event.put("calendar_id", calId);			
 			event.put("title", title);
 			event.put("description", desc);
 			event.put("eventLocation", location);
-			long startTime = time; //
+			long startTime = time; // 
 			long endTime = startTime + 3600000; // TODO cambiar 2 horas x defecto de duracion
 			event.put("dtstart", startTime);
 			event.put("dtend", endTime);
 			event.put("allDay", 0); // 0 false, 1 true
-			event.put("eventStatus", 1); //  tentative (0), confirmed (1) or canceled (2):
-			event.put("eventTimezone", "Argentina/Buenos Aires"); //
-//			event.put("visibility", 0); //  x defecto(0) ,confidencial (1) publico(3) o privado(2)
-//			event.put("transparency", 0); // opaque (0) or transparent (1).
-			event.put("hasAlarm", 1); // 0 false, 1 true
+			event.put("eventStatus", 1); //  tentative (0), confirmed (1) or canceled (2): 
+			event.put("visibility", 0); //  x defecto(0) ,confidencial (1) publico(3) o privado(2)
+			event.put("transparency", 0); // opaque (0) or transparent (1).
+			event.put("hasAlarm", 1); // 0 false, 1 true	        
 
 			Uri eventsUri = Uri.parse("content://com.android.calendar/events");
-			Uri eventUri = appContext.getContentResolver().insert(eventsUri, event);
-
+			Uri eventUri = appContext.getContentResolver().insert(eventsUri, event);		
+			
 			long id = Long.parseLong(eventUri.getLastPathSegment());
-
+			
 		    // reminder insert
 	        Uri REMINDERS_URI = Uri.parse("content://com.android.calendar/reminders");
 	        ContentValues values = new ContentValues();
@@ -121,8 +120,8 @@ public class AppCommunicator {
 	        values.put( "method", 1 );
 	        values.put( "minutes", 0 );
 	        appContext.getContentResolver().insert( REMINDERS_URI, values );
-
-			return true;
+	        
+			return true;				
 		}
 		return false; //No existen calendarios
 
