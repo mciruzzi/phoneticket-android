@@ -40,13 +40,13 @@ import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainMyAccountActivity extends Activity {
-	
+
 	public final static int REQUEST_LOGIN = 0;
 
 	private final static int ID_BUY = 0;
 	private final static int ID_RESERVE = 1;
-	
-	private SparseArray<GroupOperation> groups = new SparseArray<GroupOperation>();
+
+	private final SparseArray<GroupOperation> groups = new SparseArray<GroupOperation>();
 
 	private String email;
 	private User user;
@@ -75,17 +75,18 @@ public class MainMyAccountActivity extends Activity {
 			requestLogin();
 		} else {
 			setupContent();
-
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 
 		super.onResume();
 
-		getDataOfServer();
-	}	
+		if (!email.isEmpty()) {
+			getDataOfServer();
+		}
+	}
 
 	private void setupContent() {
 		setTitle(email);
@@ -121,13 +122,13 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private void getDataOfServer() {
-		
+
 		utilBarAccount.setMessage(getString(R.string.load_progress));
 		utilBarAccount.showProgress(true);
-		
+
 		utilBarOperation.setMessage(getString(R.string.load_progress));
-		utilBarOperation.showProgress(true);		
-		
+		utilBarOperation.showProgress(true);
+
 		final MainMyAccountActivity activity = this;
 		AuthenticationService api = new APIAuthentication();
 
@@ -141,42 +142,42 @@ public class MainMyAccountActivity extends Activity {
 					loadBuyInformation(userData);
 
 					completeDataRequest();
-					
+
 				} catch (ParseException e) {
-				
+
 					NotificationUtil.showSimpleAlert(getString(R.string.error),
 							"Error al obtener los datos. Intente más tarde.",
 							activity);
-					
+
 				} catch (JSONException e) {
 
 					NotificationUtil.showSimpleAlert(getString(R.string.error),
 							"Error al procesar los datos.",
 							activity);
-					
+
 					Log.i("RESERVA-COMPRA", "Falla al parsear el JSON");
 					e.printStackTrace();
 				}
 			}
 
 			private void loadReserveInformation(JSONObject userData) throws JSONException {
-				
+
 				GroupOperation groupReserve = new GroupOperation("Reservas");
-				
+
 				if (userData.has("reservations")) {
-					
+
 					JSONArray reservations = userData.optJSONArray("reservations");
-					
+
 					Log.i("RESERVA", "Cargando reservas ... (" + reservations.length() + ")" );
 
 					for (int i = 0; i < reservations.length(); i++) {
-						
+
 						ItemOperation item = new ItemOperation(reservations.getJSONObject(i));
 						item.setCode(item.getId());
-							
+
 						groupReserve.addItem(new OperationView(item , ReserveShowActivity.class));
 
-						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada"); 
+						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
 					}
 				}
 
@@ -184,20 +185,20 @@ public class MainMyAccountActivity extends Activity {
 			}
 
 			private void loadBuyInformation(JSONObject userData) throws JSONException {
-				
+
 				GroupOperation groupBuy = new GroupOperation("Compras");
-				
+
 				if (userData.has("purchases")) {
-					
+
 					JSONArray purchases = userData.optJSONArray("purchases");
-					
+
 					Log.i("COMPRAS", "Cargando compras ... (" + purchases.length() + ")");
-					
+
 					for (int i = 0; i < purchases.length(); i++) {
-						
+
 						ItemOperation item = new ItemOperation(purchases.getJSONObject(i));
 						item.setCode(item.getTitle() + "|"+ item.getDate() + "|" + item.getCinema());
-						
+
 						groupBuy.addItem(new OperationView( item, BuyShowActivity.class ));
 						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
 					}
@@ -205,7 +206,7 @@ public class MainMyAccountActivity extends Activity {
 
 				groups.append(ID_BUY, groupBuy);
 			}
-			
+
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
 				if (errorResponse != null) {
@@ -254,17 +255,17 @@ public class MainMyAccountActivity extends Activity {
 				saveChanges();
 			}
 		});
-		
+
 		utilBarAccount = new ProcessBarUtil( findViewById(R.id.accountForm),
 			findViewById(R.id.accountBar),
 			(TextView) findViewById(R.id.accountMessageStatus),
 			this);
-		
+
 		utilBarOperation = new ProcessBarUtil( findViewById(R.id.accountListViewReserveAndBuy),
 			findViewById(R.id.operationBar),
 			(TextView) findViewById(R.id.operationMessageStatus),
 			this);
-		
+
 
 	}
 
@@ -274,14 +275,14 @@ public class MainMyAccountActivity extends Activity {
 	}
 
 	private void addTabs() {
-        
+
 		TabHost tabHost = (TabHost) findViewById(R.id.tabsHost);
 		tabHost.setup();
-		
+
 		View tabView1 = createTabView(tabHost.getContext(), "Funciones");
 		TabSpec setContent1 = tabHost.newTabSpec("Funciones").setIndicator(tabView1).setContent(R.id.myReservesBuys);
 		tabHost.addTab(setContent1);
-		
+
 		View tabView2 = createTabView(tabHost.getContext(), "Datos");
 		TabSpec setContent2 = tabHost.newTabSpec("Datos").setIndicator(tabView2).setContent(R.id.myAccountData);
 		tabHost.addTab(setContent2);
@@ -293,15 +294,15 @@ public class MainMyAccountActivity extends Activity {
         tv.setText(text);
         return view;
     }
-        
+
 	private void completeDataRequest() {
 
 		setUserData();
 		setOperationData();
 	}
-	
+
 	private void setUserData() {
-		
+
 		mName.setText(user.getNombre());
 		mLastName.setText(user.getApellido());
 		mDNI.setText(user.getDni());
@@ -312,9 +313,9 @@ public class MainMyAccountActivity extends Activity {
 		utilDate.setDate(user.getFechaNacimiento());
 		utilDate.update();
 	}
-	
+
 	private void setOperationData() {
-		
+
 		ExpandableListView listView = (ExpandableListView) findViewById(R.id.accountListViewReserveAndBuy);
 	    OperationExpandableListAdapter adapter = new OperationExpandableListAdapter(this, groups);
 	    listView.setAdapter(adapter);
@@ -336,7 +337,7 @@ public class MainMyAccountActivity extends Activity {
 
 			utilBarAccount.setMessage(getString(R.string.save_progress));
 			utilBarAccount.showProgress(true);
-			
+
 			updateData();
 
 			AuthenticationService authenticationClient = new APIAuthentication();
@@ -351,18 +352,18 @@ public class MainMyAccountActivity extends Activity {
 				@Override
 				public void onFailure(Throwable exception, JSONObject errors) {
 					try {
-						if (errors != null) 
+						if (errors != null)
 							assignValidationErrors(errors);
-						else 
+						else
 							NotificationUtil.showSimpleAlert(getString(R.string.error),
 									exception.getMessage(),
 									activity);
-						
+
 					} catch (JSONException e) {
 						NotificationUtil.showSimpleAlert(getString(R.string.error),
 								"Error al guardar los cambios. Intente más tarde.",
 								activity);
-					}				
+					}
 				}
 
 				@Override
