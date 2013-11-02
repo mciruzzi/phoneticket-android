@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -189,7 +188,6 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 		for (Film film : filmsMap.values()) {
 			
-			double ratio = 0.75;
 			LinearLayout.LayoutParams params;
 			Display display = getWindowManager().getDefaultDisplay();
 			Point size = new Point();
