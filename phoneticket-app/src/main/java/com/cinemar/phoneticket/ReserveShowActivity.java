@@ -1,10 +1,6 @@
 package com.cinemar.phoneticket;
 
-
 import org.json.JSONObject;
-
-import java.text.ParseException;
-
 
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
@@ -13,9 +9,6 @@ import com.cinemar.phoneticket.util.NotificationUtil;
 
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-import com.cinemar.phoneticket.util.UIDateUtil;
-
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -149,20 +142,23 @@ public class ReserveShowActivity extends Activity {
 		String description = title + " show";
 		String location = mCinema.getText().toString();
 		
+		Log.i("INICIO DE AGENDAR", "Por agendar " + description );
+
 		boolean success = sharer.scheduleCalendar(title,description,location,mSchedulableDate);
 		if (success)	
 			NotificationUtil.showSimpleAlert(getString(R.string.reminder_success_title), getString(R.string.reminder_success_desc), this);
 		else
 			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title), getString(R.string.missingCalendar), this);
 		
+		Log.i("FIN DE AGENDAR", "Ya ta agendado" + description );
+
 	}
 
 	private AlertDialog createWindowConfirmation() {
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-	    builder.setTitle("Confirmar");
-	    builder.setMessage("¿Está seguro que desea cancelar esta reserva?");
+		AlertDialog.Builder builder = NotificationUtil.createDialog("Confirmar", 
+				"¿Está seguro que desea cancelar esta reserva?",
+				this);
 
 	    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 

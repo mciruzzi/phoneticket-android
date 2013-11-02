@@ -1,11 +1,11 @@
 package com.cinemar.phoneticket;
 
+import com.cinemar.phoneticket.util.NotificationUtil;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
@@ -58,17 +58,8 @@ public class AbstractApiConsumerActivity extends Activity {
 	}
 
 	protected void showSimpleAlert(String msg) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-	
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
-			public void onClick(DialogInterface dialog, int which) {				
-				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
-			}
-		});
-	
-		builder.show();
+		
+		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this);
 	}
 
 }
