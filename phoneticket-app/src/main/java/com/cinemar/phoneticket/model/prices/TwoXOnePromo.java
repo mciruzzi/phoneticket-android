@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class TwoXOnePromo extends Promotion {
 	
+	private static final long serialVersionUID = 5483967907983463039L;
 
 	public TwoXOnePromo(JSONObject jsonObject) throws JSONException {
 		super(jsonObject);
@@ -12,12 +13,12 @@ public class TwoXOnePromo extends Promotion {
 
 	@Override
 	public double getPrice(int howManyPromos, PriceInfo priceInfo) {
-		return priceInfo.getAdultPrice() * howManyPromos;
+		return (priceInfo.getAdultPrice() * howManyPromos) / 2;
 	}
 
 	@Override
-	public int getSeatsNeeded(int howManyPromos) {
-		return 2 * howManyPromos;
+	public int getSeatsNeeded() {
+		return 2;
 		
 	}
 

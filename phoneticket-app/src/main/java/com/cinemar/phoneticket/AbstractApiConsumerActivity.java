@@ -5,12 +5,18 @@ import com.cinemar.phoneticket.util.NotificationUtil;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+<<<<<<< HEAD
 import android.app.Activity;
+=======
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+>>>>>>> 7ba1159d01c2b9f9213f26d9dfaabc1ad516ed81
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-public class AbstractApiConsumerActivity extends Activity {
+public class AbstractApiConsumerActivity extends FragmentActivity {
 
 	protected View mStatusView;
 	protected TextView mStatusMessageView;

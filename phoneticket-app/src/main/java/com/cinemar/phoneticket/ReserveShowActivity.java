@@ -10,6 +10,12 @@ import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 7ba1159d01c2b9f9213f26d9dfaabc1ad516ed81
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;

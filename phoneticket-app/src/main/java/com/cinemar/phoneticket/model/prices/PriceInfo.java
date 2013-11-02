@@ -14,9 +14,8 @@ public class PriceInfo implements Serializable{
 	private double adultPrice;
 	private double childPrice;
 	
-
-
 	List<Promotion> promotions;
+
 
 	public PriceInfo(JSONObject jsonObject) throws JSONException {
 		JSONObject prices = jsonObject.getJSONObject("prices");
@@ -59,4 +58,9 @@ public class PriceInfo implements Serializable{
 	public void setAdultPrice(double adultPrice) {
 		this.adultPrice = adultPrice;
 	}
+	
+	public List<Promotion> getPromotions() {
+		return promotions;
+	}
+
 }

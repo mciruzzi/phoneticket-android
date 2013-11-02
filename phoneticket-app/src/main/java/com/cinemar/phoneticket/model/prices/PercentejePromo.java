@@ -16,13 +16,13 @@ public class PercentejePromo extends Promotion {
 
 	@Override
 	public double getPrice(int howManyPromos, PriceInfo priceInfo) {
-		return (priceInfo.getAdultPrice() * (1-discountPercentaje))*howManyPromos;
+		return ((priceInfo.getAdultPrice() * (100-discountPercentaje))/100) * howManyPromos;
 
 	}
 
 	@Override
-	public int getSeatsNeeded(int howManyPromos) {
-		return howManyPromos;
+	public int getSeatsNeeded() {
+		return 1;
 
 	}
 

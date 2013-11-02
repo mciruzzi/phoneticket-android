@@ -4,6 +4,8 @@
     <string name="app_name">Phone-Ticket</string>
     <string name="action_settings">Configuración</string>
     <string name="error">Error</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Ok</string>
     <string name="default_accept">Aceptar</string>
     <string name="default_cancel">Cancelar</string>
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
@@ -32,6 +34,10 @@
     <string name="fechaVencimiento">Fecha de Vencimiento</string>
     <string name="title_activity_select_tickets">SelectTicketsActivity</string>
     <string name="seleccioneTiposEntrada">Seleccion de Pago</string>
+    <string name="adult_ticket">Adultos</string>
+    <string name="children_ticket">Ninios</string>
+    <string name="promo_code">Codigo de promocion</string>
+    <string name="pick_quantity_seats">Seleccione la cantidad de asientos</string>
 
     
 </resources>
