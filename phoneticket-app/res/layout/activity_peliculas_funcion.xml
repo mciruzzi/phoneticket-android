@@ -177,15 +177,15 @@
             <Button
                 android:id="@+id/reservarButton"
                 style="@style/Buttons"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="@string/reserve" />
 
             <Button
                 android:id="@+id/comprarButton"
                 style="@style/Buttons"
-				android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+				android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
 				android:text="@string/buy" />
         </LinearLayout>
     </LinearLayout>
