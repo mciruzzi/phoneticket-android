@@ -372,10 +372,6 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 
 	public void onReserveOk(String msg,JSONObject result) {
 
-		//TODO este cod es el mismo q está en la clase de selección de sillas. Se usa?
-
-		NotificationUtil.showSimpleAlert("", msg, this);
-
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
 
 		Intent intent = new Intent(this, ReserveShowActivity.class);
@@ -387,19 +383,24 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			intent.putExtra(OperationConstants.DATE, item.getDateToString());
 			intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
 			intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
-			intent.putExtra(OperationConstants.CODE, item.getCode());
+			intent.putExtra(OperationConstants.CODE, item.getId()); // para las reservas el id es el cod.
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			intent.putExtra(OperationConstants.ID_SHOW, item.getIdShow());
 
-			startActivity(intent);
+			final Intent intentFinal = intent;
+
+			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) { //para que espere a que el usuario toque la pantalla, sino salta un error en la consola
+					startActivity(intentFinal);
+					finish();
+				}
+			});
 
 		} catch (JSONException e) {
 			this.showSimpleAlert("Error parseando compra respuesta");
 		}
-
-		this.finish();
-
 	}
 
 	public void onErrorWhenReserving(String msg) {
