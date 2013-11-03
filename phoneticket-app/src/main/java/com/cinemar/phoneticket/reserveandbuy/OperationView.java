@@ -25,7 +25,7 @@ public class OperationView {
 		intent.putExtra(OperationConstants.CODE, item.getCode());
 		intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 		intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
-		intent.putExtra(OperationConstants.)
+		intent.putExtra(OperationConstants.ID_SHOW, item.getIdShow());
 	}
 	
 	public ItemOperation getItem() {

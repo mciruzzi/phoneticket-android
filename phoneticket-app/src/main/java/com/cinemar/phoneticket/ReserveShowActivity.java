@@ -118,7 +118,7 @@ public class ReserveShowActivity extends Activity {
 		intent.putExtra(OperationConstants.ID_SHOW, idShow);
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
-//		intent.putExtra("seatsCount", StringUtils.mSeating.getText().toString().);
+//		intent.putExtra("seatsCount", mSeating.getText().toString().);
 
 		startActivity(intent);
 	}
