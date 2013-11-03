@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -23,21 +22,18 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.model.prices.Promotion;
-import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListener;
 import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListener;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.PurchaseRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
-import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
-import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
 import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class SelectTicketsActivity extends AbstractApiConsumerActivity implements PerformBuyListener{
 	private String showId;
-	private Set<String> selectedSeats = new HashSet<String>();
+	private final Set<String> selectedSeats = new HashSet<String>();
 	private int seatsCount;
 	private boolean isBuy, isReserve, isNumbered;
 	private PriceInfo priceInfo;
@@ -49,7 +45,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			editFechaVencimiento;
 	TextView ticketsTotal,cantTickets;
 	TicketItemViewController adultsTicketsItem,childrenTicketsItem,selectedPromoItem=null;
-	
+
 	List<TicketItemViewController> promosItems = new ArrayList<TicketItemViewController>();
 
 	@Override
@@ -69,9 +65,9 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		}
 		else{
 			seatsCount = getIntent().getIntExtra("seatsCount",0);
-			isNumbered = true;			
+			isNumbered = false;
 		}
-			
+
 		priceInfo = (PriceInfo) getIntent().getSerializableExtra("priceInfo");
 
 		// ** Important to get in order to use the showProgress method**//
@@ -79,7 +75,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		mStatusView = findViewById(R.id.sala_status);
 		mStatusMessageView = (TextView) findViewById(R.id.sala_status_message);
 
-		getUIItems();		
+		getUIItems();
 		displayPromos();
 		updateValues();
 	}
@@ -101,19 +97,18 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		ticketsTotal = (TextView) findViewById(R.id.ticketsTotal);
 		cantTickets = (TextView) findViewById(R.id.cantTickets);
 		cantTickets.setText("Seleccione sus "+ seatsCount + " tickets:"+ '\n'+ "* Las promociones no son acumulables");
-		
+
 		adultsTicketsItem = new AdultsTicketItemViewController(
 				(LinearLayout) findViewById(R.id.adultsTicketsLayout),this,priceInfo);
 		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
 		adultsTicketsItem.setDescription("Entrada de adulto");
-			
-		
+
 		childrenTicketsItem = new ChildrenTicketItemViewController(
 				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo);
 		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
 		childrenTicketsItem.setDescription("Entrada de ninio");
-		
-	    
+
+
 	}
 
 	public void reservaSelected(View view) {
@@ -142,74 +137,74 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	public PriceInfo getPriceInfo(){
 		return priceInfo;
 	}
-	
-	private void displayPromos() {		
+
+	private void displayPromos() {
 		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
-		
+
 		LayoutInflater inflater = LayoutInflater.from(getBaseContext());
-		
+
 		//No son necesarios ahora que son tratados distintos
 //		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 //		adultsTicketsItem = new SingleTicketItemViewController(
 //				adultsItem,this,priceInfo.getAdultPrice());
 //		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-//		adultsTicketsItem.setDescription("Entrada de adulto");				
-//		 
+//		adultsTicketsItem.setDescription("Entrada de adulto");
+//
 //		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 //		childrenTicketsItem = new SingleTicketItemViewController(
 //				childrenItem,this,priceInfo.getChildPrice());
 //		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
 //		childrenTicketsItem.setDescription("Entrada de ninio");
-//		
+//
 //		promosItems.add(adultsTicketsItem);
 //		promosItems.add(childrenTicketsItem);
 //		ticketsItemContainer.addView(adultsItem);
 //		ticketsItemContainer.addView(childrenItem);
-		
+
 		for (Promotion promo : priceInfo.getPromotions()){
 			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-			
-			promosItems.add(new TicketItemViewController(promoItem, this,promo));		
+
+			promosItems.add(new TicketItemViewController(promoItem, this,promo));
 			ticketsItemContainer.addView(promoItem);
 		}
 	}
-	
+
 	public void updateValues(){
 		selectedTickets = 0;
 		double total = 0;
 		boolean promoSelected = false;// para dejar elejir solo 1 promo (no acumulables)
 		selectedPromoItem=null;
-		
+
 		//recoletamos la cantidad de tickets ya seleccionados
 		for (TicketItemViewController promoItem : promosItems){
 			selectedTickets += promoItem.getSelectedAmount();
-			if (promoItem.getSelectedAmount()>0){ 
+			if (promoItem.getSelectedAmount()>0){
 				promoSelected = true;
 				selectedPromoItem = promoItem;
 			}
-			
+
 		}
-		
+
 		selectedTickets += childrenTicketsItem.getSelectedAmount();
-	
+
 		//tickets que faltan seleccionar
 		int maxTicketsAllowed = seatsCount - selectedTickets;
-		
-		//Hago update de los valores que puedo escojer en cada item/spinner	
+
+		//Hago update de los valores que puedo escojer en cada item/spinner
 		for (TicketItemViewController promoItem :promosItems){
-			promoItem.updateTicketsView(maxTicketsAllowed, promoSelected);			
+			promoItem.updateTicketsView(maxTicketsAllowed, promoSelected);
 			total += promoItem.getSubtotal();
-		}	
-		
+		}
+
 		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
 		adultsTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
 		childrenTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
-		
+
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
-		
+
 	}
-	
+
 	public void onClickDone(View view) {
 		// TODO validar/chequear datos de compra/ y hacer call a la api
 		// de compras para registrala
@@ -224,26 +219,29 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			if (selectedPromoItem.isValidatedByCode())
 			purchaseRequest.setPromotionCode(selectedPromoItem.getPromotionCode());
 		}
-		purchaseRequest.setSeats(selectedSeats);		
-		
-		purchaseRequest.setCardNumber(Integer.parseInt(editNumeroDeTarjeta.getText().toString()));
+		if (isNumbered) {
+			purchaseRequest.setSeats(selectedSeats);
+		} else {
+			purchaseRequest.setSeatsCount(seatsCount);
+		}
+
+		purchaseRequest.setCardNumber(editNumeroDeTarjeta.getText().toString());
 		purchaseRequest.setCardOwner(editTitular.getText().toString());
 		purchaseRequest.setCardVerification(Integer.parseInt(editCodigoSeg.getText().toString()));
-		
+
 		purchaseRequest.setNumbered(isNumbered);
-		
+
 		ReserveBuyAPI api = new ReserveBuyAPI();
-		BuyResponseHandler buyResponseHandler = new BuyResponseHandler(
-				this);
-		
+		BuyResponseHandler buyResponseHandler = new BuyResponseHandler(this);
+
 		api.performBuy(this, purchaseRequest, buyResponseHandler);
-		
+
 	}
-	
+
 	public void onBuyOk(String msg,JSONObject result) {
 		showSimpleAlert(msg);
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
-				
+
 		Intent intent = new Intent(this, BuyShowActivity.class);
 		ItemOperation item ;
 		try {
@@ -257,24 +255,24 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
-			
+
 			startActivity(intent);
-			
+
 		} catch (JSONException e) {
-			this.showSimpleAlert("Error parseando compra respuesta");			
+			this.showSimpleAlert("Error parseando compra respuesta");
 		}
-			
-		this.finish();			
+
+		this.finish();
 	}
 
 	public void onErrorWhenBuying(String msg) {
 		showSimpleAlert(msg);
-		
-	}
-	
-	
 
-	
+	}
+
+
+
+
 
 
 }

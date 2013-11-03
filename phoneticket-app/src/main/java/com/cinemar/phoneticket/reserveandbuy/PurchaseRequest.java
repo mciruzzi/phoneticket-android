@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class PurchaseRequest {
-	
+
 	String email;
 	String showId;
-	Collection<String> seatsIds; 
+	Collection<String> seatsIds;
 	int seatsCount;
 	String reservationId = null; //if coming from reservation
 	int kidsCount;
 	String promotionId;
 	String promotionCode = null;
-	int cardNumber,cardVerification;
+	String cardNumber;
+	int cardVerification;
 	String cardOwner;
 	boolean isNumbered;
 
@@ -54,10 +55,12 @@ public class PurchaseRequest {
 	public void setPromotionCode(String promotionCode) {
 		this.promotionCode = promotionCode;
 	}
-	public int getCardNumber() {
+
+	public String getCardNumber() {
 		return cardNumber;
 	}
-	public void setCardNumber(int cardNumber) {
+
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 	public int getCardVerification() {
@@ -94,14 +97,14 @@ public class PurchaseRequest {
 	public void setSeats(Collection<String> seatsIds) {
 		this.seatsIds = seatsIds;
 		seatsCount = seatsIds.size();
-	}	
+	}
 	public int getSeatsCount() {
 		return seatsCount;
 	}
 	public void setSeatsCount(int seatsAmount) {
 		this.seatsCount = seatsAmount;
 	}
-	
-	
+
+
 
 }

@@ -18,7 +18,7 @@ import com.loopj.android.http.RequestParams;
 
 public class ReserveBuyAPI {
 
-	private RestClient client;
+	private final RestClient client;
 
 	public ReserveBuyAPI() {
 		client = new APIClient();
@@ -36,7 +36,7 @@ public class ReserveBuyAPI {
 		 * RequestParams params =new RequestParams(); params.put("email",
 		 * reserve.getEmail()); params.put("show_id", reserve.getShowId());
 		 * params.put("seats", reserve.getSeatsAsArray());
-		 * 
+		 *
 		 * client.post("reservations.json", params, responseHandler);
 		 */
 
@@ -67,7 +67,7 @@ public class ReserveBuyAPI {
 
 		client.post("reservations.json", params, responseHandler);
 	}
-	
+
 	public void performBuy(Context ctx,PurchaseRequest purchase,
 			JsonHttpResponseHandler responseHandler) {
 
@@ -76,25 +76,25 @@ public class ReserveBuyAPI {
 		try {
 			obj.put("email", purchase.getEmail());
 			obj.put("show_id", purchase.getShowId());
-			
+
 			if (purchase.isNumbered)
 				obj.put("seats", new JSONArray(purchase.getSeats()));
 			else
-				obj.put("seats", purchase.getSeatsCount());
-			
+				obj.put("seats_count", purchase.getSeatsCount());
+
 			obj.put("reservation_id", purchase.getReservationId());
 			obj.put("kids_count", purchase.getKidsCount());
 			obj.put("promotion_id", purchase.getPromotionId());
 			obj.put("promotion_code", purchase.getPromotionCode());
 			obj.put("card_number", purchase.getCardNumber());
 			obj.put("card_verification_code", purchase.getCardVerification());
-			obj.put("card_owner_name", purchase.getCardOwner());			
+			obj.put("card_owner_name", purchase.getCardOwner());
 
 			entity = new StringEntity(obj.toString());
 		} catch (JSONException e) {
-			Log.i("Compra","e");
+			Log.i("Compra", e.getMessage());
 		} catch (UnsupportedEncodingException e) {
-			Log.i("Compra","e");
+			Log.i("Compra", e.getMessage());
 		}
 
 		client.post(ctx, "purchases.json", entity, responseHandler);
