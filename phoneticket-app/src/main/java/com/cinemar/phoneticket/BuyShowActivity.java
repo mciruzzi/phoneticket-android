@@ -90,10 +90,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	
 	public void shareWithTwitter(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Compre esta peli", mShareUrl);
+		Intent shareIntent= sharer.getTwitterIntent("Compré esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -106,7 +106,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));

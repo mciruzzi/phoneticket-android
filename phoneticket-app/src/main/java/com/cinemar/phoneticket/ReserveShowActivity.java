@@ -36,11 +36,6 @@ public class ReserveShowActivity extends Activity {
 	
 	private ProcessBarUtil bar;
 
-	
-	
-
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +112,14 @@ public class ReserveShowActivity extends Activity {
 		startActivity(intent);
 		
 		NotificationUtil.showSimpleAlert("Comprar", "Tenés q pagar!", this);
+		
+		intent.putExtra("showId", idReserve);
+		intent.putExtra("priceInfo", priceInfo);
+		intent.putExtra("isReserve", false);
+
+		intent.putStringArrayListExtra("selectedSeats", seatsIds);
+
+		startActivityForResult(intent,SELECT_TICKETS_TRANSACTION);
 		
 	}
 	

@@ -20,6 +20,7 @@ public class ItemOperation {
 	private String shareUrl;
 	private String cover;
 	private String id;
+	private String idShow;
 	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
@@ -34,10 +35,10 @@ public class ItemOperation {
 		setCinema(cinema.getString("name") + " " + room.getString("name"));
 		setDate(show.getString("starts_at"));
 		setSeating(seats);
-		//setCode(operation.getString("id")); //TODO Change por lo que verdaderamente va a ser el codigo del QR
 		setCode(getTitle() + "|"+ getDate() + "|" + getCinema());
 		setId(operation.getString("id"));
 		setCover(film.getString("cover_url"));
+		setIdShow(show.getString("id"));
 	}
 	
 	public String getTitle() {
@@ -140,5 +141,13 @@ public class ItemOperation {
 
 	private void setId(String id) {
 		this.id = id;
+	}
+
+	public String getIdShow() {
+		return idShow;
+	}
+
+	private void setIdShow(String idShow) {
+		this.idShow = idShow;
 	}
 }

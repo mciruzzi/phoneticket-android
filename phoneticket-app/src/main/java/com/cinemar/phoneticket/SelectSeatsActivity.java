@@ -43,7 +43,6 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 	private static final int SELECT_TICKETS_TRANSACTION = 0;
 	private String showId;
 	private boolean isReserve;
-	// String[][] seats = new String[20][20];
 	private Room showRoom;
 	private PriceInfo priceInfo;
 	private TableLayout cinemaLayout;

@@ -341,13 +341,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	
 	private void goToTicketSelectionActivity(int seatsCount) {
 	
-	Intent intent = new Intent(this, SelectTicketsActivity.class);
-	intent.putExtra("showId", selectedShow.getShowId());
-	intent.putExtra("seatsCount", seatsCount);
-	intent.putExtra("priceInfo", priceInfo);
-	intent.putExtra("isReserve", false);	
-	
-	startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
+		Intent intent = new Intent(this, SelectTicketsActivity.class);
+		intent.putExtra("showId", selectedShow.getShowId());
+		intent.putExtra("seatsCount", seatsCount);
+		intent.putExtra("priceInfo", priceInfo);
+		intent.putExtra("isReserve", false);	
+		
+		startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 	}
 	
 	@Override
