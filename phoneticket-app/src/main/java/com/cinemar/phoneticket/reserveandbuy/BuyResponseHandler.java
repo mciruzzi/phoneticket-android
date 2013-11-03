@@ -20,14 +20,14 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 
 	@Override
 	public void onSuccess(JSONObject result) {
-		
+
 		Log.i("BuyResponseHandler", "Compra Efectuada con Exito");
 		listener.onBuyOk("Compra realizada con éxito", result);
 	}
 
 	@Override
 	public void onFailure(Throwable arg0, String arg1) {
-		
+
 		Log.i("BuyResponseHandler", "Error Efectuando Compra:" + arg1);
 		listener.onErrorWhenBuying(arg1);
 	};
@@ -84,6 +84,6 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 	}
 
 	public enum Fields {
-		promotion_code, payment, card_number, other
+		promotion_code, payment, card_number, seats, seats_count, other
 	}
 };

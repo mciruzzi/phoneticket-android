@@ -49,6 +49,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 
 	private static final int TRANSACTION_REQUEST_CODE = 9999;
 	public static final int TRANSACTION_OK = 9998;
+	public static final int TRANSACTION_SEATS_PROBLEM = 9997;
 	private Film mFilm;
 	private String theatreId;
 	private Show selectedShow = null;
@@ -348,17 +349,32 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == TRANSACTION_OK) {
-			finish();
+		if (requestCode == TRANSACTION_REQUEST_CODE) {
+			switch (resultCode) {
+			case SelectTicketsActivity.TRANSACTION_OK:
+				finish();
+				break;
+
+			case SelectTicketsActivity.TRANSACTION_SEATS_PROBLEM:
+				showSimpleAlert("No quedan suficiente cantidad de asientos.\nPor favor, seleccione una cantidad menor.", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						displaySeatsPicker();
+					}
+				});
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 
 	public void onReserveOk(String msg,JSONObject result) {
-		
+
 		//TODO este cod es el mismo q está en la clase de selección de sillas. Se usa?
 
 		NotificationUtil.showSimpleAlert("", msg, this);
-		
+
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
 
 		Intent intent = new Intent(this, ReserveShowActivity.class);
