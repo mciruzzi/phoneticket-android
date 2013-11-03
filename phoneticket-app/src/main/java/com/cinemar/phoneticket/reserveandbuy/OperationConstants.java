@@ -11,5 +11,6 @@ public interface OperationConstants {
 	public final String SHARE_URL = "shareUrl";
 	public final String SCHEDULABLE_DATE = "schedulableDate";
 	public final String NEW_OPERATION = "newOperation";
+	public final String ID_SHOW = "showId";
 	
 }

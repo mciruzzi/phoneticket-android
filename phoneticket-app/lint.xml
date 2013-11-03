@@ -2,5 +2,7 @@
 <lint>
     <issue id="NewApi">
         <ignore path="src/main/java/com/cinemar/phoneticket/MainMyAccountActivity.java" />
+        <ignore path="src/main/java/com/cinemar/phoneticket/PeliculasFuncionActivity.java" />
+        <ignore path="src/main/java/com/cinemar/phoneticket/viewcontrollers/TicketItemViewController.java" />
     </issue>
 </lint>

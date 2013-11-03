@@ -35,6 +35,7 @@ import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.Fields;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
@@ -197,10 +198,9 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		return true;
 	}
 
-	private void displaySeatsPicker() {		
-		//picker.displayPicker();				
-        picker.show(getSupportFragmentManager(), "SeatQuantityPickerFragment");
-
+	private void displaySeatsPicker() {
+		//picker.displayPicker();
+		picker.show(getSupportFragmentManager(), "SeatQuantityPickerFragment");
 	}
 
 	private void getFunciones() {
@@ -229,8 +229,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			listDataChild.put(key, cinema.getShows());
 		}
 
-		listAdapter = new ExpandableShowListAdapter(this, listDataHeader,
-				listDataChild);
+		listAdapter = new ExpandableShowListAdapter(this, listDataHeader, listDataChild);
 		// setting list adapter
 		expListView.setAdapter(listAdapter);
 
@@ -242,11 +241,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				selectedShow = listDataChild.get(
 						listDataHeader.get(groupPosition)).get(childPosition);
 
-				Toast.makeText(
-						getApplicationContext(),
-						listDataHeader.get(groupPosition) + " : "
-								+ selectedShow.getShowId(), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " : " + selectedShow.getShowId(), Toast.LENGTH_SHORT).show();
 
 				return false;
 			}
@@ -291,17 +286,17 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	};
 
 	public void onSeatsCountSelected(DialogInterface dialog,final int seatsCount) {
-				
+
 		if (isReserveSelected) {
 			ReserveRequest reserve = new ReserveRequest();
 			SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-			reserve.setEmail(settings.getString("email", null));			
+			reserve.setEmail(settings.getString("email", null));
 			reserve.setShowId(selectedShow.getShowId());
 			reserve.setSeatsCount(seatsCount);
-			
+
 			ReserveBuyAPI api = new ReserveBuyAPI();
 			ReserveResponseHandler reserveResponseHandler = new ReserveResponseHandler(this);
-			api.performUnNumberedReserve(reserve, reserveResponseHandler);			
+			api.performUnNumberedReserve(reserve, reserveResponseHandler);
 
 		} else {
 			// Hack para conseguir la informacion de precios
@@ -320,13 +315,14 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							}
 						}
 
+						@Override
 						public void onFinish() {
 							goToTicketSelectionActivity(seatsCount);
 						}
 					});
 		}
-		
-		}
+
+	}
 
 	private void goToSeatSelectionActivity(boolean isReserve) {
 
@@ -338,23 +334,23 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		intent.putExtra("isReserve", isReserve);
 		startActivityForResult(intent,TRANSACTION_REQUEST_CODE);
 	}
-	
+
 	private void goToTicketSelectionActivity(int seatsCount) {
-	
+
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
 		intent.putExtra("showId", selectedShow.getShowId());
 		intent.putExtra("seatsCount", seatsCount);
 		intent.putExtra("priceInfo", priceInfo);
-		intent.putExtra("isReserve", false);	
-		
+		intent.putExtra("isReserve", false);
+
 		startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if(resultCode==TRANSACTION_OK){
-	        finish();
-	    }
+		if (resultCode == TRANSACTION_OK) {
+			finish();
+		}
 	}
 
 	public void onReserveOk(String msg,JSONObject result) {
@@ -364,7 +360,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		NotificationUtil.showSimpleAlert("", msg, this);
 		
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
-		
+
 		Intent intent = new Intent(this, ReserveShowActivity.class);
 		ItemOperation item ;
 		try {
@@ -378,19 +374,36 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
-			
+
 			startActivity(intent);
-			
+
 		} catch (JSONException e) {
-			this.showSimpleAlert("Error parseando compra respuesta");			
+			this.showSimpleAlert("Error parseando compra respuesta");
 		}
-			
-//		this.finish();
-		
+
+		this.finish();
+
 	}
 
 	public void onErrorWhenReserving(String msg) {
 		showSimpleAlert(msg);
-		
+	}
+
+	public void onValidationError(Fields field, String msg) {
+		switch (field) {
+		case seats:
+			// Shouldn't happend (here we only select by seats_count)
+			showSimpleAlert("Los asientos seleccionados ya no se encuentran disponibles.\nPor favor, seleccione nuevamente.");
+			break;
+		case seats_count:
+			showSimpleAlert("No quedan suficiente cantidad de asientos.\nPor favor, seleccione una cantidad menor.", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					displaySeatsPicker();
+				}
+			});
+			break;
+		default:
+			break;
+		}
 	}
 }

@@ -104,7 +104,7 @@
             android:id="@+id/buy"
             style="@style/ButtonsShowReserve"
             android:contentDescription="@string/buy"
-            android:onClick="buyReserve"
+            android:onClick="getPriceInfo"
             android:src="@drawable/peso" />
 
         <ImageView

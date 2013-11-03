@@ -1,9 +1,12 @@
 package com.cinemar.phoneticket;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
 
@@ -23,6 +26,8 @@ import android.widget.TextView;
 public class ReserveShowActivity extends Activity {
 
 	private String idReserve;
+	private String idShow;
+	private PriceInfo priceInfo;
 	
 	private TextView mTitle;
 	private TextView mCinema;
@@ -55,8 +60,8 @@ public class ReserveShowActivity extends Activity {
 
 	public void cancelReserve(View view) {
 		
-	    AlertDialog alert = createWindowConfirmation();
-	    alert.show();
+		AlertDialog alert = createWindowConfirmation();
+		alert.show();
 	}
 	
 	private void doTheCancellation() {
@@ -106,21 +111,16 @@ public class ReserveShowActivity extends Activity {
 
 	}
 
-	public void buyReserve(View view) {
+	private void buyReserve() {
 		
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
-		startActivity(intent);
 		
-		NotificationUtil.showSimpleAlert("Comprar", "Tenés q pagar!", this);
-		
-		intent.putExtra("showId", idReserve);
+		intent.putExtra(OperationConstants.ID_SHOW, idShow);
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
+//		intent.putExtra("seatsCount", StringUtils.mSeating.getText().toString().);
 
-		intent.putStringArrayListExtra("selectedSeats", seatsIds);
-
-		startActivityForResult(intent,SELECT_TICKETS_TRANSACTION);
-		
+		startActivity(intent);
 	}
 	
 	public void shareWithTwitter(View view) {		
@@ -138,6 +138,7 @@ public class ReserveShowActivity extends Activity {
 	}
 	
 	public void shareWithFacebook(View view) {
+		
 		AppCommunicator sharer = new AppCommunicator(this);
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
@@ -150,7 +151,8 @@ public class ReserveShowActivity extends Activity {
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
 	}
 	
-	public void schedule(View view){		
+	public void schedule(View view){	
+		
 		AppCommunicator sharer = new AppCommunicator(this);
 		String title = mTitle.getText().toString();
 		String description = title + " show";
@@ -174,24 +176,23 @@ public class ReserveShowActivity extends Activity {
 				"¿Está seguro que desea cancelar esta reserva?",
 				this);
 
-	    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
-	        public void onClick(DialogInterface dialog, int which) {
-	           
-	        	dialog.dismiss();
-	        	doTheCancellation();
-	        }
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				doTheCancellation();
+			}
 
-	    });
+		});
 
-	    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
-	        public void onClick(DialogInterface dialog, int which) {
-	            dialog.dismiss();
-	        }
-	    });
-	    
-	    return builder.create();
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+
+		return builder.create();
 	}
 	
 	private void loadData() {
@@ -199,6 +200,7 @@ public class ReserveShowActivity extends Activity {
 		Intent intent = getIntent();
 		
 		idReserve = intent.getStringExtra(OperationConstants.CODE);
+		idShow = intent.getStringExtra(OperationConstants.ID_SHOW);
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
@@ -227,5 +229,26 @@ public class ReserveShowActivity extends Activity {
 				(TextView) findViewById(R.id.accountReserveMessageStatus),
 				this);
 		
+	}
+
+	public void getPriceInfo(View view) {
+		
+		TheatresClientAPI api = new TheatresClientAPI();
+		api.getShowSeats(idShow, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject roomInfo) {
+				try {
+					priceInfo = new PriceInfo(roomInfo);
+					buyReserve();
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
 	}
 }
