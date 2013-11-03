@@ -8,6 +8,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
+import com.cinemar.phoneticket.util.NotificationUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
@@ -231,7 +233,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 	}
 
 	public void onReserveOk(String msg,JSONObject result) {
-		showSimpleAlert(msg);
+
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
 				
 		Intent intent = new Intent(this, ReserveShowActivity.class);
@@ -243,20 +245,24 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.DATE, item.getDateToString());
 			intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
 			intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
-			intent.putExtra(OperationConstants.CODE, item.getCode());
+			intent.putExtra(OperationConstants.CODE, item.getId()); // para las reservas el id es el cod.
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
 			
-			startActivity(intent);
+			final Intent intentFinal = intent;
+
+			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {			
+				public void onClick(DialogInterface dialog, int which) { //para que espere a que el usuario toque la pantalla, sino salta un error en la consola
+					startActivity(intentFinal);
+					finish(); 
+				}
+			});
 			
 		} catch (JSONException e) {
 			this.showSimpleAlert("Error parseando compra respuesta");			
 		}
 			
-		this.finish();
-		this.finish();
-
 	}
 	
 	@Override

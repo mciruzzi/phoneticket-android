@@ -38,6 +38,7 @@ import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
+import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.viewcontrollers.SeatQuantityPickerFragment;
 import com.cinemar.phoneticket.viewcontrollers.SeatQuantityPickerFragment.NoticeDialogListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -357,7 +358,11 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	}
 
 	public void onReserveOk(String msg,JSONObject result) {
-		showSimpleAlert(msg);
+		
+		//TODO este cod es el mismo q está en la clase de selección de sillas. Se usa?
+
+		NotificationUtil.showSimpleAlert("", msg, this);
+		
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
 		
 		Intent intent = new Intent(this, ReserveShowActivity.class);
@@ -380,7 +385,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			this.showSimpleAlert("Error parseando compra respuesta");			
 		}
 			
-		this.finish();
+//		this.finish();
 		
 	}
 

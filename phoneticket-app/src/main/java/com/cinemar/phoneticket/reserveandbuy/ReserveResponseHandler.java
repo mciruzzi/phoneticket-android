@@ -17,7 +17,7 @@ public class ReserveResponseHandler extends JsonHttpResponseHandler{
 	@Override
 	public void onSuccess(JSONObject jsonObject) {
 		Log.i("ReserveResponseHandler", "Reserva Efectuada con Exito");	
-		listener.onReserveOk("OK",jsonObject);
+		listener.onReserveOk("Reserva realizada con éxito",jsonObject);
 		
 	}
 

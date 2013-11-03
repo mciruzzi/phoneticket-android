@@ -2,10 +2,8 @@ package com.cinemar.phoneticket.reserveandbuy;
 
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.util.Log;
 
-import com.cinemar.phoneticket.BuyShowActivity;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class BuyResponseHandler extends JsonHttpResponseHandler {
@@ -20,7 +18,7 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 	public void onSuccess(JSONObject result) {
 		Log.i("BuyResponseHandler", "Compra Efectuada con Exito");
 
-		listener.onBuyOk("OK", result);
+		listener.onBuyOk("Compra realizada con éxito", result);
 
 	}
 

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListen
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.PurchaseRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
@@ -239,7 +241,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	}
 
 	public void onBuyOk(String msg,JSONObject result) {
-		showSimpleAlert(msg);
+		
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
 
 		Intent intent = new Intent(this, BuyShowActivity.class);
@@ -256,13 +258,19 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
 
-			startActivity(intent);
+			final Intent intentFinal = intent;
+
+			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {			
+				public void onClick(DialogInterface dialog, int which) { //para que espere a que el usuario toque la pantalla, sino salta un error en la consola
+					startActivity(intentFinal);
+					finish(); 
+				}
+			});
 
 		} catch (JSONException e) {
 			this.showSimpleAlert("Error parseando compra respuesta");
 		}
 
-		this.finish();
 	}
 
 	public void onErrorWhenBuying(String msg) {
