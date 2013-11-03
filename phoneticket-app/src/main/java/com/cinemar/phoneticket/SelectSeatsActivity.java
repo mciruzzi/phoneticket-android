@@ -242,6 +242,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			intent.putExtra(OperationConstants.ID_SHOW, item.getIdShow());
 
 			final Intent intentFinal = intent;
 
