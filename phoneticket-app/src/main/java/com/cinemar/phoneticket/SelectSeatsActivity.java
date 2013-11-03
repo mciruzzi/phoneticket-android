@@ -211,7 +211,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			ReserveBuyAPI api = new ReserveBuyAPI();
 			ReserveResponseHandler reserveResponseHandler = new ReserveResponseHandler(
 					this);
-			api.performNumberedReserve(reserve, reserveResponseHandler);
+			api.performNumberedReserve(this,reserve, reserveResponseHandler);
 		} else {
 			// Caso de compra (faltan ingresar varios datos)
 			Intent intent = new Intent(this, SelectTicketsActivity.class);
