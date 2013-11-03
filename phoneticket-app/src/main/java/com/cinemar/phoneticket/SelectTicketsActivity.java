@@ -34,6 +34,8 @@ import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
 
 public class SelectTicketsActivity extends AbstractApiConsumerActivity implements PerformBuyListener{
+	public static final int TRANSACTION_OK = 9998;
+	public static final int TRANSACTION_SEATS_PROBLEM = 9997;
 	private String showId;
 	private final Set<String> selectedSeats = new HashSet<String>();
 	private int seatsCount;
@@ -241,8 +243,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	}
 
 	public void onBuyOk(String msg,JSONObject result) {
-		
-		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+
+		setResult(TRANSACTION_OK);
 
 		Intent intent = new Intent(this, BuyShowActivity.class);
 		ItemOperation item ;
@@ -260,10 +262,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 			final Intent intentFinal = intent;
 
-			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {			
+			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) { //para que espere a que el usuario toque la pantalla, sino salta un error en la consola
 					startActivity(intentFinal);
-					finish(); 
+					finish();
 				}
 			});
 
@@ -290,6 +292,16 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		case card_number:
 			editNumeroDeTarjeta.setError(error);
 			editNumeroDeTarjeta.requestFocus();
+			break;
+
+		case seats:
+			setResult(TRANSACTION_SEATS_PROBLEM);
+			finish();
+			break;
+
+		case seats_count:
+			setResult(TRANSACTION_SEATS_PROBLEM);
+			finish();
 			break;
 
 		case payment:

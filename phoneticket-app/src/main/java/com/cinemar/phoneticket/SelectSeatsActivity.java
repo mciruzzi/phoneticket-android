@@ -221,7 +221,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 			intent.putStringArrayListExtra("selectedSeats", seatsIds);
 
-			startActivityForResult(intent,SELECT_TICKETS_TRANSACTION);
+			startActivityForResult(intent, SELECT_TICKETS_TRANSACTION);
 		}
 	}
 
@@ -242,13 +242,13 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
-			
+
 			final Intent intentFinal = intent;
 
-			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {			
+			NotificationUtil.showSimpleAlert("", msg, this, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) { //para que espere a que el usuario toque la pantalla, sino salta un error en la consola
 					startActivity(intentFinal);
-					finish(); 
+					finish();
 				}
 			});
 
@@ -259,9 +259,21 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == PeliculasFuncionActivity.TRANSACTION_OK) {
-			setResult(PeliculasFuncionActivity.TRANSACTION_OK);
-			finish();
+		if (requestCode == SELECT_TICKETS_TRANSACTION) {
+			switch (resultCode) {
+			case SelectTicketsActivity.TRANSACTION_OK:
+				setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+				finish();
+				break;
+
+			case SelectTicketsActivity.TRANSACTION_SEATS_PROBLEM:
+				showSimpleAlert("Los asientos seleccionados ya no se encuentran disponibles.\nPor favor, seleccione nuevamente.");
+				cinemaLayout.removeAllViews();
+				requestRoomLayout();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
