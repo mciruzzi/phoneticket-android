@@ -22,6 +22,8 @@ public class ItemOperation {
 	private String id;
 	private String idShow;
 	
+	static final String SEPARADOR = ";";
+	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
 		JSONObject show = operation.getJSONObject("show");
@@ -84,7 +86,7 @@ public class ItemOperation {
 		String seatings = "";
 		
 		for (int i = 0; i < seating.length; i++)
-			seatings += seating[i] + "; ";
+			seatings += seating[i] + SEPARADOR + " ";
 		
 		return seatings;
 	}
@@ -149,5 +151,9 @@ public class ItemOperation {
 
 	private void setIdShow(String idShow) {
 		this.idShow = idShow;
+	}
+	
+	static public int getCountSeats(String seatings) {
+		return seatings.split(SEPARADOR).length - 1;
 	}
 }

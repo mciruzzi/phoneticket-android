@@ -34,7 +34,9 @@ import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
 
 public class SelectTicketsActivity extends AbstractApiConsumerActivity implements PerformBuyListener{
+
 	private String showId;
+	private String reserveId;
 	private final Set<String> selectedSeats = new HashSet<String>();
 	private int seatsCount;
 	private boolean isBuy, isReserve, isNumbered;
@@ -57,8 +59,9 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 		setTitle(getString(R.string.seleccioneTiposEntrada));
 
-		showId = getIntent().getStringExtra("showId");
-		//isReserve = getIntent().getBooleanExtra("isReserve", false);
+		showId = getIntent().getStringExtra(OperationConstants.ID_SHOW);
+		reserveId = getIntent().getStringExtra(OperationConstants.ID_RESERVE);
+		
 		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
 		if (getIntent().hasExtra("selectedSeats")){
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
@@ -108,7 +111,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		childrenTicketsItem = new ChildrenTicketItemViewController(
 				(LinearLayout) findViewById(R.id.childrenTicketsLayout),this,priceInfo);
 		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-		childrenTicketsItem.setDescription("Entrada de ninio");
+		childrenTicketsItem.setDescription("Entrada de niño");
 
 
 	}
@@ -226,6 +229,9 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		} else {
 			purchaseRequest.setSeatsCount(seatsCount);
 		}
+
+		if (reserveId != null)
+			purchaseRequest.setReservationId(reserveId);
 
 		purchaseRequest.setCardNumber(editNumeroDeTarjeta.getText().toString());
 		purchaseRequest.setCardOwner(editTitular.getText().toString());

@@ -3,6 +3,7 @@ package com.cinemar.phoneticket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
@@ -116,11 +117,13 @@ public class ReserveShowActivity extends Activity {
 		Intent intent = new Intent(this, SelectTicketsActivity.class);
 		
 		intent.putExtra(OperationConstants.ID_SHOW, idShow);
+		intent.putExtra(OperationConstants.ID_RESERVE, idReserve);
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
-//		intent.putExtra("seatsCount", mSeating.getText().toString().);
+		intent.putExtra("seatsCount", ItemOperation.getCountSeats(mSeating.getText().toString()));
 
 		startActivity(intent);
+		finish();
 	}
 	
 	public void shareWithTwitter(View view) {		

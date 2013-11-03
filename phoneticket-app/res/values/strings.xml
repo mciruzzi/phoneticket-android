@@ -33,13 +33,13 @@
     <string name="nombreDeltitular">Nombre del titular</string>
     <string name="fechaVencimiento">Fecha de Vencimiento</string>
     <string name="title_activity_select_tickets">SelectTicketsActivity</string>
-    <string name="seleccioneTiposEntrada">Seleccion de Pago</string>
+    <string name="seleccioneTiposEntrada">Selección de Pago</string>
     <string name="adult_ticket">Adultos</string>
-    <string name="children_ticket">Ninios</string>
-    <string name="promo_code">Codigo de promocion</string>
+    <string name="children_ticket">Niños</string>
+    <string name="promo_code">Código de promoción</string>
     <string name="pick_quantity_seats">Seleccione la cantidad de asientos</string>
-    <string name="congratulations_reservation">Felicitaciones!\n Su reserva ha sido realizada con exito</string>
-    <string name="congratulations_purchase">Felicitaciones!\n Su compra ha sido realizada con exito</string>
+    <string name="congratulations_reservation">Felicitaciones!\n Su reserva ha sido realizada con éxito</string>
+    <string name="congratulations_purchase">Felicitaciones!\n Su compra ha sido realizada con éxito</string>
 
     
 </resources>
