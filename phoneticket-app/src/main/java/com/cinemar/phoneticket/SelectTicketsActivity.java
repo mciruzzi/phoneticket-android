@@ -5,8 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.model.prices.Promotion;
 import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListener;
 import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.PurchaseRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
@@ -234,15 +238,33 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		
 		api.performBuy(this, purchaseRequest, buyResponseHandler);
 		
-		
-		
-		
-		
 	}
-
-	public void onBuyOk(String msg) {
+	
+	public void onBuyOk(String msg,JSONObject result) {
 		showSimpleAlert(msg);
-		
+		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+				
+		Intent intent = new Intent(this, BuyShowActivity.class);
+		ItemOperation item ;
+		try {
+			item = new ItemOperation(result);
+			intent.putExtra(OperationConstants.TITLE, item.getTitle());
+			intent.putExtra(OperationConstants.CINEMA, item.getCinema());
+			intent.putExtra(OperationConstants.DATE, item.getDateToString());
+			intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
+			intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
+			intent.putExtra(OperationConstants.CODE, item.getCode());
+			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
+			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
+			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			
+			startActivity(intent);
+			
+		} catch (JSONException e) {
+			this.showSimpleAlert("Error parseando compra respuesta");			
+		}
+			
+		this.finish();			
 	}
 
 	public void onErrorWhenBuying(String msg) {

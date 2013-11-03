@@ -27,9 +27,11 @@ import com.cinemar.phoneticket.films.DownloadImageTask;
 import com.cinemar.phoneticket.films.ExpandableShowListAdapter;
 import com.cinemar.phoneticket.films.FilmsClientAPI;
 import com.cinemar.phoneticket.model.Film;
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.Show;
 import com.cinemar.phoneticket.model.Theatre;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
+import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
@@ -43,6 +45,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		implements NoticeDialogListener,PerformReserveListener {
 
+	private static final int TRANSACTION_REQUEST_CODE = 9999;
+	public static final int TRANSACTION_OK = 9998;
 	private Film mFilm;
 	private String theatreId;
 	private Show selectedShow = null;
@@ -96,7 +100,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 					Intent intent = new Intent(
 							android.content.Intent.ACTION_VIEW, Uri.parse(mFilm
 									.getYouTubeTrailerURL()));
-					startActivity(intent);
+					startActivityForResult(intent,TRANSACTION_REQUEST_CODE);
 				}
 
 			});
@@ -190,17 +194,6 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.peliculas, menu);
 		return true;
-	}
-
-	private void goToSeatSelectionActivity(boolean isReserve) {
-
-		Intent intent = new Intent(this, SelectSeatsActivity.class);
-		intent.putExtra("showId", selectedShow.getShowId());
-		intent.putExtra("title", title);
-		// intent.putExtra("maxSelections",value); //Si se quisiese limitar la
-		// cant de entradas se hace mediante este parametro
-		intent.putExtra("isReserve", isReserve);
-		startActivity(intent);
 	}
 
 	private void displaySeatsPicker() {		
@@ -334,6 +327,17 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		
 		}
 
+	private void goToSeatSelectionActivity(boolean isReserve) {
+
+		Intent intent = new Intent(this, SelectSeatsActivity.class);
+		intent.putExtra("showId", selectedShow.getShowId());
+		intent.putExtra("title", title);
+		// intent.putExtra("maxSelections",value); //Si se quisiese limitar la
+		// cant de entradas se hace mediante este parametro
+		intent.putExtra("isReserve", isReserve);
+		startActivityForResult(intent,TRANSACTION_REQUEST_CODE);
+	}
+	
 	private void goToTicketSelectionActivity(int seatsCount) {
 	
 	Intent intent = new Intent(this, SelectTicketsActivity.class);
@@ -342,11 +346,41 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	intent.putExtra("priceInfo", priceInfo);
 	intent.putExtra("isReserve", false);	
 	
-	startActivity(intent);
+	startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if(resultCode==TRANSACTION_OK){
+	        finish();
+	    }
 	}
 
-	public void onReserveOk(String msg) {
+	public void onReserveOk(String msg,JSONObject result) {
 		showSimpleAlert(msg);
+		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+		
+		Intent intent = new Intent(this, ReserveShowActivity.class);
+		ItemOperation item ;
+		try {
+			item = new ItemOperation(result);
+			intent.putExtra(OperationConstants.TITLE, item.getTitle());
+			intent.putExtra(OperationConstants.CINEMA, item.getCinema());
+			intent.putExtra(OperationConstants.DATE, item.getDateToString());
+			intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
+			intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
+			intent.putExtra(OperationConstants.CODE, item.getCode());
+			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
+			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
+			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			
+			startActivity(intent);
+			
+		} catch (JSONException e) {
+			this.showSimpleAlert("Error parseando compra respuesta");			
+		}
+			
+		this.finish();
 		
 	}
 

@@ -22,10 +22,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.cinemar.phoneticket.films.SeatOnClickListener;
+import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.Room;
 import com.cinemar.phoneticket.model.Room.Seat;
 import com.cinemar.phoneticket.model.SeatStatus;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
+import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
@@ -36,6 +38,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 		PerformReserveListener {
 
+	private static final int SELECT_TICKETS_TRANSACTION = 0;
 	private String showId;
 	private boolean isReserve;
 	// String[][] seats = new String[20][20];
@@ -223,15 +226,47 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 			intent.putStringArrayListExtra("selectedSeats", seatsIds);
 
-			startActivity(intent);
+			startActivityForResult(intent,SELECT_TICKETS_TRANSACTION);
 		}
 	}
 
-	public void onReserveOk(String msg) {
+	public void onReserveOk(String msg,JSONObject result) {
 		showSimpleAlert(msg);
+		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+				
+		Intent intent = new Intent(this, ReserveShowActivity.class);
+		ItemOperation item ;
+		try {
+			item = new ItemOperation(result);
+			intent.putExtra(OperationConstants.TITLE, item.getTitle());
+			intent.putExtra(OperationConstants.CINEMA, item.getCinema());
+			intent.putExtra(OperationConstants.DATE, item.getDateToString());
+			intent.putExtra(OperationConstants.SEATING, item.getSeatingToString());
+			intent.putExtra(OperationConstants.TICKETS_TYPE, item.getTicketsType());
+			intent.putExtra(OperationConstants.CODE, item.getCode());
+			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
+			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
+			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			
+			startActivity(intent);
+			
+		} catch (JSONException e) {
+			this.showSimpleAlert("Error parseando compra respuesta");			
+		}
+			
+		this.finish();
+		this.finish();
 
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if(resultCode==PeliculasFuncionActivity.TRANSACTION_OK){
+	    	setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+	        finish();
+	    }
+	}
+	
 	public void onErrorWhenReserving(String msg) {
 		showSimpleAlert(msg);
 

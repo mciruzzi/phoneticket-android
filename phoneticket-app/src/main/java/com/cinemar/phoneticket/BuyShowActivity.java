@@ -23,8 +23,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	private TextView mDate;
 	private TextView mSeating;
 	private ImageView mCode;
+	private TextView mCongratulations;
 	private String mShareUrl;
 	private long mSchedulableDate;
+	private boolean mNewOperation; //If coming from a recently purchasing or reserving
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
+		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
 	}
 	
 	private void getUIElement() {
@@ -64,6 +67,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);
+		mCongratulations = (TextView)findViewById(R.id.congratulations);
+		
+		if(!mNewOperation)
+			mCongratulations.setVisibility(View.GONE);
 		
 		//QR generation
 		//Encode with a QR Code image		

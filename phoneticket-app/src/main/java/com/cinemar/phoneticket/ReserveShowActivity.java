@@ -29,10 +29,17 @@ public class ReserveShowActivity extends Activity {
 	private TextView mDate;
 	private TextView mSeating;
 	private TextView mCode;
+	private TextView mCongratulations;
 	private String mShareUrl;
 	private Long mSchedulableDate;
+	private boolean mNewOperation;
 	
 	private ProcessBarUtil bar;
+
+	
+	
+
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +203,7 @@ public class ReserveShowActivity extends Activity {
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
+		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
 		
 	}
 	
@@ -205,7 +213,11 @@ public class ReserveShowActivity extends Activity {
 		mCinema = (TextView) findViewById(R.id.accountReserveCinema);
 		mDate = (TextView) findViewById(R.id.accountReserveDate);
 		mSeating = (TextView) findViewById(R.id.accountReserveSeating);
-		mCode = (TextView) findViewById(R.id.accountReserveCode);	
+		mCode = (TextView) findViewById(R.id.accountReserveCode);
+		mCongratulations = (TextView)findViewById(R.id.congratulations);
+		
+		if(!mNewOperation)
+			mCongratulations.setVisibility(View.GONE);
 		
 		bar = new ProcessBarUtil(findViewById(R.id.accountReserveForm),
 				findViewById(R.id.accountReserveBar),
