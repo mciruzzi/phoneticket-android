@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -299,7 +300,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				
 		if (isReserveSelected) {
 			ReserveRequest reserve = new ReserveRequest();
-			reserve.setEmail("snipperme@gmail.com"); // TODO evitar hardcoding, tomar el usuario logueado
+			SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+			reserve.setEmail(settings.getString("email", null));			
 			reserve.setShowId(selectedShow.getShowId());
 			reserve.setSeatsCount(seatsCount);
 			
@@ -338,7 +340,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 	intent.putExtra("showId", selectedShow.getShowId());
 	intent.putExtra("seatsCount", seatsCount);
 	intent.putExtra("priceInfo", priceInfo);
-	intent.putExtra("isReserve", false);
+	intent.putExtra("isReserve", false);	
 	
 	startActivity(intent);
 	}

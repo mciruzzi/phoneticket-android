@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +21,11 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.model.prices.Promotion;
 import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListener;
+import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.PurchaseRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
+import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
 import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.TicketItemViewController;
@@ -31,7 +35,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	private String showId;
 	private Set<String> selectedSeats = new HashSet<String>();
 	private int seatsCount;
-	private boolean isBuy, isReserve;
+	private boolean isBuy, isReserve, isNumbered;
 	private PriceInfo priceInfo;
 	private int selectedTickets = 0;
 
@@ -40,8 +44,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	EditText editNumeroDeTarjeta, editTitular, editCodigoSeg,
 			editFechaVencimiento;
 	TextView ticketsTotal,cantTickets;
-	TicketItemViewController adultsTicketsItem;
-	TicketItemViewController childrenTicketsItem;
+	TicketItemViewController adultsTicketsItem,childrenTicketsItem,selectedPromoItem=null;
+	
 	List<TicketItemViewController> promosItems = new ArrayList<TicketItemViewController>();
 
 	@Override
@@ -57,9 +61,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		if (getIntent().hasExtra("selectedSeats")){
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
 			seatsCount = selectedSeats.size();
+			isNumbered = true;
 		}
 		else{
 			seatsCount = getIntent().getIntExtra("seatsCount",0);
+			isNumbered = true;			
 		}
 			
 		priceInfo = (PriceInfo) getIntent().getSerializableExtra("priceInfo");
@@ -167,12 +173,17 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 	public void updateValues(){
 		selectedTickets = 0;
 		double total = 0;
-		boolean promoSelected = false; // para dejar elejir solo 1 promo (no acumulables)
+		boolean promoSelected = false;// para dejar elejir solo 1 promo (no acumulables)
+		selectedPromoItem=null;
 		
 		//recoletamos la cantidad de tickets ya seleccionados
 		for (TicketItemViewController promoItem : promosItems){
 			selectedTickets += promoItem.getSelectedAmount();
-			if (selectedTickets>0) promoSelected = true;
+			if (promoItem.getSelectedAmount()>0){ 
+				promoSelected = true;
+				selectedPromoItem = promoItem;
+			}
+			
 		}
 		
 		selectedTickets += childrenTicketsItem.getSelectedAmount();
@@ -199,10 +210,34 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		// TODO validar/chequear datos de compra/ y hacer call a la api
 		// de compras para registrala
 		// Nota : Si es reserva jamas llega a seleccionar tipo de entradas
-
-		if(isBuy){
-			
+		PurchaseRequest purchaseRequest = new PurchaseRequest();
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		purchaseRequest.setEmail(settings.getString("email", null));
+		purchaseRequest.setShowId(showId);
+		purchaseRequest.setKidsCount(childrenTicketsItem.getSelectedAmount());
+		if (selectedPromoItem!=null){
+			purchaseRequest.setPromotionId(selectedPromoItem.getPromotionId());
+			if (selectedPromoItem.isValidatedByCode())
+			purchaseRequest.setPromotionCode(selectedPromoItem.getPromotionCode());
 		}
+		purchaseRequest.setSeats(selectedSeats);		
+		
+		purchaseRequest.setCardNumber(Integer.parseInt(editNumeroDeTarjeta.getText().toString()));
+		purchaseRequest.setCardOwner(editTitular.getText().toString());
+		purchaseRequest.setCardVerification(Integer.parseInt(editCodigoSeg.getText().toString()));
+		
+		purchaseRequest.setNumbered(isNumbered);
+		
+		ReserveBuyAPI api = new ReserveBuyAPI();
+		BuyResponseHandler buyResponseHandler = new BuyResponseHandler(
+				this);
+		
+		api.performBuy(this, purchaseRequest, buyResponseHandler);
+		
+		
+		
+		
+		
 	}
 
 	public void onBuyOk(String msg) {

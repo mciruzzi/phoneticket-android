@@ -14,7 +14,7 @@ public abstract class Promotion implements Serializable {
 	private PriceInfo priceInfo;
 	
 	public Promotion(JSONObject jsonObject) throws JSONException {
-		id = jsonObject.getString("id");
+		setId(jsonObject.getString("id"));
 		name = jsonObject.getString("name");
 		validationType = jsonObject.getString("validation_type");		
 	}
@@ -43,6 +43,22 @@ public abstract class Promotion implements Serializable {
 
 	public void setValidationType(String validationType) {
 		this.validationType = validationType;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public boolean isValidatedByCode() {
+		 
+		return validationType.equals(CODE);
 	}
 
 		

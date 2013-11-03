@@ -69,6 +69,10 @@ public class TicketItemViewController implements OnItemSelectedListener {
 	public double getSubtotal() {
 		return promotion.getPrice(selectedAmount, context.getPriceInfo());
 	}
+	
+	public String getPromotionId(){
+		return promotion.getId();
+	}
 
 	public void updateTicketsView(int maxTicketsAllowed, boolean promoSelected) {
 		//Si hay otra promo seleccionada y no soy yo no puedo ser seleccionada
@@ -112,7 +116,7 @@ public class TicketItemViewController implements OnItemSelectedListener {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)		
 		selectedAmount = (Integer) parent.getItemAtPosition(pos);
-		if (selectedAmount > 0 && promotion.getValidationType().equals(Promotion.CODE))
+		if (selectedAmount > 0 && promotion.isValidatedByCode())
 			promoCode.setVisibility(View.VISIBLE);
 		else
 			promoCode.setVisibility(View.GONE);
@@ -122,6 +126,15 @@ public class TicketItemViewController implements OnItemSelectedListener {
 
 	public void onNothingSelected(AdapterView<?> arg0) {
 		this.setSubtotal(new Double(0));		
+	}
+
+	public String getPromotionCode() {
+
+		return promoCode.getText().toString();
+	}
+
+	public boolean isValidatedByCode() {	
+		return promotion.isValidatedByCode();
 	}
 
 }

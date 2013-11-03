@@ -17,24 +17,23 @@ public class BuyResponseHandler extends JsonHttpResponseHandler{
 	
 	@Override
 	public void onSuccess(JSONObject film) {
-		Log.i("BuyResponseHandler", "Compra Efectuada con Exito");					
+		Log.i("BuyResponseHandler", "Compra Efectuada con Exito");		
+		listener.onBuyOk("OK");
 		
 	}
 
 	@Override
 	public void onFailure(Throwable arg0, String arg1) {
-		
+		Log.i("BuyResponseHandler", "Error Efectuando Compra");
+		listener.onBuyOk("Error Chavon");
 	};
 
 	@Override
 	public void onFailure(Throwable e, JSONObject errorResponse) {
-		
+		Log.i("BuyResponseHandler", "Error Efectuando Compra");		
+		listener.onBuyOk("Error Chavon");
 	}
 
-	@Override
-	public void onFinish() {
-					
-	}
 	
 	public interface PerformBuyListener{
 		public void onBuyOk(String msg);

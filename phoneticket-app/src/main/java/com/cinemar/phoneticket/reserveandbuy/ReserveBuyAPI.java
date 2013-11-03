@@ -68,6 +68,39 @@ public class ReserveBuyAPI {
 		client.post("reservations.json", params, responseHandler);
 	}
 	
+	public void performBuy(Context ctx,PurchaseRequest purchase,
+			JsonHttpResponseHandler responseHandler) {
+
+		JSONObject obj = new JSONObject();
+		HttpEntity entity = null;
+		try {
+			obj.put("email", purchase.getEmail());
+			obj.put("show_id", purchase.getShowId());
+			
+			if (purchase.isNumbered)
+				obj.put("seats", new JSONArray(purchase.getSeats()));
+			else
+				obj.put("seats", purchase.getSeatsCount());
+			
+			obj.put("reservation_id", purchase.getReservationId());
+			obj.put("kids_count", purchase.getKidsCount());
+			obj.put("promotion_id", purchase.getPromotionId());
+			obj.put("promotion_code", purchase.getPromotionCode());
+			obj.put("card_number", purchase.getCardNumber());
+			obj.put("card_verification_code", purchase.getCardVerification());
+			obj.put("card_owner_name", purchase.getCardOwner());			
+
+			entity = new StringEntity(obj.toString());
+		} catch (JSONException e) {
+			Log.i("Compra","e");
+		} catch (UnsupportedEncodingException e) {
+			Log.i("Compra","e");
+		}
+
+		client.post(ctx, "purchases.json", entity, responseHandler);
+
+	}
+
 
 
 }
