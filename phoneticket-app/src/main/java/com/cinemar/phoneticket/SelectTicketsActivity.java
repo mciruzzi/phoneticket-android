@@ -267,11 +267,29 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 	public void onErrorWhenBuying(String msg) {
 		showSimpleAlert(msg);
-
 	}
 
+	public void onValidationError(BuyResponseHandler.Fields field, String error) {
+		switch (field) {
+		case promotion_code:
+			// Add error to all promotions, no current way to know wich one is
+			// the problem
+			for (TicketItemViewController promoItem : promosItems) {
+				promoItem.addErrorOnPromotionCode(error);
+			}
+			break;
 
+		case payment:
+			// Payment sale con mensaje de pago rechazado (no corresponde ningún
+			// campo específico)
+			showSimpleAlert(error);
+			break;
 
+		default:
+			showSimpleAlert(error);
+			break;
+		}
+	}
 
 
 
