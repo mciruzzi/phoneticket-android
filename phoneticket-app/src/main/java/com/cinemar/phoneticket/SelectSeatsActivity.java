@@ -99,6 +99,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				displaySeats();
 			}
 
 			@Override
@@ -117,8 +118,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			};
 
 			public void onFinish() {
-				showProgress(false);
-				displaySeats();
+				showProgress(false);				
 			}
 
 		});
