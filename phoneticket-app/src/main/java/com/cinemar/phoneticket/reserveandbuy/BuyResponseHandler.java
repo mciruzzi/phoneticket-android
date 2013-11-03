@@ -73,8 +73,6 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 		} catch (IllegalArgumentException e) {
 			return Fields.other;
 		}
-
-
 	}
 
 	public interface PerformBuyListener {
@@ -86,6 +84,6 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 	}
 
 	public enum Fields {
-		promotion_code, payment, other
+		promotion_code, payment, card_number, other
 	}
 };

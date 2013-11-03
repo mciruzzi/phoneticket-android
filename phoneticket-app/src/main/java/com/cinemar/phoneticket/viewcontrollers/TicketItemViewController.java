@@ -124,8 +124,9 @@ public class TicketItemViewController implements OnItemSelectedListener {
     }
 
 	public void addErrorOnPromotionCode(String error) {
-		if (promotion.isValidatedByCode()) {
+		if (promotion.isValidatedByCode() && getSelectedAmount() > 0) {
 			promoCode.setError(error);
+			promoCode.requestFocus();
 		}
 	}
 

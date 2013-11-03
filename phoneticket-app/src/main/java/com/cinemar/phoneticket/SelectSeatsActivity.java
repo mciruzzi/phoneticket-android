@@ -31,6 +31,7 @@ import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.reserveandbuy.ReserveRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler;
+import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.Fields;
 import com.cinemar.phoneticket.reserveandbuy.ReserveResponseHandler.PerformReserveListener;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,7 +47,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 	private PriceInfo priceInfo;
 	private TableLayout cinemaLayout;
 	private Map<String, ImageView> seatsImages;
-	private LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
+	private final LinkedList<Seat> SelectedSeats = new LinkedList<Seat>();
 	private int maxSeatsToTake = Integer.MAX_VALUE;
 
 	@Override
@@ -121,8 +122,9 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 				showSimpleAlert(getString(R.string.error_connection));
 			};
 
+			@Override
 			public void onFinish() {
-				showProgress(false);				
+				showProgress(false);
 			}
 
 		});
@@ -160,16 +162,9 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 				seatsImages.put(seatModel.getId(), seatView);
 
 				if (seatModel.getStatus().equals(SeatStatus.NON_EXISTENT)) {
-					seatView.setImageResource(R.drawable.seat_available);// podria														// ser
-																			// cualquier
-																			// otro(es
-																			// solo
-																			// para
-																			// que
-																			// ocupe
-																			// el
-																			// lugar
-																			// vacio)
+					// podria ser cualquier otro(es solo para que ocupe el lugar
+					// vacio)
+					seatView.setImageResource(R.drawable.seat_available);
 					seatView.setVisibility(View.INVISIBLE); // la hago invisible
 															// aunque quizas no
 															// sea lo mejor
@@ -209,13 +204,12 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 		if (isReserve) {
 			ReserveRequest reserve = new ReserveRequest();
 			SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-			reserve.setEmail(settings.getString("email", null)); 
+			reserve.setEmail(settings.getString("email", null));
 			reserve.setShowId(showId);
 			reserve.setSeats(seatsIds);
 
 			ReserveBuyAPI api = new ReserveBuyAPI();
-			ReserveResponseHandler reserveResponseHandler = new ReserveResponseHandler(
-					this);
+			ReserveResponseHandler reserveResponseHandler = new ReserveResponseHandler(this);
 			api.performNumberedReserve(this,reserve, reserveResponseHandler);
 		} else {
 			// Caso de compra (faltan ingresar varios datos)
@@ -233,7 +227,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 	public void onReserveOk(String msg,JSONObject result) {
 		showSimpleAlert(msg);
 		setResult(PeliculasFuncionActivity.TRANSACTION_OK);
-				
+
 		Intent intent = new Intent(this, ReserveShowActivity.class);
 		ItemOperation item ;
 		try {
@@ -247,29 +241,43 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
-			
-			startActivity(intent);
-			
-		} catch (JSONException e) {
-			this.showSimpleAlert("Error parseando compra respuesta");			
-		}
-			
-		this.finish();
-		this.finish();
 
+			startActivity(intent);
+
+		} catch (JSONException e) {
+			this.showSimpleAlert("Error parseando compra respuesta");
+		}
+
+		this.finish();
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if(resultCode==PeliculasFuncionActivity.TRANSACTION_OK){
-	    	setResult(PeliculasFuncionActivity.TRANSACTION_OK);
-	        finish();
-	    }
+		if (resultCode == PeliculasFuncionActivity.TRANSACTION_OK) {
+			setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+			finish();
+		}
 	}
-	
+
 	public void onErrorWhenReserving(String msg) {
 		showSimpleAlert(msg);
 
+	}
+
+	public void onValidationError(Fields field, String msg) {
+		switch (field) {
+		case seats:
+			showSimpleAlert("Los asientos seleccionados ya no se encuentran disponibles.\nPor favor, seleccione nuevamente.");
+			cinemaLayout.removeAllViews();
+			requestRoomLayout();
+			break;
+		case seats_count:
+			// Shouldn't happend (here we only select seats and not seats_count)
+			showSimpleAlert("No quedan suficiente cantidad de asientos.\nPor favor, seleccione una cantidad menor.");
+			break;
+		default:
+			break;
+		}
 	}
 
 }

@@ -1,14 +1,15 @@
 package com.cinemar.phoneticket;
 
-import com.cinemar.phoneticket.util.NotificationUtil;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.util.NotificationUtil;
 
 public class AbstractApiConsumerActivity extends FragmentActivity {
 
@@ -27,7 +28,7 @@ public class AbstractApiConsumerActivity extends FragmentActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
-	
+
 			mStatusView.setVisibility(View.VISIBLE);
 			mStatusView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 1 : 0)
@@ -38,7 +39,7 @@ public class AbstractApiConsumerActivity extends FragmentActivity {
 							: View.GONE);
 				}
 			});
-	
+
 			mMainView.setVisibility(View.VISIBLE);
 			mMainView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 0 : 1)
@@ -58,8 +59,11 @@ public class AbstractApiConsumerActivity extends FragmentActivity {
 	}
 
 	protected void showSimpleAlert(String msg) {
-		
 		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this);
+	}
+
+	protected void showSimpleAlert(String msg, DialogInterface.OnClickListener listener) {
+		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this, listener);
 	}
 
 }

@@ -279,6 +279,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			}
 			break;
 
+		case card_number:
+			editNumeroDeTarjeta.setError(error);
+			editNumeroDeTarjeta.requestFocus();
+			break;
+
 		case payment:
 			// Payment sale con mensaje de pago rechazado (no corresponde ningún
 			// campo específico)
