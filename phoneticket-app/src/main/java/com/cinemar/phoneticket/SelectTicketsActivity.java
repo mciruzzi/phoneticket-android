@@ -37,6 +37,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 	public static final int TRANSACTION_OK = 9998;
 	public static final int TRANSACTION_SEATS_PROBLEM = 9997;
+	public static final int TRANSACTION_SHOW_PROBLEM = 9996;
 
 	private String showId;
 	private String reserveId;
@@ -315,6 +316,15 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			// Payment sale con mensaje de pago rechazado (no corresponde ningún
 			// campo específico)
 			showSimpleAlert(error);
+			break;
+
+		case show_id:
+			showSimpleAlert(error, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					setResult(TRANSACTION_SHOW_PROBLEM);
+					finish();
+				}
+			});
 			break;
 
 		default:

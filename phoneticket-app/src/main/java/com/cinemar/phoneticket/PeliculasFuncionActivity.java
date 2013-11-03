@@ -100,10 +100,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			mYoutubeImage.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					Intent intent = new Intent(
-							android.content.Intent.ACTION_VIEW, Uri.parse(mFilm
-									.getYouTubeTrailerURL()));
-					startActivityForResult(intent,TRANSACTION_REQUEST_CODE);
+					Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(mFilm.getYouTubeTrailerURL()));
+					startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 				}
 
 			});
@@ -212,8 +210,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		if (theatreId == null) { // Funciones sin filtrado
 			api.getFunciones(mFilm, responseHandler);
 		} else {
-			api.getFuncionesEnComplejo(mFilm.getId(), theatreId,
-					responseHandler);
+			api.getFuncionesEnComplejo(mFilm.getId(), theatreId, responseHandler);
 		}
 	}
 
@@ -361,6 +358,10 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 						displaySeatsPicker();
 					}
 				});
+				break;
+
+			case SelectTicketsActivity.TRANSACTION_SHOW_PROBLEM:
+				getFunciones();
 				break;
 
 			default:

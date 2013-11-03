@@ -21,7 +21,7 @@ public class ReserveResponseHandler extends JsonHttpResponseHandler{
 	@Override
 	public void onSuccess(JSONObject jsonObject) {
 
-		Log.i("ReserveResponseHandler", "Reserva Efectuada con Exito");	
+		Log.i("ReserveResponseHandler", "Reserva Efectuada con Exito");
 		listener.onReserveOk("Reserva realizada con éxito",jsonObject);
 
 	}
@@ -82,7 +82,7 @@ public class ReserveResponseHandler extends JsonHttpResponseHandler{
 	}
 
 	public enum Fields {
-		seats, seats_count, other
+		seats, seats_count, show_id, other
 	}
 };
 

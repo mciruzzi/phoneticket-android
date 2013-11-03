@@ -262,7 +262,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 		if (requestCode == SELECT_TICKETS_TRANSACTION) {
 			switch (resultCode) {
 			case SelectTicketsActivity.TRANSACTION_OK:
-				setResult(PeliculasFuncionActivity.TRANSACTION_OK);
+				setResult(SelectTicketsActivity.TRANSACTION_OK);
 				finish();
 				break;
 
@@ -271,6 +271,11 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 				cinemaLayout.removeAllViews();
 				requestRoomLayout();
 				break;
+			case SelectTicketsActivity.TRANSACTION_SHOW_PROBLEM:
+				setResult(SelectTicketsActivity.TRANSACTION_SHOW_PROBLEM);
+				finish();
+				break;
+
 			default:
 				break;
 			}
@@ -282,17 +287,28 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 	}
 
-	public void onValidationError(Fields field, String msg) {
+	public void onValidationError(Fields field, String error) {
 		switch (field) {
 		case seats:
 			showSimpleAlert("Los asientos seleccionados ya no se encuentran disponibles.\nPor favor, seleccione nuevamente.");
 			cinemaLayout.removeAllViews();
 			requestRoomLayout();
 			break;
+
 		case seats_count:
 			// Shouldn't happend (here we only select seats and not seats_count)
 			showSimpleAlert("No quedan suficiente cantidad de asientos.\nPor favor, seleccione una cantidad menor.");
 			break;
+
+		case show_id:
+			showSimpleAlert(error, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					setResult(SelectTicketsActivity.TRANSACTION_SHOW_PROBLEM);
+					finish();
+				}
+			});
+			break;
+
 		default:
 			break;
 		}

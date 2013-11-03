@@ -84,6 +84,6 @@ public class BuyResponseHandler extends JsonHttpResponseHandler {
 	}
 
 	public enum Fields {
-		promotion_code, payment, card_number, seats, seats_count, other
+		promotion_code, payment, card_number, seats, seats_count, show_id, other
 	}
 };
