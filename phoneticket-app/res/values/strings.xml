@@ -40,6 +40,7 @@
     <string name="pick_quantity_seats">Seleccione la cantidad de asientos</string>
     <string name="congratulations_reservation">Felicitaciones!\n Su reserva ha sido realizada con éxito</string>
     <string name="congratulations_purchase">Felicitaciones!\n Su compra ha sido realizada con éxito</string>
+    <string name="must_be_logged">Necesita estar logueado para proceder con esta opcion</string>
 
     
 </resources>

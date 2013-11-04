@@ -129,6 +129,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							R.string.no_selected_show));
 					return;
 				}
+				
+				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+				if (settings.getString("email", null)==null){
+					showSimpleAlert(getResources().getString(
+							R.string.must_be_logged));
+					return;
+				}
 
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(false);
@@ -146,6 +153,13 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				if (selectedShow == null) {
 					showSimpleAlert(getResources().getString(
 							R.string.no_selected_show));
+					return;
+				}
+				
+				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+				if (settings.getString("email", null)==null){
+					showSimpleAlert(getResources().getString(
+							R.string.must_be_logged));
 					return;
 				}
 
