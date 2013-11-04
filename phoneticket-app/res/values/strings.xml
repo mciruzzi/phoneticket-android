@@ -31,7 +31,7 @@
     <string name="numeroDeTarjeta">Número de Tarjeta</string>
     <string name="codigoDeSeguridad">Código de Seguridad</string>
     <string name="nombreDeltitular">Nombre del titular</string>
-    <string name="fechaVencimiento">Fecha de Vencimiento(YYYYMM)</string>
+    <string name="fechaVencimiento">Fecha de Vencimiento(AAAAMM)</string>
     <string name="title_activity_select_tickets">SelectTicketsActivity</string>
     <string name="seleccioneTiposEntrada">Selección de Pago</string>
     <string name="adult_ticket">Adultos</string>
@@ -40,9 +40,9 @@
     <string name="pick_quantity_seats">Seleccione la cantidad de asientos</string>
     <string name="congratulations_reservation">Felicitaciones!\n Su reserva ha sido realizada con éxito</string>
     <string name="congratulations_purchase">Felicitaciones!\n Su compra ha sido realizada con éxito</string>
-    <string name="must_be_logged">Necesita estar logueado para proceder con esta opcion</string>
-    <string name="error_card_number_16digits">El numero de tarjeta debe tener 16 digitos</string>
-    <string name="error_card_seg_3digits">El codigo de seguridad debe tener 3 digitos</string>
+    <string name="must_be_logged">Necesita estar logueado para proceder con esta opción</string>
+    <string name="error_card_number_16digits">El número de tarjeta debe tener 16 dígitos</string>
+    <string name="error_card_seg_3digits">El código de seguridad debe tener 3 dígitos</string>
     <string name="error_card_date_format">La fecha de vencimiento debe tener formato AAAAMM</string>
 
     

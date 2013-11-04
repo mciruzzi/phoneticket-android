@@ -119,7 +119,8 @@
             android:ems="10"
             android:hint="@string/fechaVencimiento"
             android:inputType="date"
-            android:maxLength="6" >
+            android:maxLength="6" 
+            android:textSize="12sp">
         </EditText>
 
         <Button
