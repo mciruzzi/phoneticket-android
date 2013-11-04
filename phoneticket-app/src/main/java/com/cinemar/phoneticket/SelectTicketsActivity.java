@@ -28,6 +28,7 @@ import com.cinemar.phoneticket.reserveandbuy.BuyResponseHandler.PerformBuyListen
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.PurchaseRequest;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.util.CreditCardValidatorUtil;
 import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.viewcontrollers.AdultsTicketItemViewController;
 import com.cinemar.phoneticket.viewcontrollers.ChildrenTicketItemViewController;
@@ -218,6 +219,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		// TODO validar/chequear datos de compra/ y hacer call a la api
 		// de compras para registrala
 		// Nota : Si es reserva jamas llega a seleccionar tipo de entradas
+		resetErrors();
+		
+		if ( !CreditCardValidatorUtil.validate(this,editNumeroDeTarjeta,editTitular, editCodigoSeg,editFechaVencimiento))
+			return; //validate before performing purchase
+		
 		PurchaseRequest purchaseRequest = new PurchaseRequest();
 		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
 		purchaseRequest.setEmail(settings.getString("email", null));
@@ -248,6 +254,13 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 		api.performBuy(this, purchaseRequest, buyResponseHandler);
 
+	}
+
+	private void resetErrors() {
+		this.editNumeroDeTarjeta.setError(null);
+		this.editFechaVencimiento.setError(null);
+		this.editNumeroDeTarjeta.setError(null);
+		this.editTitular.setError(null);		
 	}
 
 	public void onBuyOk(String msg,JSONObject result) {

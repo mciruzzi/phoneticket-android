@@ -78,7 +78,9 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/numeroDeTarjeta"
-            android:inputType="numberSigned" >
+            android:inputType="numberSigned"
+            android:maxLength="16" >
+
         </EditText>
 
         <EditText
@@ -90,7 +92,9 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/codigoDeSeguridad"
-            android:inputType="numberSigned" >
+            android:inputType="numberSigned"
+            android:maxLength="3" >
+
         </EditText>
 
         <EditText
@@ -114,7 +118,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/fechaVencimiento"
-            android:inputType="date" >
+            android:inputType="date"
+            android:maxLength="6" >
         </EditText>
 
         <Button
