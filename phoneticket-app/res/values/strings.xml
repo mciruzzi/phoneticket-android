@@ -4,6 +4,8 @@
     <string name="app_name">Phone-Ticket</string>
     <string name="action_settings">Configuración</string>
     <string name="error">Error</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Ok</string>
     <string name="default_accept">Aceptar</string>
     <string name="default_cancel">Cancelar</string>
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
@@ -14,21 +16,34 @@
     <string name="error_connection">Error de conexión. Intente más tarde.</string>
     <string name="title_activity_select_seats">SelectSeatsActivity</string>
     <string name="getting_sala">Obteniendo Sala</string>
-    
-
     <string name="title_activity_reserve_show">Reserva</string>
     <string name="title_activity_buy_show">Compra</string>
     <string name="reserve">Reservar</string>
     <string name="buy">Comprar</string>
-
-
-       
-	<string name="no_way_title">"No podra ser"</string>
-    <string name="missingApplication">No posee instalada la aplicacion correspondiente para ejecutar la accion</string>
-    <string name="missingCalendar">No existen calendarios para realizar la accion</string>
-    <string name="reminder_success_desc">Hemos agendado un recordatorio para esta funcion</string>
+    <string name="select">Seleccionar</string>
+    <string name="done">Listo</string>
+    <string name="no_way_title">"No podrá ser"</string>
+    <string name="missingApplication">No posee instalada la aplicación correspondiente para ejecutar la acción</string>
+    <string name="missingCalendar">No existen calendarios para realizar la acción</string>
+    <string name="reminder_success_desc">Hemos agendado un recordatorio para esta función</string>
     <string name="reminder_success_title">Agendado</string>
+    <string name="no_seats_selected">Debe seleccionar al menos un asiento</string>
+    <string name="numeroDeTarjeta">Número de Tarjeta</string>
+    <string name="codigoDeSeguridad">Código de Seguridad</string>
+    <string name="nombreDeltitular">Nombre del titular</string>
+    <string name="fechaVencimiento">Fecha de Vencimiento(AAAAMM)</string>
+    <string name="title_activity_select_tickets">SelectTicketsActivity</string>
+    <string name="seleccioneTiposEntrada">Selección de Pago</string>
+    <string name="adult_ticket">Adultos</string>
+    <string name="children_ticket">Niños</string>
+    <string name="promo_code">Código de promoción</string>
+    <string name="pick_quantity_seats">Seleccione la cantidad de asientos</string>
+    <string name="congratulations_reservation">Felicitaciones!\n Su reserva ha sido realizada con éxito</string>
+    <string name="congratulations_purchase">Felicitaciones!\n Su compra ha sido realizada con éxito</string>
+    <string name="must_be_logged">Necesita estar logueado para proceder con esta opción</string>
+    <string name="error_card_number_16digits">El número de tarjeta debe tener 16 dígitos</string>
+    <string name="error_card_seg_3digits">El código de seguridad debe tener 3 dígitos</string>
+    <string name="error_card_date_format">La fecha de vencimiento debe tener formato AAAAMM</string>
 
-
-
+    
 </resources>

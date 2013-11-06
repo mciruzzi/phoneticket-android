@@ -3,10 +3,9 @@ package com.cinemar.phoneticket.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.cinemar.phoneticket.R.id;
 
 public class Room {
 
@@ -18,6 +17,10 @@ public class Room {
 	ArrayList<String> rowsIds = new ArrayList<String>();
 	ArrayList<String> colIds = new ArrayList<String>();
 	
+	private int leftWidth;
+	private int rightWidth;
+	private int middleWidth;
+	
 	public int getRowsLength(){
 		return rowsIds.size();		
 	}
@@ -26,8 +29,6 @@ public class Room {
 		return colIds.size();		
 	}
 	
-	
-
 	public Room(JSONObject room) throws JSONException {
 		JSONObject left = room.getJSONObject("status").getJSONObject("left");
 		JSONObject middle = room.getJSONObject("status")
@@ -36,8 +37,11 @@ public class Room {
 
 
 		parseSeats(left, leftSeats, rowsIds, colIds);
+		leftWidth =left.getJSONArray("rows").length();
 		parseSeats(middle, middleSeats, rowsIds, colIds);
+		middleWidth = middle.getJSONArray("rows").length();		
 		parseSeats(right, rightSeats, rowsIds, colIds);
+		rightWidth =right.getJSONArray("rows").length();
 	}
 	
 	public Seat getSeat(int row, int col){
@@ -94,6 +98,18 @@ public class Room {
 		}
 	}
 
+	public int getLeftWidth() {
+		return leftWidth;
+	}
+
+	public int getRightWidth() {
+		return rightWidth;
+	}
+
+	public int getMiddleWidth() {
+		return middleWidth;
+	}
+
 	public class Seat {
 		private SeatStatus status;
 		
@@ -118,4 +134,6 @@ public class Room {
 		}
 
 	}
+	
+	
 }

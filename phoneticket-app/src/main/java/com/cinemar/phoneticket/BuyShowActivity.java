@@ -23,8 +23,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	private TextView mDate;
 	private TextView mSeating;
 	private ImageView mCode;
+	private TextView mCongratulations;
 	private String mShareUrl;
 	private long mSchedulableDate;
+	private boolean mNewOperation; //If coming from a recently purchasing or reserving
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 //		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
+		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
 	}
 	
 	private void getUIElement() {
@@ -64,6 +67,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mDate = (TextView) findViewById(R.id.accountBuyDate);
 		mSeating = (TextView) findViewById(R.id.accountBuySeating);
 		mCode = (ImageView) findViewById(R.id.accountBuyCode);
+		mCongratulations = (TextView)findViewById(R.id.congratulations);
+		
+		if(!mNewOperation)
+			mCongratulations.setVisibility(View.GONE);
 		
 		//QR generation
 		//Encode with a QR Code image		
@@ -83,10 +90,10 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 	
 	public void shareWithTwitter(View view) {
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Compre esta peli", mShareUrl);
+		Intent shareIntent= sharer.getTwitterIntent("Compré esta peli", mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
@@ -99,7 +106,7 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
 		if (shareIntent == null ) {
-			NotificationUtil.showSimpleAlert("No podra ser",getString(R.string.missingApplication),this);
+			NotificationUtil.showSimpleAlert("No podrá ser",getString(R.string.missingApplication),this);
 			return;
 		}		 			 
 		startActivity(Intent.createChooser(shareIntent, "Share..."));

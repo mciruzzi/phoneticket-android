@@ -3,14 +3,15 @@ package com.cinemar.phoneticket;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-public class AbstractApiConsumerActivity extends Activity {
+import com.cinemar.phoneticket.util.NotificationUtil;
+
+public class AbstractApiConsumerActivity extends FragmentActivity {
 
 	protected View mStatusView;
 	protected TextView mStatusMessageView;
@@ -27,7 +28,7 @@ public class AbstractApiConsumerActivity extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
-	
+
 			mStatusView.setVisibility(View.VISIBLE);
 			mStatusView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 1 : 0)
@@ -38,7 +39,7 @@ public class AbstractApiConsumerActivity extends Activity {
 							: View.GONE);
 				}
 			});
-	
+
 			mMainView.setVisibility(View.VISIBLE);
 			mMainView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 0 : 1)
@@ -58,17 +59,11 @@ public class AbstractApiConsumerActivity extends Activity {
 	}
 
 	protected void showSimpleAlert(String msg) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-	
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {			
-			public void onClick(DialogInterface dialog, int which) {				
-				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
-			}
-		});
-	
-		builder.show();
+		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this);
+	}
+
+	protected void showSimpleAlert(String msg, DialogInterface.OnClickListener listener) {
+		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this, listener);
 	}
 
 }

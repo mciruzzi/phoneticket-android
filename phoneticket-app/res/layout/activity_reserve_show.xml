@@ -2,122 +2,131 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:baselineAligned="false"
+    android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ReserveShowActivity"
-    android:orientation="horizontal"
-    android:background="@color/white"  >
-    
-    <LinearLayout
-	    android:id="@+id/accountReserveBar"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_gravity="center"
-	    android:gravity="center_vertical|center_horizontal"
-	    android:orientation="vertical"
-	    android:paddingTop="40dp"
-	    android:visibility="gone"
-	    android:background="@color/white" >
-	
-	 <ProgressBar
-	     style="?android:attr/progressBarStyleLarge"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_marginBottom="8dp" />
-	
-	 <TextView
-	     android:id="@+id/accountReserveMessageStatus"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_marginBottom="16dp"
-	     android:fontFamily="sans-serif-light"
-	     android:text="@string/load_progress"
-	     android:textAppearance="?android:attr/textAppearanceMedium" />
-	</LinearLayout>
+    tools:context=".ReserveShowActivity" >
 
     <LinearLayout
+        android:id="@+id/accountReserveBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="40dp"
+        android:visibility="gone" >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/accountReserveMessageStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/load_progress"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/accountReserveForm"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.09"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:id="@+id/accountReserveForm"
-        android:paddingTop="15dp"
-        android:background="@color/white">
-		        
-        <TextView
-            style="@style/Title"
-            android:id="@+id/accountReserveTitle"
-	        android:text="@string/hello_world" />
-    
-	    <TextView
-	        style="@style/DetailsReserveAndBuy"
-	        android:id="@+id/accountReserveCinema"
-	        android:text="@string/hello_world" />
-	    
-	    <TextView
-	        style="@style/DetailsReserveAndBuy"
-	       	android:id="@+id/accountReserveDate"
-	        android:text="@string/hello_world"
-	        android:layout_marginBottom="30dp"  />
-	
-	    <TextView
-			style="@style/DetailsReserveAndBuy"
-	       	android:id="@+id/accountReserveSeating"
-	        android:text="@string/hello_world"/>
-	    
-	    <TextView
-	        style="@style/DetailsReserveAndBuy"
-	        android:id="@+id/accountReserveCode"	        
-	        android:text="@string/hello_world" />
+        android:paddingTop="15dp" >
 
-	    <Button
-	        android:id="@+id/accountButtonCancel"
-			style="@style/Buttons"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/default_cancel"
-	        android:onClick="cancelReserve" />
-	        
+        <TextView
+            android:id="@+id/congratulations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="4dp"
+            android:text="@string/congratulations_reservation"            
+            android:textColor="@color/golden"
+            android:textAlignment="center"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/accountReserveTitle"
+            style="@style/Title"
+            android:text="@string/hello_world" />
+
+        <TextView
+            android:id="@+id/accountReserveCinema"
+            style="@style/DetailsReserveAndBuy"
+            android:text="@string/hello_world" />
+
+        <TextView
+            android:id="@+id/accountReserveDate"
+            style="@style/DetailsReserveAndBuy"
+            android:layout_marginBottom="30dp"
+            android:text="@string/hello_world" />
+
+        <TextView
+            android:id="@+id/accountReserveSeating"
+            style="@style/DetailsReserveAndBuy"
+            android:text="@string/hello_world" />
+
+        <TextView
+            android:id="@+id/accountReserveCode"
+            style="@style/DetailsReserveAndBuy"
+            android:text="@string/hello_world" />
+
+        <Button
+            android:id="@+id/accountButtonCancel"
+            style="@style/Buttons"
+            android:layout_gravity="center_horizontal"
+            android:onClick="cancelReserve"
+            android:text="@string/default_cancel" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="0.03"
         android:layout_width="0dp"
-    	android:layout_height="wrap_content"
-    	android:gravity="center"
-    	android:paddingTop="15dp">
-        
-        <ImageView
-            style="@style/ButtonsShowReserve"
-			android:id="@+id/buy"
-			android:src="@drawable/peso"
-			android:contentDescription="@string/buy"
-			android:onClick="buyReserve" />
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="15dp" >
 
         <ImageView
+            android:id="@+id/buy"
             style="@style/ButtonsShowReserve"
-			android:id="@+id/twitter"
-			android:src="@drawable/twitter"
-			android:contentDescription="@string/twitter"
-			android:onClick="shareWithTwitter"/>
+            android:contentDescription="@string/buy"
+            android:onClick="getPriceInfo"
+            android:src="@drawable/peso" />
 
         <ImageView
-            style="@style/ButtonsShowReserve"            
-			android:id="@+id/facebook"
-			android:src="@drawable/facebook"
-			android:contentDescription="@string/facebook"
-			android:onClick="shareWithFacebook" />
-        
+            android:id="@+id/twitter"
+            style="@style/ButtonsShowReserve"
+            android:contentDescription="@string/twitter"
+            android:onClick="shareWithTwitter"
+            android:src="@drawable/twitter" />
+
         <ImageView
-            style="@style/ButtonsShowReserve"            
-			android:id="@+id/calendar"
-			android:src="@drawable/calendario"
-			android:contentDescription="@string/calendar"
-			android:onClick="schedule"  />
-        
+            android:id="@+id/facebook"
+            style="@style/ButtonsShowReserve"
+            android:contentDescription="@string/facebook"
+            android:onClick="shareWithFacebook"
+            android:src="@drawable/facebook" />
+
+        <ImageView
+            android:id="@+id/calendar"
+            style="@style/ButtonsShowReserve"
+            android:contentDescription="@string/calendar"
+            android:onClick="schedule"
+            android:src="@drawable/calendario" />
     </LinearLayout>
-    
+
 </LinearLayout>

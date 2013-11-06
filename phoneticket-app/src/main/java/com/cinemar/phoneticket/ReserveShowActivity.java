@@ -1,21 +1,18 @@
 package com.cinemar.phoneticket;
 
-
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-
-
+import com.cinemar.phoneticket.model.ItemOperation;
+import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
+import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
 
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-import com.cinemar.phoneticket.util.UIDateUtil;
-
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,17 +27,21 @@ import android.widget.TextView;
 public class ReserveShowActivity extends Activity {
 
 	private String idReserve;
+	private String idShow;
+	private PriceInfo priceInfo;
 	
 	private TextView mTitle;
 	private TextView mCinema;
 	private TextView mDate;
 	private TextView mSeating;
 	private TextView mCode;
+	private TextView mCongratulations;
 	private String mShareUrl;
 	private Long mSchedulableDate;
+	private boolean mNewOperation;
 	
 	private ProcessBarUtil bar;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,8 +61,8 @@ public class ReserveShowActivity extends Activity {
 
 	public void cancelReserve(View view) {
 		
-	    AlertDialog alert = createWindowConfirmation();
-	    alert.show();
+		AlertDialog alert = createWindowConfirmation();
+		alert.show();
 	}
 	
 	private void doTheCancellation() {
@@ -111,9 +112,18 @@ public class ReserveShowActivity extends Activity {
 
 	}
 
-	public void buyReserve(View view) {
-		NotificationUtil.showSimpleAlert("Comprar", "Tenés q pagar!", this);
+	private void buyReserve() {
 		
+		Intent intent = new Intent(this, SelectTicketsActivity.class);
+		
+		intent.putExtra(OperationConstants.ID_SHOW, idShow);
+		intent.putExtra(OperationConstants.ID_RESERVE, idReserve);
+		intent.putExtra("priceInfo", priceInfo);
+		intent.putExtra("isReserve", false);
+		intent.putExtra("seatsCount", ItemOperation.getCountSeats(mSeating.getText().toString()));
+
+		startActivity(intent);
+		finish();
 	}
 	
 	public void shareWithTwitter(View view) {		
@@ -131,6 +141,7 @@ public class ReserveShowActivity extends Activity {
 	}
 	
 	public void shareWithFacebook(View view) {
+		
 		AppCommunicator sharer = new AppCommunicator(this);
 		Intent shareIntent= sharer.getFacebookIntent(mShareUrl);
 
@@ -143,45 +154,48 @@ public class ReserveShowActivity extends Activity {
 		startActivity(Intent.createChooser(shareIntent, "Share..."));
 	}
 	
-	public void schedule(View view){		
+	public void schedule(View view){	
+		
 		AppCommunicator sharer = new AppCommunicator(this);
 		String title = mTitle.getText().toString();
 		String description = title + " show";
 		String location = mCinema.getText().toString();
 		
+		Log.i("INICIO DE AGENDAR", "Por agendar " + description );
+
 		boolean success = sharer.scheduleCalendar(title,description,location,mSchedulableDate);
 		if (success)	
 			NotificationUtil.showSimpleAlert(getString(R.string.reminder_success_title), getString(R.string.reminder_success_desc), this);
 		else
 			NotificationUtil.showSimpleAlert(getString(R.string.no_way_title), getString(R.string.missingCalendar), this);
 		
+		Log.i("FIN DE AGENDAR", "Ya ta agendado" + description );
+
 	}
 
 	private AlertDialog createWindowConfirmation() {
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AlertDialog.Builder builder = NotificationUtil.createDialog("Confirmar", 
+				"¿Está seguro que desea cancelar esta reserva?",
+				this);
 
-	    builder.setTitle("Confirmar");
-	    builder.setMessage("¿Está seguro que desea cancelar esta reserva?");
+		builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
-	    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				doTheCancellation();
+			}
 
-	        public void onClick(DialogInterface dialog, int which) {
-	           
-	        	dialog.dismiss();
-	        	doTheCancellation();
-	        }
+		});
 
-	    });
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
-	    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 
-	        public void onClick(DialogInterface dialog, int which) {
-	            dialog.dismiss();
-	        }
-	    });
-	    
-	    return builder.create();
+		return builder.create();
 	}
 	
 	private void loadData() {
@@ -189,6 +203,7 @@ public class ReserveShowActivity extends Activity {
 		Intent intent = getIntent();
 		
 		idReserve = intent.getStringExtra(OperationConstants.CODE);
+		idShow = intent.getStringExtra(OperationConstants.ID_SHOW);
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
@@ -196,6 +211,7 @@ public class ReserveShowActivity extends Activity {
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
+		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
 		
 	}
 	
@@ -205,12 +221,37 @@ public class ReserveShowActivity extends Activity {
 		mCinema = (TextView) findViewById(R.id.accountReserveCinema);
 		mDate = (TextView) findViewById(R.id.accountReserveDate);
 		mSeating = (TextView) findViewById(R.id.accountReserveSeating);
-		mCode = (TextView) findViewById(R.id.accountReserveCode);	
+		mCode = (TextView) findViewById(R.id.accountReserveCode);
+		mCongratulations = (TextView)findViewById(R.id.congratulations);
+		
+		if(!mNewOperation)
+			mCongratulations.setVisibility(View.GONE);
 		
 		bar = new ProcessBarUtil(findViewById(R.id.accountReserveForm),
 				findViewById(R.id.accountReserveBar),
 				(TextView) findViewById(R.id.accountReserveMessageStatus),
 				this);
 		
+	}
+
+	public void getPriceInfo(View view) {
+		
+		TheatresClientAPI api = new TheatresClientAPI();
+		api.getShowSeats(idShow, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject roomInfo) {
+				try {
+					priceInfo = new PriceInfo(roomInfo);
+					buyReserve();
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
 	}
 }

@@ -20,6 +20,9 @@ public class ItemOperation {
 	private String shareUrl;
 	private String cover;
 	private String id;
+	private String idShow;
+	
+	static final String SEPARADOR = ";";
 	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
@@ -34,10 +37,10 @@ public class ItemOperation {
 		setCinema(cinema.getString("name") + " " + room.getString("name"));
 		setDate(show.getString("starts_at"));
 		setSeating(seats);
-		//setCode(operation.getString("id")); //TODO Change por lo que verdaderamente va a ser el codigo del QR
 		setCode(getTitle() + "|"+ getDate() + "|" + getCinema());
 		setId(operation.getString("id"));
 		setCover(film.getString("cover_url"));
+		setIdShow(show.getString("id"));
 	}
 	
 	public String getTitle() {
@@ -83,7 +86,7 @@ public class ItemOperation {
 		String seatings = "";
 		
 		for (int i = 0; i < seating.length; i++)
-			seatings += seating[i] + "; ";
+			seatings += seating[i] + SEPARADOR + " ";
 		
 		return seatings;
 	}
@@ -140,5 +143,17 @@ public class ItemOperation {
 
 	private void setId(String id) {
 		this.id = id;
+	}
+
+	public String getIdShow() {
+		return idShow;
+	}
+
+	private void setIdShow(String idShow) {
+		this.idShow = idShow;
+	}
+	
+	static public int getCountSeats(String seatings) {
+		return seatings.split(SEPARADOR).length - 1;
 	}
 }

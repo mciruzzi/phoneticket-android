@@ -26,24 +26,24 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 	public OperationExpandableListAdapter(Activity activity, SparseArray<GroupOperation> groups) {
 		
 		this.activity = activity;
-	    this.groups = groups;
-	    this.inflater = activity.getLayoutInflater();
+		this.groups = groups;
+		this.inflater = activity.getLayoutInflater();
 	}
 	
 	public Object getChild(int groupPosition, int childPosition) {
-	    return groups.get(groupPosition).getItems().get(childPosition);
+		return groups.get(groupPosition).getItems().get(childPosition);
 	}
 	
 	public long getChildId(int groupPosition, int childPosition) {
-	    return 0;
+		return 0;
 	}
 	
 	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 		  
 		final OperationView children = (OperationView) getChild(groupPosition, childPosition);
 		ItemOperation item = children.getItem();
-	    TextView textTitle = null, textCinema = null, textDate = null;
-	    ImageView image = null;
+		TextView textTitle = null, textCinema = null, textDate = null;
+		ImageView image = null;
 	    
 	    if (convertView == null) {
 	      convertView = inflater.inflate(R.layout.operation_listrow_details, null);
@@ -65,7 +65,7 @@ public class OperationExpandableListAdapter extends BaseExpandableListAdapter {
 			
 		new DownloadImageTask(image).execute(item.getCover());
 		
-	    convertView.setOnClickListener(new OnClickListener() {
+		convertView.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				showActivity(children);
 			}

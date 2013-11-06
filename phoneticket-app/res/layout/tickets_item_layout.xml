@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/promoInfo"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/promoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/promoDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/codeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"            
+            android:ems="9"
+            android:visibility="gone" 
+            android:hint="@string/promo_code"/>
+        
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/promoSpinner"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
+
+    <TextView
+        android:id="@+id/promoSubtotal"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="$XX.YY" />
+
+</LinearLayout>

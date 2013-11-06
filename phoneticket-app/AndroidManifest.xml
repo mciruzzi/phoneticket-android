@@ -68,7 +68,7 @@
         </activity>
         <activity
             android:name="com.cinemar.phoneticket.ComplejosActivity"
-            android:label="@string/title_activity_complejos"            
+            android:label="@string/title_activity_complejos"
             android:parentActivityName="com.cinemar.phoneticket.MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -95,8 +95,12 @@
             android:label="@string/title_activity_select_seats"
             android:parentActivityName="com.cinemar.phoneticket.PeliculasActivity" >
             <meta-data
-            	android:name="android.support.PARENT_ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cinemar.phoneticket.PeliculasActivity" />
+        </activity>
+        <activity
+            android:name="com.cinemar.phoneticket.SelectTicketsActivity"
+            android:label="@string/title_activity_select_tickets" >
         </activity>
     </application>
 

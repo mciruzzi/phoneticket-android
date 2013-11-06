@@ -9,9 +9,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +26,7 @@ import android.widget.TextView;
 import com.cinemar.phoneticket.authentication.APIAuthentication;
 import com.cinemar.phoneticket.authentication.AuthenticationService;
 import com.cinemar.phoneticket.model.User;
+import com.cinemar.phoneticket.util.NotificationUtil;
 import com.cinemar.phoneticket.util.UIDateUtil;
 import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -345,17 +344,7 @@ public class RegisterActivity extends Activity {
 	}
 
 	private void showSimpleAlert(String msg){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(msg);
-		builder.setTitle(getString(R.string.error));
-
-		builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				//Ver si vuelve directo a la pantalla anterior o hace falta hacer algun intent o algo
-			}
-		});
-
-		builder.show();
+		NotificationUtil.showSimpleAlert(getString(R.string.error), msg, this);
 	}
 
 }

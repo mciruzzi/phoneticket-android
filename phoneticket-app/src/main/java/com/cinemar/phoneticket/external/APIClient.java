@@ -1,5 +1,9 @@
 package com.cinemar.phoneticket.external;
 
+import org.apache.http.HttpEntity;
+
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -16,6 +20,10 @@ public class APIClient implements RestClient {
 
 	public void post(String path, RequestParams params, JsonHttpResponseHandler responseHandler) {
 		client.post(getAbsoluteUrl(path), params, responseHandler);
+	}
+	
+	public void post(Context context,String path, HttpEntity httpEntity,JsonHttpResponseHandler responseHandler) {
+		client.post(context,getAbsoluteUrl(path),httpEntity,"application/json",responseHandler);		
 	}
 
 	public void get(String path, JsonHttpResponseHandler responseHandler) {

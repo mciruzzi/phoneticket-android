@@ -15,14 +15,22 @@ public class NotificationUtil {
 	}
 	
 	static public void showSimpleAlert(String title, String message, Activity activity, DialogInterface.OnClickListener listener) {
+			
+		AlertDialog.Builder alertDialog = createDialog(title, message, activity);
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		builder.setMessage(message);
-		builder.setTitle(title);
+		alertDialog.setPositiveButton("Aceptar", listener);
+		alertDialog.show();
+	}
 	
-		builder.setPositiveButton("Aceptar",listener);
-	
-		builder.show();
+	static public AlertDialog.Builder createDialog (String title, String message, Activity activity) {
+		
+		QustomDialogBuilder qustomDialogBuilder = new QustomDialogBuilder(activity).
+				setTitle(title).
+				setTitleColor("#400080").
+				setDividerColor("#400080").
+				setMessage(message);
+
+		return qustomDialogBuilder;
 	}
 
 }

@@ -1,0 +1,138 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="50dp"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".SelectTicketsActivity" >
+
+        <TextView
+            android:id="@+id/cantTickets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <LinearLayout
+            android:id="@+id/ticketItemContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include
+                android:id="@+id/adultsTicketsLayout"
+                layout="@layout/tickets_item_layout" />
+
+            <include
+                android:id="@+id/childrenTicketsLayout"
+                layout="@layout/tickets_item_layout" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ticketsTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Total" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:visibility="gone" >
+
+            <RadioButton
+                android:id="@+id/compraRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:onClick="compraSelected"
+                android:paddingRight="15dp"
+                android:text="Compra" />
+
+            <RadioButton
+                android:id="@+id/reservaRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/compraRadioButton"
+                android:onClick="reservaSelected"
+                android:text="Reserva" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/numeroDeTarjeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/numeroDeTarjeta"
+            android:inputType="numberSigned"
+            android:maxLength="16" >
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/codigoDeSeguridad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/codigoDeSeguridad"
+            android:inputType="numberSigned"
+            android:maxLength="3" >
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/nombreDeltitular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/nombreDeltitular"
+            android:inputType="textPersonName" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/fechaVencimiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/fechaVencimiento"
+            android:inputType="date"
+            android:maxLength="6" 
+            android:textSize="12sp">
+        </EditText>
+
+        <Button
+            android:id="@+id/selectSeatsButton"
+            style="@style/Buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="onClickDone"
+            android:text="@string/done" />
+    </LinearLayout>
+
+</ScrollView>
