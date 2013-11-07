@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -130,13 +131,9 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 					return;
 				}
 				
-				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-				if (settings.getString("email", null)==null){
-					showSimpleAlert(getResources().getString(
-							R.string.must_be_logged));
+				if (!validateLogin())
 					return;
-				}
-
+				
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(false);
 				else{
@@ -155,14 +152,9 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							R.string.no_selected_show));
 					return;
 				}
-				
-				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-				if (settings.getString("email", null)==null){
-					showSimpleAlert(getResources().getString(
-							R.string.must_be_logged));
+				if (!validateLogin())
 					return;
-				}
-
+						
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(true);
 				else{
@@ -179,7 +171,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				Intent shareIntent = sharer.getFacebookIntent(mFilm
 						.getShareURL());
 				if (shareIntent == null) {
-					showSimpleAlert(getString(R.string.missingApplication));
+						showSimpleAlert(getString(R.string.missingApplication));
 					return;
 				}
 
@@ -296,6 +288,27 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		}
 
 	};
+	
+	private boolean validateLogin() {
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		if (settings.getString("email", null)==null){
+			//showSimpleAlert(getResources().getString(R.string.must_be_logged));
+			Toast toast = Toast.makeText(this, getString(R.string.must_be_logged), 2000);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+			
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.setAction(LoginActivity.SIGNIN_ACTION);
+			startActivityForResult(intent, MainMyAccountActivity.REQUEST_LOGIN);
+			
+			return false;
+		}
+		else {
+			return true;
+		}
+		
+		
+	}
 
 	public void onSeatsCountSelected(DialogInterface dialog,final int seatsCount) {
 
