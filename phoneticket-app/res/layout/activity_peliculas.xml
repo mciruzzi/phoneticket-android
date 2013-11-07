@@ -35,13 +35,16 @@
         android:id="@+id/peliculasHorizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" >
+        android:background="@color/white" 
+        android:fadeScrollbars="false"    
+        >
 
         <LinearLayout
             android:id="@+id/peliculasImageContainer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+ >
             
         </LinearLayout>
     </HorizontalScrollView>
