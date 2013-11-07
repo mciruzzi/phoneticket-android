@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainMenuActivity extends Activity {
+public class MainMenuActivity extends AbstractApiConsumerActivity {
 	//Referencias a UI
 	private TextView welcomeView;
 	private Button peliculasButton;
@@ -29,6 +29,7 @@ public class MainMenuActivity extends Activity {
 					public void onClick(View view) {
 						goToPeliculasActivity();
 					}
+		
 				});
 
 		miCuentaButton = (Button) findViewById(R.id.miCuentaButton);
@@ -48,10 +49,7 @@ public class MainMenuActivity extends Activity {
 				});
 	}
 	
-	protected void goToComplejosActivity() {
-		Intent intent = new Intent(this, ComplejosActivity.class);
-		startActivity(intent);
-	}
+
 
 	@Override
 	protected void onResume() {
@@ -67,17 +65,6 @@ public class MainMenuActivity extends Activity {
 		}
 	}
 	
-	protected void goToPeliculasActivity() {
-		Intent intent = new Intent(this, PeliculasActivity.class);
-		//TODO put extra content to peliculas Intent
-		//Podria ser la sala seleccionada, si es que ya fue seleccionada
-		startActivity(intent);
-	}
-
-	protected void goToMyAccountActivity() {
-		Intent intent = new Intent(this, MainMyAccountActivity.class);		
-		startActivity(intent);
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,5 +72,6 @@ public class MainMenuActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
+	
 
 }

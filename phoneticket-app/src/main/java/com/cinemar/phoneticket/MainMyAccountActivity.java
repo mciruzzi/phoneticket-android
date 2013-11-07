@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -39,7 +40,7 @@ import com.cinemar.phoneticket.util.UIDateUtil;
 import com.cinemar.phoneticket.util.UserDataValidatorUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainMyAccountActivity extends Activity {
+public class MainMyAccountActivity extends AbstractApiConsumerActivity {
 
 	public final static int REQUEST_LOGIN = 0;
 
@@ -77,6 +78,7 @@ public class MainMyAccountActivity extends Activity {
 			setupContent();
 		}
 	}
+	
 
 	@Override
 	protected void onResume() {
@@ -116,8 +118,9 @@ public class MainMyAccountActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_my_account, menu);
+		super.onCreateOptionsMenu(menu);
+		MenuItem item = menu.findItem(R.id.action_myaccount);
+		item.setVisible(false);
 		return true;
 	}
 

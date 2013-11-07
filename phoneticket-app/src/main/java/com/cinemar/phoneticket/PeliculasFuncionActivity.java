@@ -197,12 +197,6 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		this.getFunciones();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.peliculas, menu);
-		return true;
-	}
-
 	private void displaySeatsPicker() {
 		//picker.displayPicker();
 		picker.show(getSupportFragmentManager(), "SeatQuantityPickerFragment");

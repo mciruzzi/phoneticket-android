@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-public class ReserveShowActivity extends Activity {
+public class ReserveShowActivity extends AbstractApiConsumerActivity {
 
 	private String idReserve;
 	private String idShow;
@@ -52,12 +52,6 @@ public class ReserveShowActivity extends Activity {
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.reserve_show, menu);
-		return true;
-	}
 
 	public void cancelReserve(View view) {
 		

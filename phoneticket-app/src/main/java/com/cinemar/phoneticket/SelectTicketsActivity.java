@@ -90,13 +90,6 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		updateValues();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_tickets, menu);
-		return true;
-	}
-
 	private void getUIItems() {
 		compraRadioButton = (RadioButton) findViewById(R.id.compraRadioButton);
 		reservaRadioButton = (RadioButton) findViewById(R.id.reservaRadioButton);

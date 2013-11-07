@@ -53,7 +53,8 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_peliculas"
             android:height="0dp"
-            android:text="@string/cartelera" />
+            android:text="@string/cartelera" 
+            android:onClick="goToPeliculasActivity"/>
         
        <Button
            android:id="@+id/complejoButton"

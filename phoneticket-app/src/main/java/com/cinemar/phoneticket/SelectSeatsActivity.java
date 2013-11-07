@@ -78,13 +78,6 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_seats, menu);
-		return true;
-	}
-
 	private void requestRoomLayout() {
 		mStatusMessageView.setText(R.string.getting_sala);
 		showProgress(true);
