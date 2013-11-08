@@ -1,48 +1,50 @@
-<ScrollView
-    android:id="@+id/login_form"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	tools:context=".MainMyAccountActivity"  >
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".MainMyAccountActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
-        <LinearLayout
-            android:id="@+id/accountBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="40dp"
-            android:visibility="gone" >
-	
-	        <ProgressBar
-	            style="?android:attr/progressBarStyleLarge"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="8dp" />
-	
-	        <TextView
-	            android:id="@+id/accountMessageStatus"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="16dp"
-	            android:fontFamily="sans-serif-light"
-	            android:text="@string/load_progress"
-	            android:textAppearance="?android:attr/textAppearanceMedium" />
-	    </LinearLayout>
-	    
-        <LinearLayout
+	<LinearLayout
+           android:id="@+id/accountBar"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_gravity="center"
+           android:gravity="center_vertical|center_horizontal"
+           android:orientation="vertical"
+           android:paddingTop="40dp"
+           android:visibility="gone" >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/accountMessageStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/load_progress"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+
+
+	<ScrollView
+	    android:id="@+id/login_form"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+
+		<LinearLayout
 			style="@style/LoginFormContainer"
 			android:layout_gravity="center"
 			android:orientation="vertical"
 			android:id="@+id/accountForm" >
-	        
+		        
 	        <RelativeLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
@@ -222,8 +224,6 @@
 	            android:text="Los campos con * son obligatorios"
 	            android:textAppearance="?android:attr/textAppearanceSmall"
 	            android:textSize="9sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
-
+	        </LinearLayout>
+	</ScrollView>
+</LinearLayout>

@@ -46,11 +46,12 @@
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phone_ticket_theme</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Phone_ticket_theme</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_phone_ticket_theme</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phone_ticket_theme</item> 
-		<item name="android:divider">@drawable/my_divider</item>
-
-		<item name="android:selectAllOnFocus">@color/violet</item>
-		        
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phone_ticket_theme</item>
+        
+        -               <item name="android:divider">@drawable/my_divider</item>
+-
+-               <item name="android:selectAllOnFocus">@color/violet</item>
+        
     </style>
 
    
