@@ -1,7 +1,5 @@
 package com.cinemar.phoneticket;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,7 +42,7 @@ public class MainMenuActivity extends AbstractApiConsumerActivity {
 		complejosButton.setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View v) {
-						goToComplejosActivity();						
+						goToComplejosActivity();
 					}
 				});
 	}

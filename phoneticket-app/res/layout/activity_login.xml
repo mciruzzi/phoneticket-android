@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome"
-                android:textColor="#33B5E5"
+                android:textColor="@color/violet"
                 android:textSize="30sp" />
 
             <EditText
@@ -108,23 +108,22 @@
 
             <Button
                 android:id="@+id/register_button"
-                android:layout_width="wrap_content"
+				style="@style/Buttons"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
                 android:text="@string/sign_in" />
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿No tienes una cuenta aún?" />
+                android:text="@string/message_create_account" />
 
             <Button
                 android:id="@+id/create_account_button"
-                android:layout_width="87dp"
+                style="@style/Buttons"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="46dp"
                 android:onClick="createAccountAction"
                 android:text="@string/sing_up" />
 

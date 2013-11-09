@@ -13,5 +13,6 @@ public interface OperationConstants {
 	public final String NEW_OPERATION = "newOperation";
 	public final String ID_SHOW = "showId";
 	public final String ID_RESERVE = "reserveId";
+	public final String IS_NUMERED = "isNumered";
 	
 }

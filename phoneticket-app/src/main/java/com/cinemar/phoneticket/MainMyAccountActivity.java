@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -268,8 +267,6 @@ public class MainMyAccountActivity extends AbstractApiConsumerActivity {
 			findViewById(R.id.operationBar),
 			(TextView) findViewById(R.id.operationMessageStatus),
 			this);
-
-
 	}
 
 	@Override

@@ -5,12 +5,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.cinemar.phoneticket.R;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class UIDateUtil {
@@ -42,15 +50,46 @@ public class UIDateUtil {
 		});
 
 		update();
-
+		
 		mDateListener = new DatePickerDialog.OnDateSetListener() {
 
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
+				 ViewGroup childpicker = (ViewGroup)view.findViewById(Resources.getSystem().getIdentifier("month", "id", "android"));
+
+
+				 EditText mornthEt = (EditText)childpicker.getChildAt(0);// month widget
+
+				//change textsize and textcolor for mornthEt
+
+				 Log.i("LO Q DICE: ", mornthEt.getText().toString());
+//				mornthEt.setTextSize(30);
+
+
+				 
+				mornthEt.setTextColor(Color.GREEN);
+				mornthEt.setBackgroundResource(R.color.violet);
+//				android.R.id.
+//				childpicker = (ViewGroup)view.findViewById(Resources.getSystem().getIdentifier("increment", "id", "android"));
+//				NumberPicker num = (NumberPicker) childpicker.getChildAt(0);
+//				
+//				num.setBackgroundColor(Color.GREEN);
+				
+				
+//				    		view.findViewById(Resources.getSystem().getIdentifier("timepicker_input",
+//				    "id", "android"));
+//				    textview.setTextSize(30);
+//				    textview.setTextColor(Color.GREEN);
+						
+//				view.setBackgroundColor(activity.getResources().getColor(R.color.violet));
+//				view.setBackgroundResource(R.style.DataPickerTheme);
+//				view.setBackgroundResource(R.color.violet);
+//				view.setForeground(null);
 				setDate(dayOfMonth, monthOfYear, year);
 				update();
 			}
 		};
+		
 	}
 
 	public Dialog createDialogWindow(int id) {

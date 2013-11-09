@@ -21,6 +21,7 @@ public class ItemOperation {
 	private String cover;
 	private String id;
 	private String idShow;
+	private boolean isNumered;
 	
 	static final String SEPARADOR = ";";
 	
@@ -41,6 +42,8 @@ public class ItemOperation {
 		setId(operation.getString("id"));
 		setCover(film.getString("cover_url"));
 		setIdShow(show.getString("id"));
+		setNumered(show.getBoolean("numbered_seats"));
+
 	}
 	
 	public String getTitle() {
@@ -155,5 +158,13 @@ public class ItemOperation {
 	
 	static public int getCountSeats(String seatings) {
 		return seatings.split(SEPARADOR).length - 1;
+	}
+
+	public boolean isNumered() {
+		return isNumered;
+	}
+
+	private void setNumered(boolean isNumered) {
+		this.isNumered = isNumered;
 	}
 }

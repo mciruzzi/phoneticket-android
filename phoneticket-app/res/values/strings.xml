@@ -5,7 +5,7 @@
     <string name="action_settings">Configuración</string>
     <string name="error">Error</string>
     <string name="cancel">Cancelar</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="default_accept">Aceptar</string>
     <string name="default_cancel">Cancelar</string>
     <string name="message_confirmation_acount">Habilite su cuenta con el email recibido a</string>
@@ -44,6 +44,6 @@
     <string name="error_card_number_16digits">El número de tarjeta debe tener 16 dígitos</string>
     <string name="error_card_seg_3digits">El código de seguridad debe tener 3 dígitos</string>
     <string name="error_card_date_format">La fecha de vencimiento debe tener formato AAAAMM</string>
-
+	<string name="message_create_account">¿No tienes una cuenta aún?</string>
     
 </resources>

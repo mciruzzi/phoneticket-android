@@ -15,12 +15,10 @@ import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,7 +49,6 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		loadData();
 		
 	}
-
 
 	public void cancelReserve(View view) {
 		
@@ -201,12 +198,13 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
-		
+
+		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true)
+			mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 	}
 	
 	private void getUIElement() {
