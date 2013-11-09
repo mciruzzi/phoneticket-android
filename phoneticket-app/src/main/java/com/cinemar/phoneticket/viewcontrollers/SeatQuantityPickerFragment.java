@@ -9,6 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.R;
 
 
@@ -23,17 +25,19 @@ public class SeatQuantityPickerFragment extends DialogFragment {
 
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View pickerView = inflater.inflate(R.layout.seats_quatity_picker, null);
+		TextView mTitle = (TextView) pickerView.findViewById(R.id.alertTitle);
 		numberPicker = (NumberPicker) pickerView.findViewById(R.id.seatPicker);
 		builder.setView(pickerView);
 
 		// Buttons
 		builder.setPositiveButton(R.string.ok,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {						
+					public void onClick(DialogInterface dialog, int id) {
 						mListener.onSeatsCountSelected(dialog,numberPicker.getValue());
 					}
 				});
@@ -45,7 +49,7 @@ public class SeatQuantityPickerFragment extends DialogFragment {
 					}
 				});
 
-		builder.setTitle(getString(R.string.pick_quantity_seats));
+		mTitle.setText(getString(R.string.pick_quantity_seats));
 		
 
 		String[] nums = new String[MAX_SEATS];
@@ -58,7 +62,7 @@ public class SeatQuantityPickerFragment extends DialogFragment {
 		numberPicker.setDisplayedValues(nums);
 		numberPicker.setValue(1);
 
-		return builder.create();					
+		return builder.create();
 	}
 	
  

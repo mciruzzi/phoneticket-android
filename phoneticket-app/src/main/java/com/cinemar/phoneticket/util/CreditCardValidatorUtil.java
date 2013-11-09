@@ -4,7 +4,6 @@ import com.cinemar.phoneticket.R;
 
 import android.text.TextUtils;
 import android.widget.EditText;
-import android.app.Activity;
 import android.content.Context;
 
 public class CreditCardValidatorUtil {

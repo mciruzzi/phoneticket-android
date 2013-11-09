@@ -1,17 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/seatPickerLayout"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    style="@style/PopupMenu.Phone_ticket_theme" >
-
-    <NumberPicker
-        android:id="@+id/seatPicker"
-        style="@style/PopupMenu.Phone_ticket_theme"
-        android:layout_width="wrap_content"
+    android:id="@+id/seatPickerLayout"
+    style="@style/PopupMenu.Phone_ticket_theme">
+ 
+    <LinearLayout android:id="@+id/topPanel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp" />
+        android:orientation="vertical">
+        <LinearLayout android:id="@+id/title_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|start"
+            android:minHeight="64dip"
+            android:layout_marginStart="16dip"
+            android:layout_marginEnd="16dip">
+            <com.android.internal.widget.DialogTitle android:id="@+id/alertTitle"
+                style="@style/ActionBar.Title.Phone_ticket_theme"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dip" />
+        </LinearLayout>
+        <View android:id="@+id/titleDivider"
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:visibility="visible"
+            android:background="@color/violet" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+           
+	    <NumberPicker
+	        android:id="@+id/seatPicker"
+	        style="@style/PopupMenu.Phone_ticket_theme"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_margin="5dp" 
+	        android:background="@drawable/picker"/>
+    </LinearLayout>
+
+    <FrameLayout android:id="@+id/customPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+    </FrameLayout>
 
 </LinearLayout>
