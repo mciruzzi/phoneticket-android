@@ -44,11 +44,12 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
-//		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
+		
+		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true)
+			mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 	}
 	
 	private void getUIElement() {

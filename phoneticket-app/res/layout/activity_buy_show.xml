@@ -27,28 +27,28 @@
             android:text="@string/congratulations_purchase"
             android:textAlignment="center"
             android:textColor="@color/golden"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/accountBuyTitle"
             style="@style/Title"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountBuyCinema"
             style="@style/DetailsReserveAndBuy"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountBuyDate"
             style="@style/DetailsReserveAndBuy"
             android:layout_marginBottom="30dp"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountBuySeating"
             style="@style/DetailsReserveAndBuy"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <ImageView
             android:id="@+id/accountBuyCode"

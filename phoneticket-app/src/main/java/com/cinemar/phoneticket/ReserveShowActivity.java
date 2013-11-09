@@ -27,6 +27,7 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 	private String idReserve;
 	private String idShow;
 	private PriceInfo priceInfo;
+	private int quantityOfSeats;
 	
 	private TextView mTitle;
 	private TextView mCinema;
@@ -111,7 +112,7 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		intent.putExtra(OperationConstants.ID_RESERVE, idReserve);
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
-		intent.putExtra("seatsCount", ItemOperation.getCountSeats(mSeating.getText().toString()));
+		intent.putExtra("seatsCount", quantityOfSeats);
 
 		startActivity(intent);
 		finish();
@@ -203,6 +204,8 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
 
+		quantityOfSeats = ItemOperation.getCountSeats(intent.getStringExtra(OperationConstants.SEATING));
+		
 		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true)
 			mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 	}
