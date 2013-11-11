@@ -235,6 +235,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
 			intent.putExtra(OperationConstants.ID_SHOW, item.getIdShow());
+			intent.putExtra(OperationConstants.IS_NUMERED, true);
 
 			final Intent intentFinal = intent;
 

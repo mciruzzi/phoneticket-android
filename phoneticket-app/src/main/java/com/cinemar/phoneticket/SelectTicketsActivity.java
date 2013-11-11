@@ -272,6 +272,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			intent.putExtra(OperationConstants.IS_NUMERED, isNumbered);
 
 			final Intent intentFinal = intent;
 
