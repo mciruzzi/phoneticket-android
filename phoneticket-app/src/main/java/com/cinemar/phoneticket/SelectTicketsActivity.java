@@ -1,9 +1,8 @@
 package com.cinemar.phoneticket;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +40,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 	private String showId;
 	private String reserveId;
-	private final Set<String> selectedSeats = new HashSet<String>();
+	private final List<String> selectedSeats = new LinkedList<String>();
 	private int seatsCount;
 	private boolean isBuy, isReserve, isNumbered;
 	private PriceInfo priceInfo;
@@ -144,24 +143,6 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		LinearLayout ticketsItemContainer = (LinearLayout) findViewById(R.id.ticketItemContainer);
 
 		LayoutInflater inflater = LayoutInflater.from(getBaseContext());
-
-		//No son necesarios ahora que son tratados distintos
-//		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-//		adultsTicketsItem = new SingleTicketItemViewController(
-//				adultsItem,this,priceInfo.getAdultPrice());
-//		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-//		adultsTicketsItem.setDescription("Entrada de adulto");
-//
-//		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-//		childrenTicketsItem = new SingleTicketItemViewController(
-//				childrenItem,this,priceInfo.getChildPrice());
-//		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-//		childrenTicketsItem.setDescription("Entrada de ninio");
-//
-//		promosItems.add(adultsTicketsItem);
-//		promosItems.add(childrenTicketsItem);
-//		ticketsItemContainer.addView(adultsItem);
-//		ticketsItemContainer.addView(childrenItem);
 
 		for (Promotion promo : priceInfo.getPromotions()){
 			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);

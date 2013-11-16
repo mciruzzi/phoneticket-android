@@ -2,12 +2,15 @@ package com.cinemar.phoneticket.reserveandbuy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class PurchaseRequest {
 
 	String email;
 	String showId;
-	Collection<String> seatsIds;
+	List<String> seatsIds;
 	int seatsCount;
 	String reservationId = null; //if coming from reservation
 	int kidsCount;
@@ -94,7 +97,14 @@ public class PurchaseRequest {
 		ArrayList<String> result = new ArrayList<String>(seatsIds);
 		return result;
 	}
-	public void setSeats(Collection<String> seatsIds) {
+	public void setSeats(List<String> seatsIds) {
+		Collections.sort(seatsIds, new Comparator<String>()
+	    {
+	        public int compare(String f1, String f2)
+	        {
+	            return f1.toString().compareTo(f2.toString());
+	        }        
+	    });		
 		this.seatsIds = seatsIds;
 		seatsCount = seatsIds.size();
 	}

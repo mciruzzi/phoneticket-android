@@ -32,13 +32,13 @@ public class ReserveRequest {
 		return result;
 	}
 	public void setSeats(List<String> seatsIds) {
-	Collections.sort(seatsIds, new Comparator<String>()
-            {
-                public int compare(String f1, String f2)
-                {
-                    return f2.toString().compareTo(f1.toString());
-                }        
-            });
+		Collections.sort(seatsIds, new Comparator<String>()
+	    {
+	        public int compare(String f1, String f2)
+	        {
+	            return f2.toString().compareTo(f1.toString());
+	        }        
+	    });
 		this.seatsIds = seatsIds;
 		seatsCount = seatsIds.size();
 	}	
