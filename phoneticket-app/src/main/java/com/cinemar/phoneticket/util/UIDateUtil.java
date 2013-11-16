@@ -4,11 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -131,7 +133,9 @@ public class UIDateUtil {
 	
 	public static String getStringFromDate(Date date) {
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		return dateFormat.format(date);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd-MM HH:mm", new Locale("es_ES"));
+		String dateInString = dateFormat.format(date);
+		char firstLetter = Character.toUpperCase(dateInString.charAt(0)); //esto es porque no me sale la primer letra en mayus :@
+		return dateInString.replaceFirst(Character.toString(dateInString.charAt(0)), Character.toString(firstLetter));
 	}
 }
