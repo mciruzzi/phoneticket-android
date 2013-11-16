@@ -238,7 +238,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				selectedShow = listDataChild.get(
 						listDataHeader.get(groupPosition)).get(childPosition);
 
-				Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " : " + selectedShow.getShowId(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) /*+ " : " + selectedShow.getShowId()*/, Toast.LENGTH_SHORT).show();
 
 				return false;
 			}
