@@ -181,6 +181,8 @@ public class MainMyAccountActivity extends AbstractApiConsumerActivity {
 
 						Log.i("RESERVA", "Reserva " + reservations.getJSONObject(i) + " agregada");
 					}
+					
+					groupReserve.sortOperation();
 				}
 
 				groups.append(ID_RESERVE, groupReserve);
@@ -204,6 +206,8 @@ public class MainMyAccountActivity extends AbstractApiConsumerActivity {
 						groupBuy.addItem(new OperationView( item, BuyShowActivity.class ));
 						Log.i("COMPRA", "Compra " + purchases.getJSONObject(i) + " agregada");
 					}
+					
+					groupBuy.sortOperation();
 				}
 
 				groups.append(ID_BUY, groupBuy);

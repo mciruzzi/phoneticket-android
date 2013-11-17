@@ -57,8 +57,4 @@ public class Show {
 	public boolean isNumbered() {
 		return isNumbered;
 	}
-
-
-
-
 }

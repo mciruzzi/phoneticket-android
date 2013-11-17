@@ -9,8 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class Theatre {
 	String id;
 	String name;
@@ -39,7 +37,6 @@ public class Theatre {
 		}
 		
 		sortShows(shows);
-
 	}
 
 	public String getId() {
