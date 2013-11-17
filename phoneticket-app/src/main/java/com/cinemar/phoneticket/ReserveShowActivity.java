@@ -118,8 +118,11 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		intent.putExtra("isReserve", false);
 		intent.putExtra("seatsCount", quantityOfSeats);
 		
-		if (seats != null)
-			intent.putStringArrayListExtra("selectedSeats", new ArrayList<String>(Arrays.asList(seats.split(ItemOperation.SEPARADOR))));
+		if (seats != null) {
+			String seatsSelect = seats.substring(0, seats.length() - 1); //para eliminar el último ";" 
+			intent.putStringArrayListExtra("selectedSeats", new ArrayList<String>(Arrays.asList(seatsSelect.split(ItemOperation.SEPARADOR))));
+		}
+			
 
 		startActivity(intent);
 		finish();
@@ -127,7 +130,7 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 	
 	public void shareWithTwitter(View view) {		
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli", mShareUrl);
+		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli ", mShareUrl);
 
 		if (shareIntent == null ) {
 
