@@ -1,7 +1,6 @@
 package com.cinemar.phoneticket;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -40,7 +39,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 	private String showId;
 	private String reserveId;
-	private final List<String> selectedSeats = new LinkedList<String>();
+	private final ArrayList<String> selectedSeats = new ArrayList<String>();
 	private int seatsCount;
 	private boolean isBuy, isReserve, isNumbered;
 	private PriceInfo priceInfo;
@@ -67,7 +66,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		
 		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
 		if (getIntent().hasExtra("selectedSeats")){
+			
+
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
+			ItemOperation.sortInverseSeats(selectedSeats);
+
 			seatsCount = selectedSeats.size();
 			isNumbered = true;
 		}

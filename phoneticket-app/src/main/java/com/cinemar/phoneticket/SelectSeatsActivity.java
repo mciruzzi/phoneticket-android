@@ -188,11 +188,8 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			return;
 		}
 
-		ArrayList<String> seatsIds = new ArrayList<String>();
-		for (Seat seat : SelectedSeats) {
-			seatsIds.add(seat.getId());
-		}
-
+		ArrayList<String> seatsIds = ItemOperation.getSeatSortList(SelectedSeats);
+		
 		// Hago la reserva de dichos asientos (no hay nada mas que cargar)
 		if (isReserve) {
 			ReserveRequest reserve = new ReserveRequest();
@@ -206,6 +203,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			api.performNumberedReserve(this,reserve, reserveResponseHandler);
 		} else {
 			// Caso de compra (faltan ingresar varios datos)
+			
 			Intent intent = new Intent(this, SelectTicketsActivity.class);
 			intent.putExtra("showId", showId);
 			intent.putExtra("priceInfo", priceInfo);
