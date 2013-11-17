@@ -129,10 +129,10 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							R.string.no_selected_show));
 					return;
 				}
-				
+
 				if (!validateLogin())
 					return;
-				
+
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(false);
 				else{
@@ -153,7 +153,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				}
 				if (!validateLogin())
 					return;
-						
+
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(true);
 				else{
@@ -238,7 +238,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				selectedShow = listDataChild.get(
 						listDataHeader.get(groupPosition)).get(childPosition);
 
-				Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) /*+ " : " + selectedShow.getShowId()*/, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), selectedShow.getStartTimeString(), Toast.LENGTH_SHORT).show();
 
 				return false;
 			}
@@ -281,7 +281,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		}
 
 	};
-	
+
 	private boolean validateLogin() {
 		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
 		if (settings.getString("email", null)==null){
@@ -289,18 +289,18 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 			Toast toast = Toast.makeText(this, getString(R.string.must_be_logged), 2000);
 			toast.setGravity(Gravity.CENTER, 0, 0);
 			toast.show();
-			
+
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.setAction(LoginActivity.SIGNIN_ACTION);
 			startActivityForResult(intent, MainMyAccountActivity.REQUEST_LOGIN);
-			
+
 			return false;
 		}
 		else {
 			return true;
 		}
-		
-		
+
+
 	}
 
 	public void onSeatsCountSelected(DialogInterface dialog,final int seatsCount) {

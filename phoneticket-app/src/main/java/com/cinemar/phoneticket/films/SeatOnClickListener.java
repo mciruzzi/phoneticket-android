@@ -3,13 +3,13 @@ package com.cinemar.phoneticket.films;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.cinemar.phoneticket.R;
-import com.cinemar.phoneticket.model.Room.Seat;
-import com.cinemar.phoneticket.model.SeatStatus;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+
+import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.model.Room.Seat;
+import com.cinemar.phoneticket.model.SeatStatus;
 
 public class SeatOnClickListener implements OnClickListener {
 	protected Seat seat;

@@ -4,10 +4,6 @@ package com.cinemar.phoneticket.films;
 import java.util.HashMap;
 import java.util.List;
 
-import com.cinemar.phoneticket.R;
-import com.cinemar.phoneticket.model.Show;
- 
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -15,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.model.Show;
  
 public class ExpandableShowListAdapter extends BaseExpandableListAdapter {
  

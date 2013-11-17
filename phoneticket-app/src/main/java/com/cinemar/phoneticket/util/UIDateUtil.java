@@ -6,11 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;

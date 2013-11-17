@@ -1,5 +1,12 @@
 package com.cinemar.phoneticket;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
@@ -7,13 +14,6 @@ import com.cinemar.phoneticket.util.QRCodeEncoder;
 import com.cinemar.phoneticket.util.QRContents;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
-
-import android.os.Bundle;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class BuyShowActivity extends AbstractApiConsumerActivity {
 

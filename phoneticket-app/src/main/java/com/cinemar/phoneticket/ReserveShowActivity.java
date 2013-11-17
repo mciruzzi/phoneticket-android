@@ -6,6 +6,14 @@ import java.util.Arrays;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
@@ -13,17 +21,8 @@ import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
-
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-import android.os.Bundle;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 public class ReserveShowActivity extends AbstractApiConsumerActivity {
 

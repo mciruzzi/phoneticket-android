@@ -8,7 +8,7 @@
         android:id="@+id/lblListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="8dip"
+        android:textSize="14sp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />

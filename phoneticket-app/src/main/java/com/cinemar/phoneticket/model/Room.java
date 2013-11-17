@@ -10,25 +10,25 @@ import org.json.JSONObject;
 public class Room {
 
 	//podria haber guardado en 1 solo mapa todo pero si despues hago alguna visualizacion separada para los 3 cuerpos supongo que esto va a estar mejor
-	private Map<String, Seat> leftSeats = new HashMap<String, Room.Seat>();
-	private Map<String, Seat> rightSeats = new HashMap<String, Room.Seat>();;
-	private Map<String, Seat> middleSeats = new HashMap<String, Room.Seat>();;
+	private final Map<String, Seat> leftSeats = new HashMap<String, Room.Seat>();
+	private final Map<String, Seat> rightSeats = new HashMap<String, Room.Seat>();;
+	private final Map<String, Seat> middleSeats = new HashMap<String, Room.Seat>();;
 
 	ArrayList<String> rowsIds = new ArrayList<String>();
 	ArrayList<String> colIds = new ArrayList<String>();
-	
-	private int leftWidth;
-	private int rightWidth;
-	private int middleWidth;
-	
+
+	private final int leftWidth;
+	private final int rightWidth;
+	private final int middleWidth;
+
 	public int getRowsLength(){
-		return rowsIds.size();		
+		return rowsIds.size();
 	}
-	
+
 	public int getColumnsLength(){
-		return colIds.size();		
+		return colIds.size();
 	}
-	
+
 	public Room(JSONObject room) throws JSONException {
 		JSONObject left = room.getJSONObject("status").getJSONObject("left");
 		JSONObject middle = room.getJSONObject("status")
@@ -37,33 +37,33 @@ public class Room {
 
 
 		parseSeats(left, leftSeats, rowsIds, colIds);
-		leftWidth =left.getJSONArray("rows").length();
+		leftWidth =left.getJSONArray("columns").length();
 		parseSeats(middle, middleSeats, rowsIds, colIds);
-		middleWidth = middle.getJSONArray("rows").length();		
+		middleWidth = middle.getJSONArray("columns").length();
 		parseSeats(right, rightSeats, rowsIds, colIds);
-		rightWidth =right.getJSONArray("rows").length();
+		rightWidth =right.getJSONArray("columns").length();
 	}
-	
+
 	public Seat getSeat(int row, int col){
 		String searchedId = this.translateId(row, col);
-		Seat returnedSeat = null; 
-		
-		returnedSeat = leftSeats.get(searchedId);		
+		Seat returnedSeat = null;
+
+		returnedSeat = leftSeats.get(searchedId);
 		if (returnedSeat == null) returnedSeat = middleSeats.get(searchedId);
 		if (returnedSeat == null) returnedSeat = rightSeats.get(searchedId);
-		
+
 		return returnedSeat;
 	}
 
 	public String translateId(int row, int col){
 		return rowsIds.get(row) + "-" + colIds.get(col);
-		
+
 	}
-	
+
 	private void parseSeats(JSONObject seatsJsonObject,
 			Map<String, Seat> seatContainer, ArrayList<String> rowsIds,
 			ArrayList<String> colIds) throws JSONException {
-		
+
 		String rowId;
 		String colId;
 		String id;
@@ -76,14 +76,14 @@ public class Room {
 				id = rowId + "-" + colId;
 
 				seatContainer.put(id, new Seat(id));
-				
+
 				if (!colIds.contains(colId))
 					colIds.add(colId);
-				
-				if (!rowsIds.contains(rowId)) 
-					rowsIds.add(rowId); 
-					
-				
+
+				if (!rowsIds.contains(rowId))
+					rowsIds.add(rowId);
+
+
 			}
 		}
 
@@ -112,7 +112,7 @@ public class Room {
 
 	public class Seat {
 		private SeatStatus status;
-		
+
 
 		private String id;
 
@@ -134,6 +134,6 @@ public class Room {
 		}
 
 	}
-	
-	
+
+
 }

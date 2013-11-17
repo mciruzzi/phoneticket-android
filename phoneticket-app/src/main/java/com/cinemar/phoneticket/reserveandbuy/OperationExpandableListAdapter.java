@@ -1,9 +1,5 @@
 package com.cinemar.phoneticket.reserveandbuy;
 
-import com.cinemar.phoneticket.R;
-import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.model.ItemOperation;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.util.SparseArray;
@@ -15,6 +11,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.R;
+import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.model.ItemOperation;
 
 
 public class OperationExpandableListAdapter extends BaseExpandableListAdapter {

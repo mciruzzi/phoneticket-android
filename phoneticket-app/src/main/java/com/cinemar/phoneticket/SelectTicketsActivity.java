@@ -64,10 +64,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 		showId = getIntent().getStringExtra(OperationConstants.ID_SHOW);
 		reserveId = getIntent().getStringExtra(OperationConstants.ID_RESERVE);
-		
+
 		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
 		if (getIntent().hasExtra("selectedSeats")){
-			
+
 
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
 			ItemOperation.sortSeats(selectedSeats);
@@ -183,10 +183,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			promoItem.updateTicketsView(maxTicketsAllowed, promoSelected);
 			total += promoItem.getSubtotal();
 		}
-
-		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
 		adultsTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
 		childrenTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
+		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
+
+
 
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
@@ -198,10 +199,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		// de compras para registrala
 		// Nota : Si es reserva jamas llega a seleccionar tipo de entradas
 		resetErrors();
-		
+
 		if ( !CreditCardValidatorUtil.validate(this,editNumeroDeTarjeta,editTitular, editCodigoSeg,editFechaVencimiento))
 			return; //validate before performing purchase
-		
+
 		PurchaseRequest purchaseRequest = new PurchaseRequest();
 		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
 		purchaseRequest.setEmail(settings.getString("email", null));
@@ -238,7 +239,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		this.editNumeroDeTarjeta.setError(null);
 		this.editFechaVencimiento.setError(null);
 		this.editNumeroDeTarjeta.setError(null);
-		this.editTitular.setError(null);		
+		this.editTitular.setError(null);
 	}
 
 	public void onBuyOk(String msg,JSONObject result) {

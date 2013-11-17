@@ -1,10 +1,10 @@
 package com.cinemar.phoneticket.util;
 
-import com.cinemar.phoneticket.R;
-
+import android.content.Context;
 import android.text.TextUtils;
 import android.widget.EditText;
-import android.content.Context;
+
+import com.cinemar.phoneticket.R;
 
 public class CreditCardValidatorUtil {
 	

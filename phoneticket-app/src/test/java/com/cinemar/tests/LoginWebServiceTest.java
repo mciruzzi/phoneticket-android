@@ -1,19 +1,6 @@
 package com.cinemar.tests;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import junit.framework.TestCase;
-
-import android.test.InstrumentationTestCase;
-import android.util.Log;
-
-import com.cinemar.phoneticket.authentication.APIAuthentication;
-import com.cinemar.phoneticket.authentication.AuthenticationService;
-import com.cinemar.phoneticket.model.User;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class LoginWebServiceTest extends TestCase {
 	public void testTheTruth() {
