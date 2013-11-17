@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,8 +61,9 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.peliculas, menu);
+		super.onCreateOptionsMenu(menu);
+		MenuItem item = menu.findItem(R.id.action_cartelera);
+		item.setVisible(false);
 		return true;
 	}
 
@@ -188,10 +190,10 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 
 		for (Film film : filmsMap.values()) {
 			
-			LinearLayout.LayoutParams params;
+			LinearLayout.LayoutParams params ;
 			Display display = getWindowManager().getDefaultDisplay();
 			Point size = new Point();
-			display.getSize(size);
+			display.getSize(size); 
 			int width = (int) (size.x * 0.8);
 			int height = (int) (size.y * 0.8);
 			
@@ -199,7 +201,7 @@ public class PeliculasActivity extends AbstractApiConsumerActivity {
 				params = new LinearLayout.LayoutParams( height, width);
 			else
 				params = new LinearLayout.LayoutParams( width, height);
-
+			
 			ImageView imageView = new ImageView(this);
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 			imageView.setLayoutParams(params);

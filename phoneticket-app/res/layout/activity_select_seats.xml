@@ -30,8 +30,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/salaView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,17 +51,14 @@
             android:src="@drawable/screen" />
 
         <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="8"
             android:layout_below="@id/roomscreen"
             android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-             >
+            android:layout_gravity="center_horizontal">
 
             <HorizontalScrollView
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_centerInParent="true"
@@ -82,12 +77,8 @@
         <Button
             android:id="@+id/selectSeatsButton"
             style="@style/Buttons"
-            android:layout_width="wrap_content"
             android:layout_height="0px"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:onClick="readySelectingSeats"
             android:text="@string/select" />
 

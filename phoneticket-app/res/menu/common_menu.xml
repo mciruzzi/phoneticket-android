@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- <item -->
+    <!-- android:id="@+id/action_settings" -->
+    <!-- android:orderInCategory="100" -->
+    <!-- android:showAsAction="never" -->
+    <!-- android:title="@string/action_settings"/> -->
+    <item
+        android:id="@+id/action_cartelera"
+        android:icon="@drawable/ic_peliculas"
+        android:orderInCategory="250"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/cartelera"/>
+    <item
+        android:id="@+id/action_complejos"
+        android:icon="@drawable/ic_complejos"
+        android:orderInCategory="300"
+        android:showAsAction="ifRoom"
+        android:title="@string/theatres"/>
+    <item
+        android:id="@+id/action_myaccount"
+        android:icon="@drawable/ic_micuenta"
+        android:orderInCategory="200"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/mi_cuenta"/>
+
+</menu>

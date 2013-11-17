@@ -1,7 +1,18 @@
 package com.cinemar.phoneticket;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.cinemar.phoneticket.model.ItemOperation;
 import com.cinemar.phoneticket.model.prices.PriceInfo;
@@ -10,25 +21,16 @@ import com.cinemar.phoneticket.reserveandbuy.ReserveBuyAPI;
 import com.cinemar.phoneticket.theaters.TheatresClientAPI;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
-
 import com.cinemar.phoneticket.util.ProcessBarUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.TextView;
-
-public class ReserveShowActivity extends Activity {
+public class ReserveShowActivity extends AbstractApiConsumerActivity {
 
 	private String idReserve;
 	private String idShow;
 	private PriceInfo priceInfo;
+	private int quantityOfSeats;
+	private String seats;
 	
 	private TextView mTitle;
 	private TextView mCinema;
@@ -50,13 +52,6 @@ public class ReserveShowActivity extends Activity {
 		getUIElement();
 		loadData();
 		
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.reserve_show, menu);
-		return true;
 	}
 
 	public void cancelReserve(View view) {
@@ -120,7 +115,13 @@ public class ReserveShowActivity extends Activity {
 		intent.putExtra(OperationConstants.ID_RESERVE, idReserve);
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
-		intent.putExtra("seatsCount", ItemOperation.getCountSeats(mSeating.getText().toString()));
+		intent.putExtra("seatsCount", quantityOfSeats);
+		
+		if (seats != null) {
+			String seatsSelect = seats.substring(0, seats.length() - 1); //para eliminar el último ";" 
+			intent.putStringArrayListExtra("selectedSeats", new ArrayList<String>(Arrays.asList(seatsSelect.split(ItemOperation.SEPARADOR))));
+		}
+			
 
 		startActivity(intent);
 		finish();
@@ -128,7 +129,7 @@ public class ReserveShowActivity extends Activity {
 	
 	public void shareWithTwitter(View view) {		
 		AppCommunicator sharer = new AppCommunicator(this);
-		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli", mShareUrl);
+		Intent shareIntent= sharer.getTwitterIntent("Reservé esta peli ", mShareUrl);
 
 		if (shareIntent == null ) {
 
@@ -207,12 +208,20 @@ public class ReserveShowActivity extends Activity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 		mCode.setText("Cód.: " + idReserve );
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
+
+		quantityOfSeats = ItemOperation.getCountSeats(intent.getStringExtra(OperationConstants.SEATING));
 		
+		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true) {
+			seats = intent.getStringExtra(OperationConstants.SEATING);
+			mSeating.setText("Asientos: " + seats);
+		} 
+		else {
+			seats = null;
+		}
 	}
 	
 	private void getUIElement() {

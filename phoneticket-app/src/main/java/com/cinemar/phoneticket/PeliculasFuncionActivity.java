@@ -13,7 +13,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -129,13 +129,9 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							R.string.no_selected_show));
 					return;
 				}
-				
-				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-				if (settings.getString("email", null)==null){
-					showSimpleAlert(getResources().getString(
-							R.string.must_be_logged));
+
+				if (!validateLogin())
 					return;
-				}
 
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(false);
@@ -155,13 +151,8 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 							R.string.no_selected_show));
 					return;
 				}
-				
-				SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-				if (settings.getString("email", null)==null){
-					showSimpleAlert(getResources().getString(
-							R.string.must_be_logged));
+				if (!validateLogin())
 					return;
-				}
 
 				if (selectedShow.isNumbered())
 					goToSeatSelectionActivity(true);
@@ -179,7 +170,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				Intent shareIntent = sharer.getFacebookIntent(mFilm
 						.getShareURL());
 				if (shareIntent == null) {
-					showSimpleAlert(getString(R.string.missingApplication));
+						showSimpleAlert(getString(R.string.missingApplication));
 					return;
 				}
 
@@ -203,12 +194,6 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		});
 
 		this.getFunciones();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.peliculas, menu);
-		return true;
 	}
 
 	private void displaySeatsPicker() {
@@ -235,7 +220,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		listDataChild = new HashMap<String, List<Show>>();
 
 		for (Theatre cinema : mFilm.getCinemas()) {
-			// TODO Formate funcion date properly
+
 			String key = cinema.getName() + "\n" + cinema.getAddress();
 			listDataHeader.add(key);
 			listDataChild.put(key, cinema.getShows());
@@ -253,7 +238,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 				selectedShow = listDataChild.get(
 						listDataHeader.get(groupPosition)).get(childPosition);
 
-				Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " : " + selectedShow.getShowId(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), selectedShow.getStartTimeString(), Toast.LENGTH_SHORT).show();
 
 				return false;
 			}
@@ -296,6 +281,27 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		}
 
 	};
+
+	private boolean validateLogin() {
+		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+		if (settings.getString("email", null)==null){
+			//showSimpleAlert(getResources().getString(R.string.must_be_logged));
+			Toast toast = Toast.makeText(this, getString(R.string.must_be_logged), 2000);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.setAction(LoginActivity.SIGNIN_ACTION);
+			startActivityForResult(intent, MainMyAccountActivity.REQUEST_LOGIN);
+
+			return false;
+		}
+		else {
+			return true;
+		}
+
+
+	}
 
 	public void onSeatsCountSelected(DialogInterface dialog,final int seatsCount) {
 

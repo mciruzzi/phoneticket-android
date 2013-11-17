@@ -1,9 +1,9 @@
 package com.cinemar.phoneticket.util;
 
-import com.cinemar.phoneticket.R;
-
-import android.text.TextUtils;
 import android.app.Activity;
+import android.text.TextUtils;
+
+import com.cinemar.phoneticket.R;
 
 public class UserDataValidatorUtil {
 	

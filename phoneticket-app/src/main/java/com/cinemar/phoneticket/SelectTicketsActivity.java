@@ -1,9 +1,7 @@
 package com.cinemar.phoneticket;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,8 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -42,7 +40,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 	private String showId;
 	private String reserveId;
-	private final Set<String> selectedSeats = new HashSet<String>();
+	private final ArrayList<String> selectedSeats = new ArrayList<String>();
 	private int seatsCount;
 	private boolean isBuy, isReserve, isNumbered;
 	private PriceInfo priceInfo;
@@ -66,10 +64,15 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 		showId = getIntent().getStringExtra(OperationConstants.ID_SHOW);
 		reserveId = getIntent().getStringExtra(OperationConstants.ID_RESERVE);
-		
+
 		//contempla casos que pueden venir de una seleccion de asientos o de la cant de asientos
 		if (getIntent().hasExtra("selectedSeats")){
+
+
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
+			ItemOperation.sortSeats(selectedSeats);
+			Log.i("ASIENTO ticke", selectedSeats.toString());
+
 			seatsCount = selectedSeats.size();
 			isNumbered = true;
 		}
@@ -88,13 +91,6 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		getUIItems();
 		displayPromos();
 		updateValues();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_tickets, menu);
-		return true;
 	}
 
 	private void getUIItems() {
@@ -153,24 +149,6 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 
 		LayoutInflater inflater = LayoutInflater.from(getBaseContext());
 
-		//No son necesarios ahora que son tratados distintos
-//		LinearLayout adultsItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-//		adultsTicketsItem = new SingleTicketItemViewController(
-//				adultsItem,this,priceInfo.getAdultPrice());
-//		adultsTicketsItem.setTitle(getString(R.string.adult_ticket));
-//		adultsTicketsItem.setDescription("Entrada de adulto");
-//
-//		LinearLayout childrenItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
-//		childrenTicketsItem = new SingleTicketItemViewController(
-//				childrenItem,this,priceInfo.getChildPrice());
-//		childrenTicketsItem.setTitle(getString(R.string.children_ticket));
-//		childrenTicketsItem.setDescription("Entrada de ninio");
-//
-//		promosItems.add(adultsTicketsItem);
-//		promosItems.add(childrenTicketsItem);
-//		ticketsItemContainer.addView(adultsItem);
-//		ticketsItemContainer.addView(childrenItem);
-
 		for (Promotion promo : priceInfo.getPromotions()){
 			LinearLayout promoItem = (LinearLayout)inflater.inflate(R.layout.tickets_item_layout, null);
 
@@ -205,10 +183,11 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			promoItem.updateTicketsView(maxTicketsAllowed, promoSelected);
 			total += promoItem.getSubtotal();
 		}
-
-		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
 		adultsTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
 		childrenTicketsItem.updateTicketsView(maxTicketsAllowed,promoSelected);
+		total += (childrenTicketsItem.getSubtotal() + adultsTicketsItem.getSubtotal());
+
+
 
 		//Expreso el total a pagar al momento
 		ticketsTotal.setText("Total: $"+ Double.valueOf(total));
@@ -220,10 +199,10 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		// de compras para registrala
 		// Nota : Si es reserva jamas llega a seleccionar tipo de entradas
 		resetErrors();
-		
+
 		if ( !CreditCardValidatorUtil.validate(this,editNumeroDeTarjeta,editTitular, editCodigoSeg,editFechaVencimiento))
 			return; //validate before performing purchase
-		
+
 		PurchaseRequest purchaseRequest = new PurchaseRequest();
 		SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
 		purchaseRequest.setEmail(settings.getString("email", null));
@@ -260,7 +239,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 		this.editNumeroDeTarjeta.setError(null);
 		this.editFechaVencimiento.setError(null);
 		this.editNumeroDeTarjeta.setError(null);
-		this.editTitular.setError(null);		
+		this.editTitular.setError(null);
 	}
 
 	public void onBuyOk(String msg,JSONObject result) {
@@ -280,6 +259,7 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			intent.putExtra(OperationConstants.SHARE_URL, item.getShareUrl());
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
+			intent.putExtra(OperationConstants.IS_NUMERED, isNumbered);
 
 			final Intent intentFinal = intent;
 

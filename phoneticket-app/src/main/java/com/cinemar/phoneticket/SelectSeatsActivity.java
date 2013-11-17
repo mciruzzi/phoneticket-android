@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -76,13 +75,6 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 
 		this.requestRoomLayout();
 
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_seats, menu);
-		return true;
 	}
 
 	private void requestRoomLayout() {
@@ -196,11 +188,8 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			return;
 		}
 
-		ArrayList<String> seatsIds = new ArrayList<String>();
-		for (Seat seat : SelectedSeats) {
-			seatsIds.add(seat.getId());
-		}
-
+		ArrayList<String> seatsIds = ItemOperation.getSeatSortList(SelectedSeats);
+		
 		// Hago la reserva de dichos asientos (no hay nada mas que cargar)
 		if (isReserve) {
 			ReserveRequest reserve = new ReserveRequest();
@@ -214,6 +203,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			api.performNumberedReserve(this,reserve, reserveResponseHandler);
 		} else {
 			// Caso de compra (faltan ingresar varios datos)
+			
 			Intent intent = new Intent(this, SelectTicketsActivity.class);
 			intent.putExtra("showId", showId);
 			intent.putExtra("priceInfo", priceInfo);
@@ -243,6 +233,7 @@ public class SelectSeatsActivity extends AbstractApiConsumerActivity implements
 			intent.putExtra(OperationConstants.SCHEDULABLE_DATE, item.getDate().getTime());
 			intent.putExtra(OperationConstants.NEW_OPERATION, true);
 			intent.putExtra(OperationConstants.ID_SHOW, item.getIdShow());
+			intent.putExtra(OperationConstants.IS_NUMERED, true);
 
 			final Intent intentFinal = intent;
 

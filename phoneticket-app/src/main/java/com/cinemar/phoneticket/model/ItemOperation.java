@@ -1,12 +1,19 @@
 package com.cinemar.phoneticket.model;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
+import com.cinemar.phoneticket.model.Room.Seat;
 import com.cinemar.phoneticket.util.UIDateUtil;
 
 public class ItemOperation {
@@ -21,8 +28,9 @@ public class ItemOperation {
 	private String cover;
 	private String id;
 	private String idShow;
+	private boolean isNumered;
 	
-	static final String SEPARADOR = ";";
+	public static final String SEPARADOR = ";";
 	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
@@ -41,6 +49,8 @@ public class ItemOperation {
 		setId(operation.getString("id"));
 		setCover(film.getString("cover_url"));
 		setIdShow(show.getString("id"));
+		setNumered(show.getBoolean("numbered_seats"));
+
 	}
 	
 	public String getTitle() {
@@ -93,6 +103,7 @@ public class ItemOperation {
 
 	private void setSeating(JSONArray seats) throws JSONException {
 		
+		Log.i("SILLAS ", seats.toString());
 		String[] seating = new String[seats.length()];
 		
 		for (int i = 0; i < seats.length(); i++)
@@ -155,5 +166,70 @@ public class ItemOperation {
 	
 	static public int getCountSeats(String seatings) {
 		return seatings.split(SEPARADOR).length - 1;
+	}
+
+	public boolean isNumered() {
+		return isNumered;
+	}
+
+	private void setNumered(boolean isNumered) {
+		this.isNumered = isNumered;
+	}
+	
+	static public ArrayList<String> getSeatSortList(LinkedList<Seat> selectedSeats) {
+		
+		ArrayList<String> seatsIds = new ArrayList<String>();
+		
+		for (Seat seat : selectedSeats) {
+			seatsIds.add(seat.getId());
+		}
+		
+		sortSeats(seatsIds);
+		
+		return seatsIds;
+	}
+	
+	static public void sortSeats(ArrayList<String> seatsIds ) {
+		Collections.sort(seatsIds, new Comparator<String>()
+	    {
+	        public int compare(String seat1, String seat2)
+	        {
+	        	String[] seat1Split = seat1.split("-");
+	        	String[] seat2Split = seat2.split("-");
+	        		        	
+	        	if (seat1Split[0].compareTo(seat2Split[0]) == 0) {
+		        	
+	        		Integer number1 = Integer.valueOf(seat1Split[1]);
+	        		Integer number2 = Integer.valueOf(seat2Split[1]);
+	        		
+	        		return number2.compareTo(number1);
+	        	}
+	        	
+	        	return seat2.compareTo(seat1);
+	        }        
+	    });
+		Log.i("ASIENTO STATOS", seatsIds.toString());
+	}
+	
+	static public void sortInverseSeats(ArrayList<String> seatsIds ) {
+		Collections.sort(seatsIds, new Comparator<String>()
+	    {
+	        public int compare(String seat1, String seat2)
+	        {
+	        	String[] seat1Split = seat1.split("-");
+	        	String[] seat2Split = seat2.split("-");
+	        		        	
+	        	if (seat1Split[0].compareTo(seat2Split[0]) == 0) {
+		        	
+	        		Integer number1 = Integer.valueOf(seat1Split[1]);
+	        		Integer number2 = Integer.valueOf(seat2Split[1]);
+	        		
+	        		return number1.compareTo(number2);
+	        	}
+	        	
+	        	return seat1.compareTo(seat2);
+	        }        
+	    });
+		Log.i("ASIENTO STATOS IN", seatsIds.toString());
 	}
 }

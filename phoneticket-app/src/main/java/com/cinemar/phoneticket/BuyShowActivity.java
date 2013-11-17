@@ -1,5 +1,12 @@
 package com.cinemar.phoneticket;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.cinemar.phoneticket.reserveandbuy.OperationConstants;
 import com.cinemar.phoneticket.util.AppCommunicator;
 import com.cinemar.phoneticket.util.NotificationUtil;
@@ -7,14 +14,6 @@ import com.cinemar.phoneticket.util.QRCodeEncoder;
 import com.cinemar.phoneticket.util.QRContents;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
-
-import android.os.Bundle;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class BuyShowActivity extends AbstractApiConsumerActivity {
 
@@ -37,12 +36,6 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		loadData();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.buy_show, menu);
-		return true;
-	}
 
 	private void loadData() {
 		
@@ -51,11 +44,12 @@ public class BuyShowActivity extends AbstractApiConsumerActivity {
 		mTitle.setText(intent.getStringExtra(OperationConstants.TITLE));
 		mCinema.setText(intent.getStringExtra(OperationConstants.CINEMA));
 		mDate.setText(intent.getStringExtra(OperationConstants.DATE));
-		mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
-//		mCode (intent.getStringExtra(OperationConstants.CODE));
 		mShareUrl = intent.getStringExtra(OperationConstants.SHARE_URL);
 		mSchedulableDate = intent.getLongExtra(OperationConstants.SCHEDULABLE_DATE,0);
 		mNewOperation = intent.getBooleanExtra(OperationConstants.NEW_OPERATION, false);
+		
+		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true)
+			mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
 	}
 	
 	private void getUIElement() {

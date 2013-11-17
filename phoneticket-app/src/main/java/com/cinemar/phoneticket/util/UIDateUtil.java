@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -28,30 +29,30 @@ public class UIDateUtil {
 	public static final int DATE_DIALOG_ID = 8888;
 
 
-	public UIDateUtil(TextView mBirthDay, ImageButton mPickDate, final Activity activity)
-	{
+    public UIDateUtil(TextView mBirthDay, ImageButton mPickDate, final Activity activity)
+    {
 		this.mBirthDay = mBirthDay;
 		this.mPickDate = mPickDate;
 		this.activity = activity;
-
+		
 		this.mPickDate.setOnClickListener(new View.OnClickListener() {
-			@SuppressWarnings("deprecation")
-			public void onClick(View arg0) {
-				activity.showDialog(DATE_DIALOG_ID);
-			}
+	        @SuppressWarnings("deprecation")
+	        public void onClick(View arg0) {
+	                activity.showDialog(DATE_DIALOG_ID);
+	        }
 		});
-
+		
 		update();
-
+		
 		mDateListener = new DatePickerDialog.OnDateSetListener() {
-
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-				setDate(dayOfMonth, monthOfYear, year);
-				update();
-			}
+		
+	        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+	
+                setDate(dayOfMonth, monthOfYear, year);
+                update();
+	        }
 		};
-	}
+    }
 
 	public Dialog createDialogWindow(int id) {
 
@@ -130,7 +131,9 @@ public class UIDateUtil {
 	
 	public static String getStringFromDate(Date date) {
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		return dateFormat.format(date);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd-MM HH:mm", new Locale("es_ES"));
+		String dateInString = dateFormat.format(date);
+		char firstLetter = Character.toUpperCase(dateInString.charAt(0)); //esto es porque no me sale la primer letra en mayus :@
+		return dateInString.replaceFirst(Character.toString(dateInString.charAt(0)), Character.toString(firstLetter));
 	}
 }

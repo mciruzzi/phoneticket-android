@@ -56,33 +56,33 @@
             android:text="@string/congratulations_reservation"            
             android:textColor="@color/golden"
             android:textAlignment="center"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/accountReserveTitle"
             style="@style/Title"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountReserveCinema"
             style="@style/DetailsReserveAndBuy"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountReserveDate"
             style="@style/DetailsReserveAndBuy"
             android:layout_marginBottom="30dp"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountReserveSeating"
             style="@style/DetailsReserveAndBuy"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <TextView
             android:id="@+id/accountReserveCode"
             style="@style/DetailsReserveAndBuy"
-            android:text="@string/hello_world" />
+            android:text="" />
 
         <Button
             android:id="@+id/accountButtonCancel"

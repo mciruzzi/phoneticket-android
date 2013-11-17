@@ -40,6 +40,8 @@
   <style name="SpinnerDropDownItemcolor_theme" parent="android:Widget.DropDownItem.Spinner">
       <item name="android:checkMark">@drawable/btn_radio_holo_light</item>
   </style>
+
+  
   <style name="Tabcolor_theme">
       <item name="android:paddingLeft">16dip</item>
       <item name="android:paddingRight">16dip</item>

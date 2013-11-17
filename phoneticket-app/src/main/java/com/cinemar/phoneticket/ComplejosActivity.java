@@ -7,27 +7,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.cinemar.phoneticket.films.DownloadImageTask;
-import com.cinemar.phoneticket.model.Theatre;
-import com.cinemar.phoneticket.theaters.TheatreOnClickListener;
-import com.cinemar.phoneticket.theaters.TheatresClientAPI;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.content.ActivityNotFoundException;
-
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.cinemar.phoneticket.films.DownloadImageTask;
+import com.cinemar.phoneticket.model.Theatre;
+import com.cinemar.phoneticket.theaters.TheatreOnClickListener;
+import com.cinemar.phoneticket.theaters.TheatresClientAPI;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class ComplejosActivity extends AbstractApiConsumerActivity {
 
@@ -53,8 +52,9 @@ public class ComplejosActivity extends AbstractApiConsumerActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.complejos, menu);
+		super.onCreateOptionsMenu(menu);
+		MenuItem item = menu.findItem(R.id.action_complejos);
+		item.setVisible(false);
 		return true;
 	}
 

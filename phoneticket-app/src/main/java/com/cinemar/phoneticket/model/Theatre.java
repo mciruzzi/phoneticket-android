@@ -1,6 +1,8 @@
 package com.cinemar.phoneticket.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -33,7 +35,8 @@ public class Theatre {
 				shows.add(new Show(showObject));
 			}
 		}
-
+		
+		sortShows(shows);
 	}
 
 	public String getId() {
@@ -90,10 +93,20 @@ public class Theatre {
 
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
+		sortShows(this.shows);
 	}
 
 	public void addShow(Show show) {
 		this.addShow(show);
 	}
 
+	static public void sortShows(List<Show> shows ) {
+		
+		Collections.sort(shows, new Comparator<Show>()
+	    {
+	        public int compare(Show show1, Show show2) {
+	        	return show1.getStartTime().compareTo(show2.getStartTime());
+	        }        
+	    });
+	}
 }

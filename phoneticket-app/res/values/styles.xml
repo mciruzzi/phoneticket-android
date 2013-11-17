@@ -19,17 +19,6 @@
         <!--  item name="android:actionBarStyle">@style/CustomActionBarTheme</item> -->
     </style>
 
-    <!--   
-    <style name="CustomActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
-          <item name="android:titleTextStyle">@style/MyActionBar</item>
-  	</style>
-
-	<style name="MyActionBar">
-		<item name="android:textColor">#ff400080</item>
-		<item name="android:textSize">20sp</item>
-		<item name="android:textStyle">bold|italic</item>
-	</style>
-   -->
     
     <!-- Para los botones del menú ppal -->
     
