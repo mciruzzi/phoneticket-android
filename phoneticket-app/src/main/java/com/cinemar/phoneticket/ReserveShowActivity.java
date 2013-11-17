@@ -1,5 +1,8 @@
 package com.cinemar.phoneticket;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +31,7 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 	private String idShow;
 	private PriceInfo priceInfo;
 	private int quantityOfSeats;
+	private String seats;
 	
 	private TextView mTitle;
 	private TextView mCinema;
@@ -113,6 +117,9 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 		intent.putExtra("priceInfo", priceInfo);
 		intent.putExtra("isReserve", false);
 		intent.putExtra("seatsCount", quantityOfSeats);
+		
+		if (seats != null)
+			intent.putStringArrayListExtra("selectedSeats", new ArrayList<String>(Arrays.asList(seats.split(ItemOperation.SEPARADOR))));
 
 		startActivity(intent);
 		finish();
@@ -206,8 +213,13 @@ public class ReserveShowActivity extends AbstractApiConsumerActivity {
 
 		quantityOfSeats = ItemOperation.getCountSeats(intent.getStringExtra(OperationConstants.SEATING));
 		
-		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true)
-			mSeating.setText("Asientos: " + intent.getStringExtra(OperationConstants.SEATING));
+		if (intent.getBooleanExtra(OperationConstants.IS_NUMERED, false) == true) {
+			seats = intent.getStringExtra(OperationConstants.SEATING);
+			mSeating.setText("Asientos: " + seats);
+		} 
+		else {
+			seats = null;
+		}
 	}
 	
 	private void getUIElement() {

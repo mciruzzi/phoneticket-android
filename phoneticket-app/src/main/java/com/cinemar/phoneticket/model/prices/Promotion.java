@@ -10,12 +10,13 @@ public abstract class Promotion implements Serializable {
 	private static final long serialVersionUID = 6023972663947325236L;
 	public static final String CODE="code";
 	
-	private String id,name,validationType;
+	private String id,name,validationType, description;
 	
 	public Promotion(JSONObject jsonObject) throws JSONException {
 		setId(jsonObject.getString("id"));
 		name = jsonObject.getString("name");
-		validationType = jsonObject.getString("validation_type");		
+		validationType = jsonObject.getString("validation_type");
+		setDescription("descrición" /*jsonObject.getString("???")*/); //TODO ACÁ IRÍA LA DESCRIPCIÓN
 	}
 	
 		
@@ -58,6 +59,16 @@ public abstract class Promotion implements Serializable {
 	public boolean isValidatedByCode() {
 		 
 		return validationType.equals(CODE);
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

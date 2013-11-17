@@ -46,7 +46,7 @@ public class TicketItemViewController implements OnItemSelectedListener {
 
 		if (promotion != null) {
 			this.setTitle(promotion.getName());
-			this.setDescription(promotion.getName()); // TODO Change for description
+			this.setDescription(promotion.getDescription());
 		}
 	}
 

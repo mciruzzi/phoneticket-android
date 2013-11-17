@@ -23,7 +23,7 @@ public class ItemOperation {
 	private String idShow;
 	private boolean isNumered;
 	
-	static final String SEPARADOR = ";";
+	public static final String SEPARADOR = ";";
 	
 	public ItemOperation(JSONObject operation) throws JSONException {
 		
