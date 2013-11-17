@@ -16,7 +16,7 @@ public abstract class Promotion implements Serializable {
 		setId(jsonObject.getString("id"));
 		name = jsonObject.getString("name");
 		validationType = jsonObject.getString("validation_type");
-		setDescription("descrición" /*jsonObject.getString("???")*/); //TODO ACÁ IRÍA LA DESCRIPCIÓN
+		setDescription(jsonObject.getString("description"));
 	}
 	
 		
