@@ -1,7 +1,7 @@
 package com.cinemar.phoneticket.model;
 
 import java.text.ParseException;
-import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,17 +9,14 @@ import org.json.JSONObject;
 import com.cinemar.phoneticket.util.UIDateUtil;
 
 public class Show {
-	String showId;
-	Calendar startTime;
-	String startTimeString;	
-	boolean isNumbered = true; //TODO change para tomarlo en el constructor
+	private String showId;
+	private Date startTime;
+	private String startTimeString;	
+	private boolean isNumbered = true; //TODO change para tomarlo en el constructor
 
-
-
-	public Show(String showId, Calendar startTime) {
+	public Show(String showId) {
 		super();
 		this.showId = showId;
-		this.startTime = startTime;		
 	}
 	
 	public Show(JSONObject showObject) throws JSONException {
@@ -29,7 +26,8 @@ public class Show {
 		this.isNumbered = showObject.getBoolean("numbered_seats");
 		
 		try {
-			this.startTimeString = UIDateUtil.getStringFromDate(UIDateUtil.getDateFromString(showObject.getString("starts_at")));
+			this.startTime = UIDateUtil.getDateFromString(showObject.getString("starts_at"));
+			this.startTimeString = UIDateUtil.getStringFromDate(this.startTime);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -44,18 +42,14 @@ public class Show {
 		this.showId = showId;
 	}
 
-	public Calendar getStartTime() {
+	public Date getStartTime() {
 		return startTime;
-	}
-
-	public void setStartTime(Calendar startTime) {
-		this.startTime = startTime;
 	}
 		
 	public String getStartTimeString() {
 		return startTimeString;
 	}
-
+	
 	public void setStartTimeString(String startTimeString) {
 		this.startTimeString = startTimeString;
 	}

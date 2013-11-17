@@ -220,7 +220,7 @@ public class PeliculasFuncionActivity extends AbstractApiConsumerActivity
 		listDataChild = new HashMap<String, List<Show>>();
 
 		for (Theatre cinema : mFilm.getCinemas()) {
-			// TODO Formate funcion date properly
+
 			String key = cinema.getName() + "\n" + cinema.getAddress();
 			listDataHeader.add(key);
 			listDataChild.put(key, cinema.getShows());
