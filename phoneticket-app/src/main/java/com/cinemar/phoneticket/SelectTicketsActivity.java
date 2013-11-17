@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -69,7 +70,8 @@ public class SelectTicketsActivity extends AbstractApiConsumerActivity implement
 			
 
 			selectedSeats.addAll(getIntent().getStringArrayListExtra("selectedSeats"));
-			ItemOperation.sortInverseSeats(selectedSeats);
+			ItemOperation.sortSeats(selectedSeats);
+			Log.i("ASIENTO ticke", selectedSeats.toString());
 
 			seatsCount = selectedSeats.size();
 			isNumbered = true;

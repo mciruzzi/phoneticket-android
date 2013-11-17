@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.cinemar.phoneticket.model.Room.Seat;
 import com.cinemar.phoneticket.util.UIDateUtil;
 
@@ -101,6 +103,7 @@ public class ItemOperation {
 
 	private void setSeating(JSONArray seats) throws JSONException {
 		
+		Log.i("SILLAS ", seats.toString());
 		String[] seating = new String[seats.length()];
 		
 		for (int i = 0; i < seats.length(); i++)
@@ -205,7 +208,7 @@ public class ItemOperation {
 	        	return seat2.compareTo(seat1);
 	        }        
 	    });
-//		Log.i("ASIENTO STATOS", seatsIds.toString());
+		Log.i("ASIENTO STATOS", seatsIds.toString());
 	}
 	
 	static public void sortInverseSeats(ArrayList<String> seatsIds ) {
@@ -227,6 +230,6 @@ public class ItemOperation {
 	        	return seat1.compareTo(seat2);
 	        }        
 	    });
-//		Log.i("ASIENTO STATOS IN", seatsIds.toString());
+		Log.i("ASIENTO STATOS IN", seatsIds.toString());
 	}
 }
